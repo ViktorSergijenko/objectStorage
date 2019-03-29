@@ -1,0 +1,46 @@
+/* Container holding the image and the text */
+.container {
+    position: relative;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+  
+  /* Bottom right text */
+  .text-block {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+// img {
+//     border-radius: 10%;
+//     width: 100%;
+//   }
+
+// .hero-image {
+//     width: 100%;
+//     margin: auto;
+//     border-radius: 10%;
+//   }
+  
+//   .hero-image::after {
+//     display: block;
+//     position: relative;
+//     background-image: linear-gradient(to bottom, rgba(126, 121, 121, 0) 0, #fff 100%);
+//     margin-top: -400px;
+//     border-radius: 10%;
+//     height: 400px;
+//     width: 100%;
+//     content: '';
+//   }
+
+//   .bottomleft {
+//     position: absolute;
+//     bottom: 8px;
+//     left: 16px;
+//     font-size: 18px;
+//   }

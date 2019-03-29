@@ -3,6 +3,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './dashboard.component';
 import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
+import { NbSpinnerModule } from '@nebular/theme';
 
 
 
@@ -10,6 +11,7 @@ import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses
   imports: [
     ThemeModule,
     NgxEchartsModule,
+    NbSpinnerModule
   ],
   declarations: [DashboardComponent, WarehousesListComponent]
 })

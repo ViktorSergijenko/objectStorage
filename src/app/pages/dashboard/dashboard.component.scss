@@ -20,3 +20,65 @@
     }
   }
 }
+.input-group.has-person-icon {
+  position: relative;
+
+  .form-control {
+
+    padding-left: 3rem;
+  }
+
+  &::before {
+    content: '\F47D';
+    font-family: 'Nebular';
+    font-size: 2rem;
+    position: absolute;
+    z-index: 100;
+    left: 1rem;
+    top: 0.25rem;
+  }
+}
+
+* {box-sizing: border-box;}
+
+/* Style the input container */
+.input-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Style the form icons */
+.icon {
+  padding: 10px;
+  background: dodgerblue;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* Style the input fields */
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid dodgerblue;
+}
+
+/* Set a style for the submit button */
+.btn {
+  background-color: dodgerblue;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
