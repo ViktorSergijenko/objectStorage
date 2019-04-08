@@ -1,29 +1,54 @@
-<div class="row">
-  <div class="col-sm-12">
-    <div class="input-container">
-      <i class="fa fa-search icon"></i>
-      <input class="input-field" type="text" placeholder="Search warehouse" name="search">
-    </div>
-  </div>
-
+<div class="container">
   <div class="row">
-    <div class="col-sm-4">
-      <ngx-warehouses-list></ngx-warehouses-list>
-    </div>
-    <div class="col-sm-4">
-      <ngx-warehouses-list></ngx-warehouses-list>
-    </div>
-    <div class="col-sm-4">
-      <ngx-warehouses-list></ngx-warehouses-list>
-    </div>
-    <div class="col-sm-4">
-      <ngx-warehouses-list></ngx-warehouses-list>
-    </div>
-    <div class="col-sm-4">
-      <ngx-warehouses-list></ngx-warehouses-list>
-    </div>
-    <div class="col-sm-4">
-      <ngx-warehouses-list></ngx-warehouses-list>
-    </div>
+    <div class="col-sm-8">
+      <div class="input-container">
+        <i class="fa fa-search icon"></i>
+        <input class="input-field" type="text" placeholder="Search" name="imageSearch" [ngModel]="searchValue"
+          (ngModelChange)="searchTextChanged($event)">
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          Warehouses
+        </div>
+        <div class="col-sm-6 text-right">
+          <i class="fas fa-folder-plus fa-2x icon-add" (click)="openAddHouseModal()"></i>
+        </div>
+      </div>
+      <div class="card flex-row flex-wrap" *ngFor="let warehouse of warehouseList">
 
+
+        <div class="row no-gutters">
+
+          <div class="col-auto">
+            <img src="./assets/images/warehouse3.jpg" class="img-fluid image-size" *ngIf="!warehouse.imageBase64" alt="">
+            <img [src]="warehouse.imageBase64" class="img-fluid image-size" *ngIf="warehouse.imageBase64" alt="no image">
+          </div>
+          <div class="col">
+            <div class="card-block px-2">
+              <h4 class="card-title">Warehouse name: {{warehouse.name}}</h4>
+              <p class="card-text">Address: {{warehouse.address}}</p>
+              <p class="card-text">Location: {{warehouse.location}}</p>
+              <p class="card-text">Type: {{warehouse.type}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer w-100 text-muted">
+          <div class="col-md-7 col-lg-8 col-xs-12"></div>
+          <div class="row-with-btns text-center">
+
+            <i class="fas fa-folder-minus fa-2x icon-delete" (click)="removeWarehouse(warehouse)"></i>
+
+
+            <i class="fas fa-info-circle fa-2x icon-detail"></i>
+
+
+            <i (click)="openEditHouseModal(warehouse)" class="fas fa-cart-arrow-down fa-2x catalog-min-icon"></i>
+
+
+            <i class="fas fa-exclamation-circle fa-2x problem-icon "></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
