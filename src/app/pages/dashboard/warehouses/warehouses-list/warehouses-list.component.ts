@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WarehousesService } from '../warehouses.service';
+import { Warehouse } from '../../../../models/warehouse.model';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -14,10 +16,16 @@ export class WarehousesListComponent implements OnInit {
    * @memberof WarehousesListComponent
    */
   imageSourcePath: string;
+  warehouseList: Warehouse[] = [];
 
-  constructor() { }
+  constructor(
+    private warehouseService: WarehousesService
+  ) { }
 
   ngOnInit() {
+    this.warehouseService.getAllWarehouses().subscribe((warehouses: Warehouse[]) => {
+      this.warehouseList = warehouses;
+    })
     this.getRandomImageForWarehouse();
   }
 
