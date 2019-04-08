@@ -1,0 +1,58 @@
+<nb-card>
+  <nb-card-header class="header text-center">
+    <h2>Add warehouse form</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="newWarehouseForm">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Address</label>
+        <input type="text" class="form-control" id="Address" placeholder="Address" formControlName="address">
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="Location">Location</label>
+        <input type="text" class="form-control" id="Location" placeholder="Location" formControlName="location">
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="file" accept="image/*" class="form-control" id="image" placeholder="Image" (change)="onFileSelected($event)">
+      </div>
+      <div class="row" *ngIf="selectedFile">
+        <div class="col-sm-12 text-center">
+          <img class="image-size" [src]="selectedFile" alt="">
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" ngbDropdown>
+            <button class="btn btn btn-outline-primary dropdown-toggle dropdown-width" type="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" id="dropdownMenu1" ngbDropdownToggle>Choose type</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+              <button class="dropdown-item" *ngFor="let role of names" (click)="onDropDownSelect(role)">{{role}}</button>
+            </div>
+          </div>
+          <input [ngModelOptions]="{standalone: true}" type="text" class="form-control" aria-label="Text input with dropdown button"
+            [(ngModel)]="type">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button nbButton type="submit" status="success" class="btn btn-danger " (click)="addWarehouse()">Submit</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center close-button">
+          <button nbButton outline status="danger" (click)="close()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<pre>
+  {{newWarehouseForm.value | json}}
+</pre>
