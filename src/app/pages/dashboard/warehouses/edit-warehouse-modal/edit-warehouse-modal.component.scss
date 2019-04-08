@@ -1,0 +1,14 @@
+.image-size {
+    width: 19rem;
+    height: 20rem;
+}
+.header {
+    background: deepskyblue;
+}
+.close-button {
+   padding-top: 20px;
+}
+.dropdown-width {
+    // Using important because some kind of bootstrap class is does not allow me just to simply change button width
+    width: 150px !important;
+}
