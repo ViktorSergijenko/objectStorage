@@ -8,7 +8,7 @@ const routes: Routes = [{
   component: PagesComponent,
   children: [{
     path: 'iot-dashboard',
-    component: DashboardComponent,
+    loadChildren: './dashboard/dashboard.module#DashboardModule',
   }, {
     path: 'tables',
     loadChildren: './tables/tables.module#TablesModule',

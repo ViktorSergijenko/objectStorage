@@ -2,9 +2,9 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'IoT Dashboard',
+    title: 'Warehouses',
     icon: 'nb-home',
-    link: '/pages/iot-dashboard',
+    link: '/pages/iot-dashboard/list',
   },
   {
     title: 'FEATURES',

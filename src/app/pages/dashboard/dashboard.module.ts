@@ -8,6 +8,8 @@ import { AddWarehouseModalComponent } from './warehouses/add-warehouse-modal/add
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditWarehouseModalComponent } from './warehouses/edit-warehouse-modal/edit-warehouse-modal.component';
+import { WarehouseRoutingModule } from './warehouse-routing.module';
+import { WarehouseInfoComponent } from './warehouses/warehouse-info/warehouse-info.component';
 
 
 
@@ -20,9 +22,10 @@ import { EditWarehouseModalComponent } from './warehouses/edit-warehouse-modal/e
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    WarehouseRoutingModule
   ],
-  declarations: [DashboardComponent, WarehousesListComponent, AddWarehouseModalComponent, EditWarehouseModalComponent],
+  declarations: [DashboardComponent, WarehousesListComponent, AddWarehouseModalComponent, EditWarehouseModalComponent, WarehouseInfoComponent],
   exports: [AddWarehouseModalComponent, EditWarehouseModalComponent],
   entryComponents: [AddWarehouseModalComponent, EditWarehouseModalComponent]
 })
