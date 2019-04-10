@@ -35,11 +35,11 @@ export class WarehousesService {
   /**
    * Method gets warehouse  by ID
    *
-   * @param {number} warehouseId ID of warehouse to get
+   * @param {string} warehouseId ID of warehouse to get
    * @returns {Observable<Warehouse>} Returns `Observable` with `Warehouse`
    * @memberof WarehousesService
    */
-  getById(warehouseId: number): Observable<Warehouse> {
+  getById(warehouseId: string): Observable<Warehouse> {
     return this.http.get<Warehouse>(`${this.getEndpointUrl()}/${warehouseId}`);
   }
 
