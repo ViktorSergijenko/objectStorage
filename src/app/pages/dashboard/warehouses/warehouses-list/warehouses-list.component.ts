@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WarehousesService } from '../warehouses.service';
+import { WarehousesService } from '../../../../services/warehouses.service';
 import { Warehouse } from '../../../../models/warehouse.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterSorting } from '../../../../models/filter-sort.model';
@@ -44,7 +44,7 @@ export class WarehousesListComponent implements OnInit {
   constructor(
     private warehouseService: WarehousesService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -129,10 +129,8 @@ export class WarehousesListComponent implements OnInit {
    * @memberof WarehousesListComponent
    */
   openEditHouseModal(warehouseToEdit: Warehouse) {
-    console.log(warehouseToEdit);
     // Opening modal window where we can edit Warehouse
     const activeModal = this.modalService.open(EditWarehouseModalComponent, {
-
       container: 'nb-layout',
     });
     // Passing object that we want to edit to the modal window...
@@ -160,7 +158,7 @@ export class WarehousesListComponent implements OnInit {
   private getWarehouseList() {
     // Calling method that will send a get request
     this.warehouseService.getAllWarehouses()
-      // Subscribing to method to receive data 
+      // Subscribing to method to receive data
       .subscribe((warehouses: Warehouse[]) => {
         // Initializing our local variable with data that has come
         this.warehouseList = warehouses;

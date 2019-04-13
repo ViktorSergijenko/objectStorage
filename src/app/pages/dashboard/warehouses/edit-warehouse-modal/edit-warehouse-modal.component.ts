@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrService } from '@nebular/theme';
-import { WarehousesService } from '../warehouses.service';
+import { WarehousesService } from '../../../../services/warehouses.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WarehouseType, Warehouse } from '../../../../models/warehouse.model';
 import { finalize } from 'rxjs/operators';
@@ -107,8 +107,6 @@ export class EditWarehouseModalComponent implements OnInit {
       this.editWarehouseForm.patchValue({ type: WarehouseType.SimpleWarehouse });
       this.type = type;
     }
-    console.log(this.type);
-
   }
   editWarehouse() {
     // Enable loading indicator

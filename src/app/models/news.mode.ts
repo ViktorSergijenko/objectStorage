@@ -1,4 +1,4 @@
-import { BaseEntity } from "./base.model";
+import { BaseEntity } from './base.model';
 
 /**
  * News model
@@ -14,7 +14,7 @@ export class News extends BaseEntity {
      * @type {string}
      * @memberof News
      */
-    title: string
+    title: string;
     /**
      * Short description
      *
@@ -28,7 +28,7 @@ export class News extends BaseEntity {
      * @type {string}
      * @memberof News
      */
-    description: string
+    description: string;
     /**
      * Flag that indicates does the problem is solved or not
      *
@@ -37,7 +37,7 @@ export class News extends BaseEntity {
      */
     fixedProblem: boolean;
     /**
-     * Id of an warehouse that this news is related to 
+     * Id of an warehouse that this news is related to
      *
      * @type {string}
      * @memberof News

@@ -100,7 +100,27 @@
       cursor: pointer;
     }
   }
+  .problem-icon {
+    color: red;
+    &:hover {
+      cursor: pointer;
+    }  
+  }
 
+  .resolve-icon {
+    color: #00ff00;
+    &:hover {
+      text-shadow: 3px 3px 16px  #00ff00;
+      cursor: pointer;
+    }
+  }
+  .icon-detail {
+    &:hover {
+      color: #ffa100;
+      text-shadow: 3px 3px 16px  #ffa100;
+      cursor: pointer;
+    }
+  }
   
 
   

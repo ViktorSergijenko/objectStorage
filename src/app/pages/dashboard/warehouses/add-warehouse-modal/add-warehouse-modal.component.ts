@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Warehouse, WarehouseType } from '../../../../models/warehouse.model';
-import { WarehousesService } from '../warehouses.service';
+import { WarehousesService } from '../../../../services/warehouses.service';
 import { finalize } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
 
@@ -28,9 +28,9 @@ export class AddWarehouseModalComponent implements OnInit {
   error: string = '';
   selectedFile = null;
   names: string[] = [
-    "Main warehouse",
-    "Simple warehouse"
-  ]
+    'Main warehouse',
+    'Simple warehouse'
+  ];
   type: string;
   /**
    * Flag that indicates if loading indicator is active or not
@@ -51,7 +51,7 @@ export class AddWarehouseModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('dsa')
+
   }
 
   /**
@@ -63,9 +63,8 @@ export class AddWarehouseModalComponent implements OnInit {
     this.modal.dismiss();
   }
   onFileSelected(event) {
-    var file = event.target.files[0];
-    console.log(file);
-    var reader = new FileReader();
+    const file = event.target.files[0];
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
       this.selectedFile = reader.result;
@@ -76,14 +75,14 @@ export class AddWarehouseModalComponent implements OnInit {
     };
   }
   readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
       myReader.readAsDataURL(file);
       this.selectedFile = myReader.result;
 
-    }
+    };
 
   }
   onDropDownSelect(type: string) {
@@ -94,8 +93,6 @@ export class AddWarehouseModalComponent implements OnInit {
       this.newWarehouseForm.patchValue({ type: WarehouseType.SimpleWarehouse });
       this.type = type;
     }
-    console.log(this.type);
-
   }
 
   addWarehouse() {
@@ -103,7 +100,7 @@ export class AddWarehouseModalComponent implements OnInit {
     this.loadingIndicator = true;
     this.warehouseService.addOrUpdate(this.newWarehouseForm.value)
       .pipe(
-        // When method was executed 
+        // When method was executed
         finalize(() => {
           // Disable loading indicator
           this.loadingIndicator = false;

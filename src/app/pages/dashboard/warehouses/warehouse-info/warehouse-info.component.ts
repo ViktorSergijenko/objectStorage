@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { WarehousesService } from '../warehouses.service';
+import { ActivatedRoute } from '@angular/router';
+import { WarehousesService } from '../../../../services/warehouses.service';
 import { Warehouse } from '../../../../models/warehouse.model';
 import { News } from '../../../../models/news.mode';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddNewsModalComponent } from './add-news-modal/add-news-modal.component';
+import { NewsService } from '../../../../services/news.service';
+import { DetailsNewsModalComponent } from './details-news-modal/details-news-modal.component';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -37,11 +41,12 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   warehouseNewsList: News[] = [];
-  test: string[] = ['asd', 'asd', 'afsafsaf', 'asfasf', 'affsfsf', 'fasfsa']
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private warehouseService: WarehousesService
+    private warehouseService: WarehousesService,
+    private modalService: NgbModal,
+    private newsService: NewsService,
   ) { }
 
   ngOnInit() {
@@ -115,7 +120,53 @@ export class WarehouseInfoComponent implements OnInit {
 
   //#endregion Convertation base 64 to blob and download file functionality
 
+  /**
+   * Method opens modal window with form to add a news
+   *
+   * @memberof WarehouseInfoComponent
+   */
+  openAddNewsModal() {
+    // Opening modal window where we can edit Warehouse
+    const activeModal = this.modalService.open(AddNewsModalComponent, {
+      container: 'nb-layout',
+    });
 
+    activeModal.componentInstance.warehouseId = this.specificWarehouseId;
+    // When modal window was closed it can pass data back to uss...
+    activeModal.result.then(newNews => {
+      // Getting data that has came back from modal window and pushing it to the list
+      this.warehouseNewsList.push(newNews);
+    })
+  }
+
+  /**
+   * Method opens modal window with news detailed information
+   *
+   * @param {News} newsThatWeWantToWatch
+   * @memberof WarehouseInfoComponent
+   */
+  openDetailsNewsModal(newsThatWeWantToWatch: News) {
+    // Opening modal window where we can edit Warehouse
+    const activeModal = this.modalService.open(DetailsNewsModalComponent, {
+      size: 'lg',
+      container: 'nb-layout',
+    });
+    // Passing information to modal window
+    activeModal.componentInstance.news = newsThatWeWantToWatch;
+  }
+  /**
+   * Method toggles news flag
+   *
+   * @param {News} news
+   * @memberof WarehouseInfoComponent
+   */
+  toggleNewsFlag(news: News) {
+
+    this.newsService.toggleNewsFlag(news.id)
+      .subscribe(toggledNews => {
+        news = Object.assign(news, toggledNews);
+      });
+  }
 
   /**
    * Getting id of an warehouse from routing
@@ -127,12 +178,20 @@ export class WarehouseInfoComponent implements OnInit {
     // Getting a route param from our routing.
     this.specificWarehouseId = this.route.snapshot.paramMap.get('id');
   }
+  /**
+   * Method gets news list for warehouse
+   *
+   * @private
+   * @memberof WarehouseInfoComponent
+   */
   private getWarehouseNewsList() {
-    this.warehouseService.getWarehouseNews(this.specificWarehouseId)
+    console.log(this.specificWarehouseId);
+    this.newsService.getByWarehouseId(this.specificWarehouseId)
       .subscribe(newsList => {
         this.warehouseNewsList = newsList;
       });
   }
+
 
   /**
    *Method gets specific warehouse by id
