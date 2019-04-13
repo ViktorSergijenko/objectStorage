@@ -1,16 +1,44 @@
 import { NgModule } from '@angular/core';
-import { NgxEchartsModule } from 'ngx-echarts';
 import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './dashboard.component';
+import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
+import { NbSpinnerModule } from '@nebular/theme';
+import { CommonModule } from '@angular/common';
+import { AddWarehouseModalComponent } from './warehouses/add-warehouse-modal/add-warehouse-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditWarehouseModalComponent } from './warehouses/edit-warehouse-modal/edit-warehouse-modal.component';
+import { WarehouseRoutingModule } from './warehouse-routing.module';
+import { WarehouseInfoComponent } from './warehouses/warehouse-info/warehouse-info.component';
+import { AddNewsModalComponent } from './warehouses/warehouse-info/add-news-modal/add-news-modal.component';
+import { DetailsNewsModalComponent } from './warehouses/warehouse-info/details-news-modal/details-news-modal.component';
+
 
 
 
 @NgModule({
   imports: [
+    CommonModule,
     ThemeModule,
-    NgxEchartsModule,
+    NbSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    NgbDropdownModule,
+    WarehouseRoutingModule
   ],
-  declarations: [DashboardComponent]
+  declarations:
+    [
+      DashboardComponent,
+      WarehousesListComponent,
+      AddWarehouseModalComponent,
+      EditWarehouseModalComponent,
+      WarehouseInfoComponent,
+      AddNewsModalComponent,
+      DetailsNewsModalComponent,
+    ],
+  exports: [AddWarehouseModalComponent, EditWarehouseModalComponent, AddNewsModalComponent, DetailsNewsModalComponent],
+  entryComponents: [AddWarehouseModalComponent, EditWarehouseModalComponent, AddNewsModalComponent, DetailsNewsModalComponent]
 })
 
 export class DashboardModule { }

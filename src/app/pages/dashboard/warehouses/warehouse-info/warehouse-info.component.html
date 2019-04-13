@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="card" *ngIf="warehouse">
+        <div class="card__image-container">
+
+          <img src="./assets/images/warehouse3.jpg" class="card__image" *ngIf="!warehouse.imageBase64" alt="">
+          <img [src]="warehouse.imageBase64" class="card__image" *ngIf="warehouse.imageBase64" alt="no image">
+        </div>
+
+        <svg class="card__svg" viewBox="0 0 800 500">
+
+          <path
+            d="M 0 100 Q 50 200 100 250 Q 250 400 350 300 C 400 250 550 150 650 300 Q 750 450 800 400 L 800 500 L 0 500"
+            stroke="transparent" fill="white" />
+          <path class="card__line"
+            d="M 0 100 Q 50 200 100 250 Q 250 400 350 300 C 400 250 550 150 650 300 Q 750 450 800 400" stroke="pink"
+            stroke-width="2" fill="transparent" />
+        </svg>
+
+        <div class="card__content">
+          <h1 class="card__title">{{warehouse.name}}</h1>
+          <p><b>Address: {{warehouse.address}}</b></p>
+          <p><b>Location: {{warehouse.location}}</b></p>
+          <p><b>Type: {{warehouse.type}}</b></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+
+      <div class="card" [ngClass]="{'qr-code': !downloadButtonVisability}" style="width:100%" *ngIf="warehouse">
+        <img class="card-img-top" [src]="warehouse.qrCodeBase64" alt="Card image" *ngIf="warehouse.qrCodeBase64">
+        <div class="card-body text-center">
+          <h4 class="card-title">QR Code</h4>
+          <i class="fas fa-caret-down fa-2x arrow-icon" (click)="toggleQrCodeDownloadButtonVisability()"
+            *ngIf="!downloadButtonVisability"></i>
+          <i class="fas fa-caret-up fa-2x arrow-icon" (click)="toggleQrCodeDownloadButtonVisability()"
+            *ngIf="downloadButtonVisability"></i>
+          <p class="download-qr" *ngIf="downloadButtonVisability" (click)="downloadQrCode(warehouse.qrCodeBase64)">
+            DOWNLOAD
+            QR CODE</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <nb-card class="list-card">
+        <nb-card-header class="row-with-btns">
+          <p>News list</p>
+          <i class="fas fa-plus-circle fa-2x icon-add" (click)="openAddNewsModal()"></i>
+        </nb-card-header>
+        <nb-card-body *ngIf="warehouseNewsList">
+          <nb-list>
+            <nb-list-item *ngFor="let news of warehouseNewsList">
+              <div class="row">
+                <div class="col-sm-6 text-left">
+                  <h4>{{ news.title }}</h4>
+                  <p>{{ news.shortDescription }}</p>
+                </div>
+                <div class="col-sm-6 text-right" *ngIf="!news.fixedProblem">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <i class="fas fa-check fa-2x resolve-icon" (click)="toggleNewsFlag(news)"></i>
+                    </div>
+                    <div class="col-sm-4">
+                      <i class="fas fa-info-circle fa-2x icon-detail" (click)="openDetailsNewsModal(news)"></i>
+                    </div>
+                    <div class="col-sm-4">
+                      <i class="fas fa-exclamation-circle fa-2x problem-icon "></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 text-right" *ngIf="news.fixedProblem">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <i class="fas fa-check fa-2x resolve-icon"></i>
+                    </div>
+                    <div class="col-sm-6">
+                      <i class="fas fa-info-circle fa-2x icon-detail" (click)="openDetailsNewsModal(news)"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </nb-list-item>
+          </nb-list>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>
