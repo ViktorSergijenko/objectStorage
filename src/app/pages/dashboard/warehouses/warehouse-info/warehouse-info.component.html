@@ -83,6 +83,15 @@
             </nb-list-item>
           </nb-list>
         </nb-card-body>
+        <nb-card-body *ngIf="!warehouseNewsList">
+          <nb-list>
+            <nb-list-item *ngFor="let news of warehouseNewsList">
+              <div class="row">
+                No data found
+              </div>
+            </nb-list-item>
+          </nb-list>
+        </nb-card-body>
       </nb-card>
     </div>
   </div>
