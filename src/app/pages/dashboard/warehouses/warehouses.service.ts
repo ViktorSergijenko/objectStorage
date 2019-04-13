@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Warehouse } from '../../../models/warehouse.model';
 import { FilterSorting } from '../../../models/filter-sort.model';
+import { environment } from '../../../../environments/environment';
+import { News } from '../../../models/news.mode';
 
 
 @Injectable({
@@ -72,5 +73,16 @@ export class WarehousesService {
    */
   removeWarehouse(warehouseId: string): Observable<void> {
     return this.http.delete<void>(`${this.getEndpointUrl()}/${warehouseId}`);
+  }
+
+  /**
+   * Method gets warehouse news
+   *
+   * @param {string} warehouseId Id of an warehouse that news we want to get
+   * @returns {Observable<News[]>} Returns `Observable` with warehouse news list `News[]`
+   * @memberof WarehousesService
+   */
+  getWarehouseNews(warehouseId: string): Observable<News[]> {
+    return this.http.post<News[]>(`${this.getEndpointUrl()}/warehouse-news`, warehouseId);
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WarehousesService } from '../warehouses.service';
 import { Warehouse } from '../../../../models/warehouse.model';
+import { News } from '../../../../models/news.mode';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -29,6 +30,14 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   warehouse: Warehouse
+  /**
+   * Warehouse news list
+   *
+   * @type {News[]}
+   * @memberof WarehouseInfoComponent
+   */
+  warehouseNewsList: News[] = [];
+  test: string[] = ['asd', 'asd', 'afsafsaf', 'asfasf', 'affsfsf', 'fasfsa']
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -40,6 +49,8 @@ export class WarehouseInfoComponent implements OnInit {
     this.gettingWarehouseIdFormRoute();
     // Getting warehouse by id
     this.getWarehouse();
+    // Getting warehouse news list
+    this.getWarehouseNewsList();
   }
 
   toggleQrCodeDownloadButtonVisability() {
@@ -47,6 +58,9 @@ export class WarehouseInfoComponent implements OnInit {
     console.log(this.downloadButtonVisability);
   }
 
+  // TODO: Write a comments and JSDOCs to all this methods.....
+
+  //#region Convertation base 64 to blob and download file functionality
   downloadQrCode(base64content: string) {
     base64content = base64content.replace(/data\:image\/(jpeg|jpg|png)\;base64\,/gi, '');
     console.log(atob(base64content));
@@ -64,6 +78,8 @@ export class WarehouseInfoComponent implements OnInit {
     }
 
   }
+
+
   convertBase64ToBlobData(base64Data: string, contentType: string = 'image/png', sliceSize = 512) {
     const byteCharacters = atob(base64Data);
     const byteArrays = [];
@@ -85,6 +101,7 @@ export class WarehouseInfoComponent implements OnInit {
     return blob;
   }
 
+
   dataURItoBlob(dataURI) {
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -95,6 +112,8 @@ export class WarehouseInfoComponent implements OnInit {
     const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
+
+  //#endregion Convertation base 64 to blob and download file functionality
 
 
 
@@ -108,6 +127,12 @@ export class WarehouseInfoComponent implements OnInit {
     // Getting a route param from our routing.
     this.specificWarehouseId = this.route.snapshot.paramMap.get('id');
   }
+  private getWarehouseNewsList() {
+    this.warehouseService.getWarehouseNews(this.specificWarehouseId)
+      .subscribe(newsList => {
+        this.warehouseNewsList = newsList;
+      });
+  }
 
   /**
    *Method gets specific warehouse by id
@@ -116,9 +141,10 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   private getWarehouse() {
-    this.warehouseService.getById(this.specificWarehouseId).subscribe(warehouseThatHasCame => {
-      this.warehouse = warehouseThatHasCame;
-    });
+    this.warehouseService.getById(this.specificWarehouseId)
+      .subscribe(warehouseThatHasCame => {
+        this.warehouse = warehouseThatHasCame;
+      });
   }
 
 }
