@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="row">
     <div class="col-sm-3">
       <div class="card" *ngIf="warehouse">
@@ -44,12 +43,12 @@
       </div>
     </div>
     <div class="col-sm-5">
-      <nb-card class="list-card" *ngIf="warehouseNewsList">
+      <nb-card class="list-card">
         <nb-card-header class="row-with-btns">
           <p>News list</p>
           <i class="fas fa-plus-circle fa-2x icon-add" (click)="openAddNewsModal()"></i>
         </nb-card-header>
-        <nb-card-body>
+        <nb-card-body *ngIf="warehouseNewsList">
           <nb-list>
             <nb-list-item *ngFor="let news of warehouseNewsList">
               <div class="row">
