@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Warehouse } from '../models/warehouse.model';
 import { FilterSorting } from '../models/filter-sort.model';
-import { environment } from '../../environments/environment';
 import { News } from '../models/news.mode';
+import { environment } from '../../environments/environment.prod';
 
 
 @Injectable({

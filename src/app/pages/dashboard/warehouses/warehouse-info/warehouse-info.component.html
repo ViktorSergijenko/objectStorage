@@ -29,7 +29,7 @@
     </div>
     <div class="col-sm-4">
 
-      <div class="card" [ngClass]="{'qr-code': !downloadButtonVisability}" style="width:400px" *ngIf="warehouse">
+      <div class="card" [ngClass]="{'qr-code': !downloadButtonVisability}" style="width:100%" *ngIf="warehouse">
         <img class="card-img-top" [src]="warehouse.qrCodeBase64" alt="Card image" *ngIf="warehouse.qrCodeBase64">
         <div class="card-body text-center">
           <h4 class="card-title">QR Code</h4>
