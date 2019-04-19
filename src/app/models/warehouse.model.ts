@@ -10,6 +10,7 @@ export class Warehouse extends BaseEntity {
     imageBase64: string;
     type: WarehouseType;
     catalogs: Catalog[] = [];
+    hasProblems: boolean;
 
 }
 

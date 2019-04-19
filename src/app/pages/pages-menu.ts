@@ -4,7 +4,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Warehouses',
     icon: 'nb-home',
-    link: '/pages/iot-dashboard/list',
+    link: '/pages/warehouse/list',
   },
   {
     title: 'FEATURES',

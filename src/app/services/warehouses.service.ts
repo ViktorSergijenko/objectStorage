@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { Warehouse } from '../models/warehouse.model';
 import { FilterSorting } from '../models/filter-sort.model';
 import { News } from '../models/news.mode';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+
 
 
 @Injectable({

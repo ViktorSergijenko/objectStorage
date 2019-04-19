@@ -76,7 +76,7 @@ export class WarehousesListComponent implements OnInit {
    */
   goToAdditionalInformationPage(idForRoute: string) {
     // Navigating user to details page
-    this.router.navigate([`pages/iot-dashboard/details/${idForRoute}`]);
+    this.router.navigate([`pages/warehouse/details/${idForRoute}`]);
   }
 
   /**
@@ -180,6 +180,7 @@ export class WarehousesListComponent implements OnInit {
       .subscribe(filteredList => {
         this.warehouseList = []
         this.warehouseList = filteredList;
+        console.log(this.warehouseList);
       });
   }
 }

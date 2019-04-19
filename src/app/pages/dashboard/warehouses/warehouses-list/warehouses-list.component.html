@@ -47,7 +47,7 @@
             <i (click)="openEditHouseModal(warehouse)" class="fas fa-cart-arrow-down fa-2x catalog-min-icon"></i>
 
 
-            <i class="fas fa-exclamation-circle fa-2x problem-icon "></i>
+            <i class="fas fa-exclamation-circle fa-2x problem-icon" *ngIf="warehouse.hasProblems"></i>
 
           </div>
         </div>

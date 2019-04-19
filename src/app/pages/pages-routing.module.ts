@@ -7,17 +7,17 @@ const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [{
-    path: 'iot-dashboard',
+    path: 'warehouse',
     loadChildren: './dashboard/dashboard.module#DashboardModule',
   }, {
     path: 'tables',
     loadChildren: './tables/tables.module#TablesModule',
   }, {
     path: '',
-    redirectTo: 'iot-dashboard',
+    redirectTo: 'warehouse/list',
     pathMatch: 'full',
   }, {
-    path: '**',
+    path: 'warehouse',
     component: DashboardComponent,
   }],
 }];
