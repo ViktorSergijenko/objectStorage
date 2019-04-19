@@ -45,7 +45,7 @@ export class EditWarehouseModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modal: NgbActiveModal,
     private warehouseService: WarehousesService,
-    private toasterService: NbToastrService
+    private toastrService: NbToastrService
   ) {
     this.createForm();
   }
@@ -122,11 +122,13 @@ export class EditWarehouseModalComponent implements OnInit {
       .subscribe(newWarehouse => {
         // Closing modal window and passing new warehouse object back to component where this modal window was opened
         this.modal.close(newWarehouse);
+        this.toastrService.success(`Warehouse was modified`);
       },
         // If there was an error during method execution
         err => {
           // Initialize our error value with error message that came
           this.error = err;
+          this.toastrService.danger(`Warehouse was not modified`);
         });
   }
   private createForm() {

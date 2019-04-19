@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { NewsService } from '../../../../../services/news.service';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-add-news-modal',
@@ -43,6 +44,7 @@ export class AddNewsModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modal: NgbActiveModal,
     private newsService: NewsService,
+    private toastrService: NbToastrService,
   ) {
     this.createForm();
   }
@@ -75,11 +77,13 @@ export class AddNewsModalComponent implements OnInit {
       .subscribe(newWarehouse => {
         // Closing modal window and passing new news object back to component where this modal window was opened
         this.modal.close(newWarehouse);
+        this.toastrService.success(`News was added`);
       },
         // If there was an error during method execution
         err => {
           // Initialize our error value with error message that came
           this.error = err;
+          this.toastrService.danger(`News was not added`);
         });
   }
 

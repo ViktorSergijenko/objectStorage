@@ -7,6 +7,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewsModalComponent } from './add-news-modal/add-news-modal.component';
 import { NewsService } from '../../../../services/news.service';
 import { DetailsNewsModalComponent } from './details-news-modal/details-news-modal.component';
+import { NbToastrService } from '@nebular/theme';
+import { pipe } from '@angular/core/src/render3';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -41,12 +44,16 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   warehouseNewsList: News[] = [];
+  isLoading: boolean = true;
+  isLoadingNews: boolean = true;
+  toggelingNews: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private warehouseService: WarehousesService,
     private modalService: NgbModal,
     private newsService: NewsService,
+    private toastrService: NbToastrService,
   ) { }
 
   ngOnInit() {
@@ -60,7 +67,6 @@ export class WarehouseInfoComponent implements OnInit {
 
   toggleQrCodeDownloadButtonVisability() {
     this.downloadButtonVisability = !this.downloadButtonVisability
-    console.log(this.downloadButtonVisability);
   }
 
   // TODO: Write a comments and JSDOCs to all this methods.....
@@ -161,10 +167,16 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   toggleNewsFlag(news: News) {
-
+    this.toggelingNews = true;
     this.newsService.toggleNewsFlag(news.id)
+      .pipe(finalize(() => {
+        this.toggelingNews = false;
+      }))
       .subscribe(toggledNews => {
         news = Object.assign(news, toggledNews);
+        this.toastrService.success(`Status was changed`);
+      }, err => {
+        this.toastrService.danger(`Status was not changed`);
       });
   }
 
@@ -185,8 +197,10 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   private getWarehouseNewsList() {
-    console.log(this.specificWarehouseId);
     this.newsService.getByWarehouseId(this.specificWarehouseId)
+      .pipe(finalize(() => {
+        this.isLoadingNews = false;
+      }))
       .subscribe(newsList => {
         this.warehouseNewsList = newsList;
       });
@@ -200,7 +214,11 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   private getWarehouse() {
+
     this.warehouseService.getById(this.specificWarehouseId)
+      .pipe(finalize(() => {
+        this.isLoading = false;
+      }))
       .subscribe(warehouseThatHasCame => {
         this.warehouse = warehouseThatHasCame;
       });

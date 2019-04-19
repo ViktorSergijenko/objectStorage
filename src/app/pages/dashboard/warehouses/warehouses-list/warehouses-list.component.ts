@@ -8,6 +8,7 @@ import { AddWarehouseModalComponent } from '../add-warehouse-modal/add-warehouse
 import { EditWarehouseModalComponent } from '../edit-warehouse-modal/edit-warehouse-modal.component';
 import { finalize, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -39,12 +40,14 @@ export class WarehousesListComponent implements OnInit {
    * @memberof FileManagerListComponent
    */
   searchValue: string = '';
+  isLoading: boolean = true;
 
   filterSortingOption: FilterSorting = new FilterSorting;
   constructor(
     private warehouseService: WarehousesService,
     private modalService: NgbModal,
     private router: Router,
+    private toastrService: NbToastrService,
   ) { }
 
   ngOnInit() {
@@ -101,6 +104,9 @@ export class WarehousesListComponent implements OnInit {
       // When method will be executed without errors, we will delete selected warehouse from warehouse list that is used to display warehouses...
       // by using method filter, we leave only those objects in list, that are not equal to selected warehouse
       this.warehouseList = this.warehouseList.filter(warehouses => warehouses !== selectedWarehouse);
+      this.toastrService.success(`Warehouse was deleted`);
+    }, err => {
+      this.toastrService.danger(`Warehouse was not deleted`);
     });
   }
 
@@ -158,6 +164,10 @@ export class WarehousesListComponent implements OnInit {
   private getWarehouseList() {
     // Calling method that will send a get request
     this.warehouseService.getAllWarehouses()
+      .pipe(
+        finalize(() => {
+          this.isLoading = false
+        }))
       // Subscribing to method to receive data
       .subscribe((warehouses: Warehouse[]) => {
         // Initializing our local variable with data that has come
@@ -174,9 +184,6 @@ export class WarehousesListComponent implements OnInit {
   private getFilteredWarehouseList(filterOption: string) {
     this.filterSortingOption.filterOption = filterOption;
     this.warehouseService.getFilteredWarehouses(this.filterSortingOption)
-      .pipe(
-        finalize(() => {
-        }))
       .subscribe(filteredList => {
         this.warehouseList = []
         this.warehouseList = filteredList;

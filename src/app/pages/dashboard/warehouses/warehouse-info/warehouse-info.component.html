@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-3" [nbSpinner]="isLoading" nbSpinnerStatus="danger">
       <div class="card" *ngIf="warehouse">
         <div class="card__image-container">
 
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4" [nbSpinner]="isLoading" nbSpinnerStatus="danger">
 
       <div class="card" [ngClass]="{'qr-code': !downloadButtonVisability}" style="width:100%" *ngIf="warehouse">
         <img class="card-img-top" [src]="warehouse.qrCodeBase64" alt="Card image" *ngIf="warehouse.qrCodeBase64">
@@ -42,13 +42,13 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-5">
+    <div class="col-sm-5" [nbSpinner]="isLoadingNews" nbSpinnerStatus="danger">
       <nb-card class="list-card">
         <nb-card-header class="row-with-btns">
           <p>News list</p>
           <i class="fas fa-plus-circle fa-2x icon-add" (click)="openAddNewsModal()"></i>
         </nb-card-header>
-        <nb-card-body *ngIf="warehouseNewsList">
+        <nb-card-body *ngIf="warehouseNewsList.length > 0" [nbSpinner]="toggelingNews" nbSpinnerStatus="danger">
           <nb-list>
             <nb-list-item *ngFor="let news of warehouseNewsList">
               <div class="row">
@@ -83,9 +83,9 @@
             </nb-list-item>
           </nb-list>
         </nb-card-body>
-        <nb-card-body *ngIf="!warehouseNewsList">
+        <nb-card-body *ngIf="warehouseNewsList.length == 0">
           <nb-list>
-            <nb-list-item *ngFor="let news of warehouseNewsList">
+            <nb-list-item>
               <div class="row">
                 No data found
               </div>
