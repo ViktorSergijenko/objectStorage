@@ -9,6 +9,7 @@ import { EditWarehouseModalComponent } from '../edit-warehouse-modal/edit-wareho
 import { finalize, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NbToastrService } from '@nebular/theme';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -100,14 +101,27 @@ export class WarehousesListComponent implements OnInit {
    * @memberof DashboardComponent
    */
   removeWarehouse(selectedWarehouse: Warehouse) {
-    this.warehouseService.removeWarehouse(selectedWarehouse.id).subscribe(() => {
-      // When method will be executed without errors, we will delete selected warehouse from warehouse list that is used to display warehouses...
-      // by using method filter, we leave only those objects in list, that are not equal to selected warehouse
-      this.warehouseList = this.warehouseList.filter(warehouses => warehouses !== selectedWarehouse);
-      this.toastrService.success(`Warehouse was deleted`);
-    }, err => {
-      this.toastrService.danger(`Warehouse was not deleted`);
+    const activeModal = this.modalService.open(DeleteModalComponent, {
+      container: 'nb-layout',
     });
+    activeModal.componentInstance.objectName = 'Warehouse';
+    activeModal.result.then(res => {
+      console.log(res);
+      if (res) {
+        this.warehouseService.removeWarehouse(selectedWarehouse.id).subscribe(() => {
+          // When method will be executed without errors, we will delete selected warehouse from warehouse list that is used to display warehouses...
+          // by using method filter, we leave only those objects in list, that are not equal to selected warehouse
+          this.warehouseList = this.warehouseList.filter(warehouses => warehouses !== selectedWarehouse);
+          this.toastrService.success(`Warehouse was deleted`);
+        }, err => {
+          this.toastrService.danger(`Warehouse was not deleted`);
+        });
+      }
+      else {
+        return 0;
+      }
+    })
+
   }
 
 

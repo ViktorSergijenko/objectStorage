@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row header-div">
+    <div class="col-sm-12 text-center">
+      Are you are shure that you want to delete <b>{{objectName}}</b>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 text-left">
+      <button nbButton status="success" (click)="acceptToDelete()">Accept</button>
+    </div>
+    <div class="col-sm-6 text-right">
+      <button nbButton status="danger" (click)="declineToDelete()">Cancel</button>
+    </div>
+  </div>
+</div>

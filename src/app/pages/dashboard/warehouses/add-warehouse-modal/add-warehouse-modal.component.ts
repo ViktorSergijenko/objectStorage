@@ -29,7 +29,7 @@ export class AddWarehouseModalComponent implements OnInit {
   selectedFile = null;
   names: string[] = [
     'Main warehouse',
-    'Simple warehouse'
+    'Simple warehouse',
   ];
   type: string;
   /**

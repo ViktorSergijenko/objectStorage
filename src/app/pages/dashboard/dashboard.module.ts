@@ -12,6 +12,7 @@ import { WarehouseRoutingModule } from './warehouse-routing.module';
 import { WarehouseInfoComponent } from './warehouses/warehouse-info/warehouse-info.component';
 import { AddNewsModalComponent } from './warehouses/warehouse-info/add-news-modal/add-news-modal.component';
 import { DetailsNewsModalComponent } from './warehouses/warehouse-info/details-news-modal/details-news-modal.component';
+import { DeleteModalComponent } from './warehouses/delete-modal/delete-modal.component';
 
 
 
@@ -37,9 +38,21 @@ import { DetailsNewsModalComponent } from './warehouses/warehouse-info/details-n
       WarehouseInfoComponent,
       AddNewsModalComponent,
       DetailsNewsModalComponent,
+      DeleteModalComponent
     ],
-  exports: [AddWarehouseModalComponent, EditWarehouseModalComponent, AddNewsModalComponent, DetailsNewsModalComponent],
-  entryComponents: [AddWarehouseModalComponent, EditWarehouseModalComponent, AddNewsModalComponent, DetailsNewsModalComponent]
+  exports: [AddWarehouseModalComponent,
+    EditWarehouseModalComponent,
+    AddNewsModalComponent,
+    DetailsNewsModalComponent,
+    DeleteModalComponent
+  ],
+  entryComponents: [
+    AddWarehouseModalComponent,
+    EditWarehouseModalComponent,
+    AddNewsModalComponent,
+    DetailsNewsModalComponent,
+    DeleteModalComponent
+  ]
 })
 
 export class DashboardModule { }
