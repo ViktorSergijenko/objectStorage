@@ -123,8 +123,11 @@
   }
   .width-card {
     width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 6px;
   }
-
+  :host /deep/ .customformat{ text-align: right; } 
   
   @keyframes LineFadeIn {
     0% { opacity: 0; d: path("M 0 300 Q 0 300 0 300 Q 0 300 0 300 C 0 300 0 300 0 300 Q 0 300 0 300 "); stroke: #fff; }

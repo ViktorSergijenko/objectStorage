@@ -1,0 +1,65 @@
+<!-- <nb-card>
+  <nb-card-header class="header text-center">
+    <h2>Edit catalog form</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="editCatalogForm" class="form-inline">
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" class="form-control" id="Address" placeholder="Address" formControlName="address">
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="name">C</label>
+            <input type="text" class="form-control" id="name" placeholder="Current amount"
+              formControlName="currentAmount">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 text-center close-button">
+          <button nbButton outline status="danger" (click)="close()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card> -->
+<div class="row" *ngIf="addOrRemove">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-header>Add products</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="editCatalogForm" class="form-inline">
+          <input type="text" class="form-control" id="name" placeholder="Current amount"
+            formControlName="currentAmount">
+          <p class="text-max" (click)="addMaximumAmount()">MAX</p>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<div class="row" *ngIf="!addOrRemove">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-header>Remove products</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="editCatalogForm" class="form-inline">
+          <input type="text" class="form-control" id="name" placeholder="Current amount"
+            formControlName="currentAmount">
+          <p class="text-max" (click)="removeMinimumAmount()"
+            *ngIf="catalogToEdit.currentAmount>catalogToEdit.minimumAmount">MIN</p>
+          <p class="text-max" (click)="removeAllAmount()">ALL</p>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -10,6 +10,11 @@ import { DetailsNewsModalComponent } from './details-news-modal/details-news-mod
 import { NbToastrService } from '@nebular/theme';
 import { pipe } from '@angular/core/src/render3';
 import { finalize } from 'rxjs/operators';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
+import { LocalDataSource } from 'ng2-smart-table';
+import { Catalog } from '../../../../models/catalog.model';
+import { IncrementDecrementCatalogModalComponent } from './increment-decrement-catalog-modal/increment-decrement-catalog-modal.component';
+import { EditCatalogModelComponent } from './edit-catalog-model/edit-catalog-model.component';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -47,6 +52,82 @@ export class WarehouseInfoComponent implements OnInit {
   isLoading: boolean = true;
   isLoadingNews: boolean = true;
   toggelingNews: boolean = false;
+  testObj: Catalog[] = [];
+  //#region Table settings
+  settings = {
+    mode: 'external',
+    actions: false,
+    pager: {
+      perPage: 10
+    },
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    columns: {
+      name: {
+        title: 'Catalog name',
+        type: 'string',
+      },
+      currentAmount: {
+        title: 'Current amount',
+        type: 'number',
+      },
+      maximumAmount: {
+        title: 'Maximum amount',
+        type: 'number',
+      },
+      minimumAmount: {
+        title: 'Minimum amount',
+        type: 'number',
+      },
+      purchasePrice: {
+        title: 'Purchase Price',
+        type: 'number',
+      },
+      soldPrice: {
+        title: 'Sold Price',
+        type: 'number',
+      },
+      differenceBetweenSoldAndPurchasePrice: {
+        title: 'Difference',
+        type: 'number',
+      },
+      shortContent: {
+        title: 'Short Content',
+        type: 'custom',
+        renderComponent: IncrementDecrementCatalogModalComponent
+      },
+      // isProcessed: {
+      //   title: this.translate.instant('FEEDBACK_TABLE.PROCESSED'),
+      //   editable: false,
+      //   renderComponent: UserFeedbackStatusComponent,
+      //   type: 'custom',
+      //   filter: {
+      //     type: 'list',
+      //     config: {
+      //       list: [
+      //         { value: true, title: this.translate.instant('FEEDBACK.PROCESSED_YES') },
+      //         { value: false, title: this.translate.instant('FEEDBACK.PROCESSED_NO') },
+      //       ]
+      //     },
+      //   },
+      // },
+
+      //   details:
+      //   {
+      //     title: 'Actions',
+      //     filter: false,
+      //     addable: false,
+      //     editable: false,
+      //     type: 'custom',
+      //     renderComponent: UserFeedbackDetailsButtonComponent,
+      //   },
+    },
+    noDataMessage: 'Catalogs was not found'
+  };
+  //#endregion
+
+  source: LocalDataSource = new LocalDataSource();
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +138,24 @@ export class WarehouseInfoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.testObj[0] = new Catalog();
+    this.testObj[0].name = 'Snikers';
+    this.testObj[0].purchasePrice = 4;
+    this.testObj[0].soldPrice = 3;
+    this.testObj[0].minimumAmount = 20;
+    this.testObj[0].maximumAmount = 50;
+    this.testObj[0].currentAmount = 18;
+    this.testObj[0].differenceBetweenSoldAndPurchasePrice = 1;
+    this.testObj[1] = new Catalog();
+    this.testObj[1].name = 'Twiks';
+    this.testObj[1].purchasePrice = 8;
+    this.testObj[1].soldPrice = 4;
+    this.testObj[1].minimumAmount = 10;
+    this.testObj[1].maximumAmount = 30;
+    this.testObj[1].currentAmount = 8;
+    this.testObj[1].differenceBetweenSoldAndPurchasePrice = 4;
+
+    this.source.load(this.testObj);
     // Getting warehouse id from routing
     this.gettingWarehouseIdFormRoute();
     // Getting warehouse by id
@@ -143,6 +242,39 @@ export class WarehouseInfoComponent implements OnInit {
       // Getting data that has came back from modal window and pushing it to the list
       this.warehouseNewsList.push(newNews);
     })
+  }
+  /**
+   * Method deletes news form system
+   *
+   * @param {News} selectedNews
+   * @memberof WarehouseInfoComponent
+   */
+  deleteNew(selectedNews: News) {
+    this.isLoadingNews = true;
+    const activeModal = this.modalService.open(DeleteModalComponent, {
+      container: 'nb-layout',
+    });
+    activeModal.componentInstance.objectName = 'News';
+    activeModal.result.then(res => {
+      if (res) {
+        this.newsService.removeNews(selectedNews.id)
+          .pipe(
+            finalize(() => {
+              this.isLoadingNews = false;
+            })
+          )
+          .subscribe(() => {
+            this.warehouseNewsList = this.warehouseNewsList.filter(news => news !== selectedNews)
+            this.toastrService.success(`News was deleted`);
+          }, err => {
+            this.toastrService.danger(`News was not deleted`);
+          })
+      } else {
+        this.isLoadingNews = false;
+        return 0;
+      }
+    })
+
   }
 
   /**

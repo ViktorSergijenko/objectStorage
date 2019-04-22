@@ -1,0 +1,10 @@
+.form-inline {
+    justify-content: space-between;
+}
+.text-max {
+    font-size: x-large;
+    &:hover {
+      text-decoration: underline;
+        cursor: pointer;
+      }
+}

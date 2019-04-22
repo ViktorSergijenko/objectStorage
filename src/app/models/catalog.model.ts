@@ -5,10 +5,10 @@ export class Catalog extends BaseEntity {
     name: string;
     currentAmount: number;
     maximumAmount: number;
-    MinimumAmount: number;
-    PurchasePrice: number;
-    SoldPrice: number;
-    DifferenceBetweenSoldAndPurchasePrice: number;
+    minimumAmount: number;
+    purchasePrice: number;
+    soldPrice: number;
+    differenceBetweenSoldAndPurchasePrice: number;
     warehouse: Warehouse;
     WarehouseId: string;
 }

@@ -1,0 +1,15 @@
+.problem-icon {
+    color: red;
+    &:hover {
+        text-shadow: 3px 3px 16px red;
+      cursor: pointer;
+    }  
+  }
+
+  .resolve-icon {
+    color: #00ff00;
+    &:hover {
+      text-shadow: 3px 3px 16px  #00ff00;
+      cursor: pointer;
+    }
+  }

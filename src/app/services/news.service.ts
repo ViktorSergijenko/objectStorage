@@ -57,5 +57,15 @@ export class NewsService {
   toggleNewsFlag(newsId: string): Observable<News> {
     return this.http.get<News>(`${this.getEndpointUrl()}/fix-news/${newsId}`)
   }
+  /**
+  * Method removes news from system
+  *
+  * @param {string} newsId news id to remove
+  * @returns {Observable<void>} Returns empty `Observable` as succesful result
+  * @memberof NewsService
+  */
+  removeNews(newsId: string): Observable<void> {
+    return this.http.delete<void>(`${this.getEndpointUrl()}/${newsId}`);
+  }
 
 }

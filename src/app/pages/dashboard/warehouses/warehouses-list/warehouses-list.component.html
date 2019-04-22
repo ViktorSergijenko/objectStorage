@@ -39,14 +39,9 @@
           <div class="row-with-btns text-center">
 
             <i class="fas fa-folder-minus fa-2x icon-delete" (click)="removeWarehouse(warehouse)"></i>
-
-
             <i class="fas fa-info-circle fa-2x icon-detail" (click)="goToAdditionalInformationPage(warehouse.id)"></i>
-
-
-            <i (click)="openEditHouseModal(warehouse)" class="fas fa-cart-arrow-down fa-2x catalog-min-icon"></i>
-
-
+            <i class="fas fa-edit fa-2x icon-detail" (click)="openEditHouseModal(warehouse)"></i>
+            <i class="fas fa-cart-arrow-down fa-2x catalog-min-icon"></i>
             <i class="fas fa-exclamation-circle fa-2x problem-icon" *ngIf="warehouse.hasProblems"></i>
 
           </div>
@@ -54,3 +49,4 @@
       </div>
     </div>
   </div>
+</div>

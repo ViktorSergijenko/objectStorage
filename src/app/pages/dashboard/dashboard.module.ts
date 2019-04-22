@@ -13,6 +13,9 @@ import { WarehouseInfoComponent } from './warehouses/warehouse-info/warehouse-in
 import { AddNewsModalComponent } from './warehouses/warehouse-info/add-news-modal/add-news-modal.component';
 import { DetailsNewsModalComponent } from './warehouses/warehouse-info/details-news-modal/details-news-modal.component';
 import { DeleteModalComponent } from './warehouses/delete-modal/delete-modal.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { IncrementDecrementCatalogModalComponent } from './warehouses/warehouse-info/increment-decrement-catalog-modal/increment-decrement-catalog-modal.component';
+import { EditCatalogModelComponent } from './warehouses/warehouse-info/edit-catalog-model/edit-catalog-model.component';
 
 
 
@@ -27,7 +30,8 @@ import { DeleteModalComponent } from './warehouses/delete-modal/delete-modal.com
     NgbModule,
     NgbDropdownModule,
     WarehouseRoutingModule,
-    NbToastrModule.forRoot()
+    NbToastrModule.forRoot(),
+    Ng2SmartTableModule
   ],
   declarations:
     [
@@ -38,20 +42,27 @@ import { DeleteModalComponent } from './warehouses/delete-modal/delete-modal.com
       WarehouseInfoComponent,
       AddNewsModalComponent,
       DetailsNewsModalComponent,
-      DeleteModalComponent
+      DeleteModalComponent,
+      IncrementDecrementCatalogModalComponent,
+      EditCatalogModelComponent
     ],
-  exports: [AddWarehouseModalComponent,
+  exports: [
+    AddWarehouseModalComponent,
     EditWarehouseModalComponent,
     AddNewsModalComponent,
     DetailsNewsModalComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    IncrementDecrementCatalogModalComponent,
+    EditCatalogModelComponent
   ],
   entryComponents: [
     AddWarehouseModalComponent,
     EditWarehouseModalComponent,
     AddNewsModalComponent,
     DetailsNewsModalComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    IncrementDecrementCatalogModalComponent,
+    EditCatalogModelComponent
   ]
 })
 

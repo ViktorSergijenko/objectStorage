@@ -10,6 +10,7 @@ import { finalize, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NbToastrService } from '@nebular/theme';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -44,6 +45,8 @@ export class WarehousesListComponent implements OnInit {
   isLoading: boolean = true;
 
   filterSortingOption: FilterSorting = new FilterSorting;
+
+
   constructor(
     private warehouseService: WarehousesService,
     private modalService: NgbModal,
