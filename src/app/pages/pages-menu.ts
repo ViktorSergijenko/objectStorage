@@ -25,21 +25,21 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'nb-locked',
     children: [
       {
-        title: 'Login',
-        link: '/auth/login',
-      },
-      {
         title: 'Register',
-        link: '/auth/register',
+        link: '/pages/register',
       },
       {
-        title: 'Request Password',
-        link: '/auth/request-password',
+        title: 'Login',
+        link: '/pages/login',
       },
-      {
-        title: 'Reset Password',
-        link: '/auth/reset-password',
-      },
+      //   {
+      //     title: 'Request Password',
+      //     link: '/auth/request-password',
+      //   },
+      //   {
+      //     title: 'Reset Password',
+      //     link: '/auth/reset-password',
+      //   },
     ],
   },
 ];

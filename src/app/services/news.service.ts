@@ -5,6 +5,7 @@ import { News } from '../models/news.mode';
 import { environment } from '../../environments/environment';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class NewsService {
    * Method returns endpoint that is related only to this module
    *
    * @returns {string} Returns full api url with included module
-   * @memberof WarehousesService
+   * @memberof NewsService
    */
   getEndpointUrl(): string {
     return `${environment.apiUrl}news`;
