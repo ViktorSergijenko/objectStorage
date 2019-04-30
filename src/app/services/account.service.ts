@@ -43,7 +43,8 @@ export class AccountService {
     return this.http.post<LoginVM>(`${this.getEndpointUrl()}/login`, userToLogin);
   }
   getUserProfile() {
+    console.log(localStorage.getItem('UserToken'));
     var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('UserToken') })
-    return this.http.get(`${environment.apiUrl}/profile/get-progile`, { headers: tokenHeader });
+    return this.http.get(`${environment.apiUrl}userProfile/get-profile`, { headers: tokenHeader });
   }
 }
