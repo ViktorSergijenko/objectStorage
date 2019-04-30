@@ -8,38 +8,40 @@ import {
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
 } from '@nebular/auth';
+import { RegistrationComponent } from './pages/registration/registration.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
   { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
   {
-    path: 'auth',
-    component: NbAuthComponent,
-    children: [
-      {
-        path: '',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'login',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'register',
-        component: NbRegisterComponent,
-      },
-      {
-        path: 'logout',
-        component: NbLogoutComponent,
-      },
-      {
-        path: 'request-password',
-        component: NbRequestPasswordComponent,
-      },
-      {
-        path: 'reset-password',
-        component: NbResetPasswordComponent,
-      },
-    ],
+    path: 'login',
+    component: LoginComponent,
+    // children: [
+    //   {
+    //     path: '',
+    //     component: NbLoginComponent,
+    //   },
+    //   {
+    //     path: 'login',
+    //     component: NbLoginComponent,
+    //   },
+    //   {
+    //     path: 'register',
+    //     component: NbRegisterComponent,
+    //   },
+    //   {
+    //     path: 'logout',
+    //     component: NbLogoutComponent,
+    //   },
+    //   {
+    //     path: 'request-password',
+    //     component: NbRequestPasswordComponent,
+    //   },
+    //   {
+    //     path: 'reset-password',
+    //     component: NbResetPasswordComponent,
+    //   },
+    // ],
   },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
   { path: '**', redirectTo: 'pages' },
@@ -47,6 +49,7 @@ const routes: Routes = [
 
 const config: ExtraOptions = {
   useHash: true,
+  enableTracing: false
 };
 
 @NgModule({
