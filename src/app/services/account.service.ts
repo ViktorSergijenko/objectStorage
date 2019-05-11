@@ -35,7 +35,7 @@ export class AccountService {
   /**
   * Method that send request to login user
   *
-  * @param {LoginVM} userToLogin User information to login
+  * @param {LoginVM} userToLogin User information to login 
   * @returns {Observable<LoginVM>} Returns `Observable` with new `User`
   * @memberof AccountService
   */

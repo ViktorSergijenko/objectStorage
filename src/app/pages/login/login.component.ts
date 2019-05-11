@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/pages/warehouse/list');
       },
         err => {
-          if (err.status == 400) {
+          if (err.status === 400) {
             this.toastrService.danger(`Incorrect email or password`, `Authentification failed.`);
           }
         })

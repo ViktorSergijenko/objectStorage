@@ -1,4 +1,6 @@
 {
     "typescript.tsdk": "./node_modules/typescript/lib",
-    "tslint.enable": false
+    "tslint.enable": false,
+    "appService.defaultWebAppToDeploy": "/subscriptions/99481a95-42c5-4608-9eec-92674a01626f/resourceGroups/warehouse/providers/Microsoft.Web/sites/warehouse-manager",
+    "appService.deploySubpath": ""
 }
