@@ -12,9 +12,6 @@ const routes: Routes = [{
   children: [{
     path: 'warehouse',
     loadChildren: './dashboard/dashboard.module#DashboardModule',
-  }, {
-    path: 'tables',
-    loadChildren: './tables/tables.module#TablesModule',
   },
   {
     path: 'register',

@@ -40,7 +40,8 @@
           <input type="text" class="form-control" id="name" placeholder="Current amount"
             formControlName="currentAmount">
           <p class="text-max" (click)="addMaximumAmount()">MAX</p>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary"
+            (click)="submitToAddProductsToCatalogFromBasket()">Submit</button>
         </form>
       </nb-card-body>
     </nb-card>
@@ -57,7 +58,7 @@
           <p class="text-max" (click)="removeMinimumAmount()"
             *ngIf="catalogToEdit.currentAmount>catalogToEdit.minimumAmount">MIN</p>
           <p class="text-max" (click)="removeAllAmount()">ALL</p>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" (click)="submitToAddProductsInBasket()">Submit</button>
         </form>
       </nb-card-body>
     </nb-card>

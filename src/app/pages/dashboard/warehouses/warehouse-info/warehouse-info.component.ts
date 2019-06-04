@@ -15,6 +15,11 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Catalog } from '../../../../models/catalog.model';
 import { IncrementDecrementCatalogModalComponent } from './increment-decrement-catalog-modal/increment-decrement-catalog-modal.component';
 import { EditCatalogModelComponent } from './edit-catalog-model/edit-catalog-model.component';
+import { CatalogService } from '../../../../services/catalog.service';
+import { AddNewCatalogModalComponent } from './add-new-catalog-modal/add-new-catalog-modal.component';
+import { EditCatalogModalComponent } from './edit-catalog-modal/edit-catalog-modal.component';
+import { Subscription } from 'rxjs';
+import { BasketService } from '../../../../services/basket.service';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -22,6 +27,13 @@ import { EditCatalogModelComponent } from './edit-catalog-model/edit-catalog-mod
   styleUrls: ['./warehouse-info.component.scss']
 })
 export class WarehouseInfoComponent implements OnInit {
+  /**
+   * Subscription that monitors for catalog updates. Used to track changes for catalog values
+   *
+   * @type {Subscription}
+   * @memberof UserFeedbackListComponent
+   */
+  catalogUpdate: Subscription;
   /**
    * Flag that toggles download QR code button visability
    *
@@ -41,7 +53,14 @@ export class WarehouseInfoComponent implements OnInit {
    * @type {Warehouse}
    * @memberof WarehouseInfoComponent
    */
-  warehouse: Warehouse
+  warehouse: Warehouse;
+  /**
+   * Varialbe that stores all catalogs that are located in warehouse
+   *
+   * @type {Catalog}
+   * @memberof WarehouseInfoComponent
+   */
+  catalogList: Catalog[] = [];
   /**
    * Warehouse news list
    *
@@ -51,12 +70,28 @@ export class WarehouseInfoComponent implements OnInit {
   warehouseNewsList: News[] = [];
   isLoading: boolean = true;
   isLoadingNews: boolean = true;
+  isLoadingCatalogTable: boolean = false;
   toggelingNews: boolean = false;
   testObj: Catalog[] = [];
   //#region Table settings
   settings = {
     mode: 'external',
-    actions: false,
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      create: true,
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: false,
+    },
     pager: {
       perPage: 10
     },
@@ -72,56 +107,30 @@ export class WarehouseInfoComponent implements OnInit {
         title: 'Current amount',
         type: 'number',
       },
-      maximumAmount: {
-        title: 'Maximum amount',
-        type: 'number',
-      },
-      minimumAmount: {
-        title: 'Minimum amount',
-        type: 'number',
-      },
-      purchasePrice: {
-        title: 'Purchase Price',
-        type: 'number',
-      },
-      soldPrice: {
-        title: 'Sold Price',
-        type: 'number',
-      },
-      differenceBetweenSoldAndPurchasePrice: {
-        title: 'Difference',
-        type: 'number',
-      },
       shortContent: {
         title: 'Short Content',
         type: 'custom',
         renderComponent: IncrementDecrementCatalogModalComponent
       },
-      // isProcessed: {
-      //   title: this.translate.instant('FEEDBACK_TABLE.PROCESSED'),
-      //   editable: false,
-      //   renderComponent: UserFeedbackStatusComponent,
-      //   type: 'custom',
-      //   filter: {
-      //     type: 'list',
-      //     config: {
-      //       list: [
-      //         { value: true, title: this.translate.instant('FEEDBACK.PROCESSED_YES') },
-      //         { value: false, title: this.translate.instant('FEEDBACK.PROCESSED_NO') },
-      //       ]
-      //     },
-      //   },
-      // },
-
-      //   details:
-      //   {
-      //     title: 'Actions',
-      //     filter: false,
-      //     addable: false,
-      //     editable: false,
-      //     type: 'custom',
-      //     renderComponent: UserFeedbackDetailsButtonComponent,
-      //   },
+      maximumAmount: {
+        title: 'Maximum amount',
+        type: 'number',
+      },
+      actions:
+      {
+        filter: false,
+        addable: false,
+        editable: false,
+        title: 'Catalog Details',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
+        },
+        id: {
+          title: 'ID',
+          type: 'string',
+        },
+      },
     },
     noDataMessage: 'Catalogs was not found'
   };
@@ -135,38 +144,28 @@ export class WarehouseInfoComponent implements OnInit {
     private modalService: NgbModal,
     private newsService: NewsService,
     private toastrService: NbToastrService,
+    private catalogService: CatalogService,
+    private basketService: BasketService
   ) { }
 
   ngOnInit() {
-    this.testObj[0] = new Catalog();
-    this.testObj[0].name = 'Snikers';
-    this.testObj[0].purchasePrice = 4;
-    this.testObj[0].soldPrice = 3;
-    this.testObj[0].minimumAmount = 20;
-    this.testObj[0].maximumAmount = 50;
-    this.testObj[0].currentAmount = 18;
-    this.testObj[0].differenceBetweenSoldAndPurchasePrice = 1;
-    this.testObj[1] = new Catalog();
-    this.testObj[1].name = 'Twiks';
-    this.testObj[1].purchasePrice = 8;
-    this.testObj[1].soldPrice = 4;
-    this.testObj[1].minimumAmount = 10;
-    this.testObj[1].maximumAmount = 30;
-    this.testObj[1].currentAmount = 8;
-    this.testObj[1].differenceBetweenSoldAndPurchasePrice = 4;
-
-    this.source.load(this.testObj);
+    this.catalogUpdate = this.basketService.getUpdatedCatalog()
+      .subscribe(update => {
+        this.source.update(update.old, update.new)
+      });
     // Getting warehouse id from routing
     this.gettingWarehouseIdFormRoute();
     // Getting warehouse by id
     this.getWarehouse();
     // Getting warehouse news list
     this.getWarehouseNewsList();
+    this.getCatalogs();
+  }
+  ngOnDestroy() {
+    // Unsubscribe from catalog update Subscription
+    this.catalogUpdate.unsubscribe();
   }
 
-  toggleQrCodeDownloadButtonVisability() {
-    this.downloadButtonVisability = !this.downloadButtonVisability
-  }
 
   // TODO: Write a comments and JSDOCs to all this methods.....
 
@@ -243,6 +242,38 @@ export class WarehouseInfoComponent implements OnInit {
       this.warehouseNewsList.push(newNews);
     })
   }
+
+  /**
+   * Method opens modal window with form to add new catalog in warehouse
+   *
+   * @memberof WarehouseInfoComponent
+   */
+  openAddCatalogModal() {
+    // Opening modal window where we can add new catalog
+    const activeModal = this.modalService.open(AddNewCatalogModalComponent, {
+      container: 'nb-layout',
+    });
+    activeModal.componentInstance.warehouseId = this.specificWarehouseId;
+    // When modal window was closed it can pass data back to uss...
+    activeModal.result.then(newCatalog => {
+      // Push new warehouse to the warehouse list that is used to display them 
+      this.source.append(newCatalog);
+    })
+  }
+
+  openEditCatalogModal(event): void {
+
+    const activeModal = this.modalService.open(EditCatalogModalComponent, {
+      container: 'nb-layout',
+    });
+    // Passing object that we want to edit to the modal window...
+    // Using 'Object.assign' to avoid issues, when we changing warehouse values in input, and it is instantly changed in display list too
+    // Thx to 'Object.assign' in the modal window, we are working with a copie of selected media file, not with origin
+    activeModal.componentInstance.catalogToEdit = Object.assign({}, event.data);
+    activeModal.result.then(editedCatalog => {
+      this.source.update(event.data, editedCatalog);
+    });
+  }
   /**
    * Method deletes news form system
    *
@@ -274,7 +305,29 @@ export class WarehouseInfoComponent implements OnInit {
         return 0;
       }
     })
-
+  }
+  deleteCatalog(event) {
+    this.isLoadingCatalogTable = true;
+    const activeModal = this.modalService.open(DeleteModalComponent, {
+      container: 'nb-layout',
+    });
+    activeModal.componentInstance.objectName = `catalog: ${event.data.name}`;
+    activeModal.result.then(res => {
+      if (res) {
+        this.catalogService.removeCatalog(event.data.id)
+          .pipe(
+            finalize(() => {
+              this.isLoadingCatalogTable = false;
+            })
+          )
+          .subscribe(() => {
+            this.source.remove(event.data);
+            this.toastrService.success(`Catalog ${event.data.name} was deleted`);
+          }, err => {
+            this.toastrService.danger(`Catalog ${event.data.name} was not deleted`);
+          })
+      }
+    });
   }
 
   /**
@@ -353,6 +406,28 @@ export class WarehouseInfoComponent implements OnInit {
       }))
       .subscribe(warehouseThatHasCame => {
         this.warehouse = warehouseThatHasCame;
+      });
+  }
+
+  /**
+   * Method gets list of catalogs
+   *
+   * @private
+   * @memberof WarehouseInfoComponent
+   */
+  private getCatalogs() {
+    // Calling method from service that will get uss our catalogs
+    this.catalogService.getCatalogsByWarehouseId(this.specificWarehouseId)
+      .pipe(
+        // When method will be executed
+        finalize(() => {
+          // Loading indicator will be disabled
+          this.isLoading = false;
+        }))
+      // Subscribing to the method, to get our objects
+      .subscribe(catalogs => {
+        // When objects will come, we load them in to the our smart table
+        this.source.load(catalogs);
       });
   }
 

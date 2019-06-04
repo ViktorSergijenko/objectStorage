@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditCatalogModelComponent } from '../edit-catalog-model/edit-catalog-model.component';
 import { Catalog } from '../../../../../models/catalog.model';
+import { BasketService } from '../../../../../services/basket.service';
 
 @Component({
   selector: 'ngx-increment-decrement-catalog-modal',
@@ -12,6 +13,7 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
+    private basketService: BasketService
   ) { }
   /**
    * Variable get data from parent component to display info in modal window
@@ -20,7 +22,7 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
    * @type {Catalog}
    * @memberof IncrementDecrementCatalogModalComponent
    */
-  @Input() rowData: Catalog;
+  @Input() rowData: any;
   ngOnInit() {
     console.log('Loan:', this.rowData);
   }
@@ -30,6 +32,10 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
     });
     activeModal.componentInstance.catalogToEdit = this.rowData;
     activeModal.componentInstance.addOrRemove = true;
+    activeModal.componentInstance.basketId = localStorage.getItem('UserBasketId');
+    activeModal.result.then(editedCatalog => {
+      this.basketService.setUpdatedCatalog({ old: this.rowData, new: editedCatalog });
+    });
   }
   openRemoveCatalogModal() {
     const activeModal = this.modalService.open(EditCatalogModelComponent, {
@@ -37,5 +43,9 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
     });
     activeModal.componentInstance.catalogToEdit = this.rowData;
     activeModal.componentInstance.addOrRemove = false;
+    activeModal.componentInstance.basketId = localStorage.getItem('UserBasketId');
+    activeModal.result.then(editedCatalog => {
+      this.basketService.setUpdatedCatalog({ old: this.rowData, new: editedCatalog });
+    });
   }
 }

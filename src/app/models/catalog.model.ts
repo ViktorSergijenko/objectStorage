@@ -10,5 +10,6 @@ export class Catalog extends BaseEntity {
     soldPrice: number;
     differenceBetweenSoldAndPurchasePrice: number;
     warehouse: Warehouse;
-    WarehouseId: string;
+    warehouseId: string;
+    productPrice: number;
 }

@@ -16,3 +16,8 @@ export class LoginVM {
     email: string;
     password: string;
 }
+export class ProfileInformationVM {
+    fullName: string;
+    email: string;
+    basketId: string;
+}

@@ -128,6 +128,55 @@
     border-radius: 6px;
   }
   :host /deep/ .customformat{ text-align: right; } 
+
+  .top-info-block{
+    width: 48%;
+  }
+
+  .info-top-container{
+    max-height: 500px;
+  }
+
+  .left-side-card-info{
+    width: 69%;
+    float: left;
+  }
+
+  .right-side-card-info{
+    width: 30%;
+    float: right;
+    text-align: center;
+    img{
+      height: auto;
+    }
+    button{
+      font-size: 11px;
+
+    }
+  }
+
+  .info-image-container{
+    height: 300px;
+    overflow: hidden;
+  }
+
+  .list-buttons{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .info-top-container{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+
+    .card__image{
+      height: auto;
+    }
+    .card{
+      border: 0;
+    }
+  }    
   
   @keyframes LineFadeIn {
     0% { opacity: 0; d: path("M 0 300 Q 0 300 0 300 Q 0 300 0 300 C 0 300 0 300 0 300 Q 0 300 0 300 "); stroke: #fff; }
@@ -144,6 +193,44 @@
     0% { transform: translate(-.5rem, -.5rem) scale(1.05); opacity: 0; filter: blur(2px); }
     50% { opacity: 1; filter: blur(2px); }
     100% { transform: translateY(0) scale(1.0); opacity: 1; filter: blur(0); }
+  }
+
+  @media only screen and (max-width: 992px) {
+    .top-info-block{
+      width: 100%;
+      margin-bottom: 50px;
+    }
+
+    .list-card{
+      max-height: 450px;
+    }
+
+    .info-top-container{
+      max-height: initial;
+      display: block;
+      justify-content: initial;
+    }
+  }
+
+
+  @media only screen and (max-width: 575px) {
+    .top-info-block{
+      .list-button{
+        max-width: 28px;
+      }
+      .info-image-container{
+        height: 200px;
+        overflow: hidden;
+      }
+      .right-side-card-info{
+        button{ 
+          padding: 6px 5px;
+        }
+      }
+      .card-top-fixed{
+        padding: 8px;
+      }
+    }
   }
 
   

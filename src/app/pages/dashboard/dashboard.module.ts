@@ -16,6 +16,10 @@ import { DeleteModalComponent } from './warehouses/delete-modal/delete-modal.com
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { IncrementDecrementCatalogModalComponent } from './warehouses/warehouse-info/increment-decrement-catalog-modal/increment-decrement-catalog-modal.component';
 import { EditCatalogModelComponent } from './warehouses/warehouse-info/edit-catalog-model/edit-catalog-model.component';
+import { ProductTableComponent } from './warehouses/warehouse-info/product-table/product-table.component';
+import { AddNewCatalogModalComponent } from './warehouses/warehouse-info/add-new-catalog-modal/add-new-catalog-modal.component';
+import { EditCatalogModalComponent } from './warehouses/warehouse-info/edit-catalog-modal/edit-catalog-modal.component';
+import { BasketModalComponent } from '../../@theme/components/header/basket-modal/basket-modal.component';
 
 
 
@@ -44,7 +48,11 @@ import { EditCatalogModelComponent } from './warehouses/warehouse-info/edit-cata
       DetailsNewsModalComponent,
       DeleteModalComponent,
       IncrementDecrementCatalogModalComponent,
-      EditCatalogModelComponent
+      EditCatalogModelComponent,
+      ProductTableComponent,
+      AddNewCatalogModalComponent,
+      EditCatalogModalComponent,
+      BasketModalComponent
     ],
   exports: [
     AddWarehouseModalComponent,
@@ -53,7 +61,11 @@ import { EditCatalogModelComponent } from './warehouses/warehouse-info/edit-cata
     DetailsNewsModalComponent,
     DeleteModalComponent,
     IncrementDecrementCatalogModalComponent,
-    EditCatalogModelComponent
+    EditCatalogModelComponent,
+    ProductTableComponent,
+    AddNewCatalogModalComponent,
+    EditCatalogModalComponent,
+    BasketModalComponent
   ],
   entryComponents: [
     AddWarehouseModalComponent,
@@ -62,7 +74,11 @@ import { EditCatalogModelComponent } from './warehouses/warehouse-info/edit-cata
     DetailsNewsModalComponent,
     DeleteModalComponent,
     IncrementDecrementCatalogModalComponent,
-    EditCatalogModelComponent
+    EditCatalogModelComponent,
+    ProductTableComponent,
+    AddNewCatalogModalComponent,
+    EditCatalogModalComponent,
+    BasketModalComponent
   ]
 })
 

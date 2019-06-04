@@ -4,6 +4,9 @@ import { Catalog } from '../../../../../models/catalog.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CatalogService } from '../../../../../services/catalog.service';
 import { NbToastrService } from '@nebular/theme';
+import { IAddProductsToBasket } from '../../../../../models/basket.model';
+import { BasketService } from '../../../../../services/basket.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-edit-catalog-model',
@@ -32,17 +35,20 @@ export class EditCatalogModelComponent implements OnInit {
    * @memberof EditCatalogModelComponent
    */
   addOrRemove: boolean;
+  basketId: string;
   catalogToEdit: Catalog = new Catalog();
+  items: IAddProductsToBasket = new IAddProductsToBasket();
   constructor(
     private formBuilder: FormBuilder,
     private modal: NgbActiveModal,
-    private catalogService: CatalogService,
+    private basketService: BasketService,
     private toastrService: NbToastrService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
+    console.log(this.editCatalogForm.value);
     this.editCatalogForm.patchValue({ currentAmount: 0 });
 
   }
@@ -54,7 +60,39 @@ export class EditCatalogModelComponent implements OnInit {
    */
   close() {
     this.modal.dismiss();
+  }
+  submitToAddProductsInBasket() {
+    this.items.productAmount = this.editCatalogForm.get('currentAmount').value;
+    this.items.catalogId = this.catalogToEdit.id;
+    this.items.basketId = this.basketId;
+    this.items.name = this.catalogToEdit.name;
+    this.basketService.addProductsToBasket(this.items)
+      .pipe(finalize(() => {
+      }))
+      .subscribe(catalog => {
+        this.toastrService.success(`Products was added to basket`);
+        this.modal.close(catalog);
+      }, err => {
+        this.toastrService.danger(`There is not enough products in catalog`);
+        this.close();
+      });
+  }
 
+  submitToAddProductsToCatalogFromBasket() {
+    this.items.productAmount = this.editCatalogForm.get('currentAmount').value;
+    this.items.catalogId = this.catalogToEdit.id;
+    this.items.basketId = this.basketId;
+    this.items.name = this.catalogToEdit.name;
+    this.basketService.addProductsToCatalogFromBasket(this.items)
+      .pipe(finalize(() => {
+      }))
+      .subscribe(catalog => {
+        this.toastrService.success(`Products was added to basket`);
+        this.modal.close(catalog);
+      }, err => {
+        this.toastrService.danger(`There is not enough products in catalog`);
+        this.close();
+      });
   }
 
   addMaximumAmount() {

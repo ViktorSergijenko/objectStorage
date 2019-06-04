@@ -7,9 +7,13 @@
 
 <div class="header-container">
   <nb-actions size="medium" [class.right]="position === 'normal'" [class.left]="position === 'inverse'">
-    <nb-action *nbIsGranted="['view', 'user']">
-      <nb-user [nbContextMenu]="userMenu" (menuClick)="onLogout($event)" [name]="user?.name" [picture]="user?.picture">
-      </nb-user>
+    <nb-action class="row-with-btns">
+      <!-- <nb-user [nbContextMenu]="userMenu" (menuClick)="onItemSelection($event)" [name]="user?.fullName" [picture]="">
+      </nb-user> -->
+      <!-- <span [nbContextMenu]="userMenu" (menuClick)="onLogout($event)">LG</span> -->
+      <span class="full-name-text" *ngIf="user">{{user.fullName}}</span>
+      <i class="fas fa-sign-out-alt fa-2x" (click)="onLogout()"></i>
     </nb-action>
   </nb-actions>
+  <i class="fas fa-shopping-basket fa-2x basket-icon" (click)="openUserBasket()"></i>
 </div>

@@ -24,10 +24,24 @@
     width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
   }
 
+  .basket-icon {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   .control-item {
     display: block;
   }
-
+  .row-with-btns {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .full-name-text {
+    padding-right: 20px;
+  }
   .header-container {
     display: flex;
     align-items: center;

@@ -1,0 +1,39 @@
+<nb-card [nbSpinner]="loadingIndicator" nbSpinnerStatus="danger">
+  <nb-card-header class="header text-center">
+    <h2>Add Catalog form</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="editCatalogForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Catalog name" formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="minimumAmount">Minimum amount</label>
+        <input type="text" class="form-control" id="minimumAmount" placeholder="Minimum amount"
+          formControlName="minimumAmount">
+      </div>
+      <div class="form-group">
+        <label for="maximumAmount">Maximum amount</label>
+        <input type="text" class="form-control" id="maximumAmount" placeholder="Maximum amount"
+          formControlName="maximumAmount">
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button nbButton type="submit" status="success" class="btn btn-danger "
+            (click)="editeCatalog()">Submit</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center close-button">
+          <button nbButton outline status="danger" (click)="close()">
+            CLOSE
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+<pre>
+  {{editCatalogForm.value | json}}
+</pre>

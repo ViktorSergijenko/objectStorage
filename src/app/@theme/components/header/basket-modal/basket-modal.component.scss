@@ -1,0 +1,13 @@
+.row-with-btns {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .close-icon {
+      color: red;
+    &:hover {
+        cursor: pointer;
+      }
+  }

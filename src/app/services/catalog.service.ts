@@ -54,5 +54,38 @@ export class CatalogService {
         return this.http.delete<void>(`${this.getEndpointUrl()}/${catalogId}`);
     }
 
+    /**
+     * Method deletes catalog from system
+     *
+     * @param {string} catalogId Id of an catalog that we want to delete
+     * @returns {Observable<void>}
+     * @memberof CatalogService
+     */
+    getCatalogByiD(catalogId: string): Observable<Catalog> {
+        return this.http.get<Catalog>(`${this.getEndpointUrl()}/${catalogId}`);
+    }
+
+    /**
+     * Method gets list of catalogs of an specifick warehouse
+     *
+     * @param {string} warehouseId Id of an warehouse that catalogs we want to get
+     * @returns {Observable<void>}
+     * @memberof CatalogService
+     */
+    getCatalogsByWarehouseId(warehouseId: string): Observable<Catalog[]> {
+        return this.http.get<Catalog[]>(`${this.getEndpointUrl()}/warehouse/${warehouseId}`);
+    }
+    /**
+     * Method gets list of catalogs of an specifick basket
+     *
+     * @param {string} basketId Id of an basket that catalogs we want to get
+     * @returns {Observable<void>}
+     * @memberof CatalogService
+     */
+    getCatalogsByBasketId(basketId: string): Observable<Catalog[]> {
+        return this.http.get<Catalog[]>(`${this.getEndpointUrl()}/basket/${basketId}`);
+    }
+
+
 
 }

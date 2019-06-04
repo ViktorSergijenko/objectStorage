@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegistrationVM, LoginVM } from '../models/user';
+import { RegistrationVM, LoginVM, ProfileInformationVM } from '../models/user';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -42,9 +42,9 @@ export class AccountService {
   login(userToLogin: LoginVM): Observable<LoginVM> {
     return this.http.post<LoginVM>(`${this.getEndpointUrl()}/login`, userToLogin);
   }
-  getUserProfile() {
+  getUserProfile(): Observable<ProfileInformationVM> {
     console.log(localStorage.getItem('UserToken'));
-    var tokenHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('UserToken') })
-    return this.http.get(`${environment.apiUrl}userProfile/get-profile`, { headers: tokenHeader });
+    var tokenHeader = new HttpHeaders();
+    return this.http.get<ProfileInformationVM>(`${environment.apiUrl}userProfile/get-profile`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 }

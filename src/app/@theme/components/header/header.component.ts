@@ -7,6 +7,9 @@ import { LayoutService } from '../../../@core/utils';
 import { Router } from '@angular/router';
 import { AccountService } from '../../../services/account.service';
 import { filter } from 'rxjs/operators';
+import { ProfileInformationVM } from '../../../models/user';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BasketModalComponent } from './basket-modal/basket-modal.component';
 
 @Component({
   selector: 'ngx-header',
@@ -17,13 +20,14 @@ export class HeaderComponent implements OnInit {
 
   @Input() position = 'normal';
 
-  user: any;
+  user: ProfileInformationVM;
 
   userMenu = [{ title: 'Log out' }];
 
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private userService: UserData,
+    private modalService: NgbModal,
     private analyticsService: AnalyticsService,
     private router: Router,
     private accountService: AccountService,
@@ -31,15 +35,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => this.user = users.nick);
-    this.menuService.onItemClick().subscribe((event) => {
-      this.onItemSelection(event.item.title);
-    })
     this.accountService.getUserProfile()
       .subscribe(credentials => {
-        console.log(credentials);
-        console.log('credentials');
+        this.user = credentials;
+        localStorage.setItem('UserFullName', credentials.fullName);
+        localStorage.setItem('UserEmail', credentials.email);
+        localStorage.setItem('UserBasketId', credentials.basketId);
       })
   }
 
@@ -52,11 +53,18 @@ export class HeaderComponent implements OnInit {
   onItemSelection(title) {
     if (title === 'Log out') {
       // Do something on Log out
+      console.log('in item select');
       this.onLogout();
     } else if (title === 'Profile') {
       // Do something on Profile
       console.log('Profile Clicked ')
     }
+  }
+  openUserBasket() {
+    const activeModal = this.modalService.open(BasketModalComponent, {
+      container: 'nb-layout',
+      size: 'lg',
+    });
   }
 
   goToHome() {
@@ -68,6 +76,10 @@ export class HeaderComponent implements OnInit {
   }
   onLogout() {
     localStorage.removeItem('UserToken');
+    localStorage.removeItem('UserEmail');
+    localStorage.removeItem('UserFullName');
+    localStorage.removeItem('UserBasketId');
+    console.log('in navigation');
     this.router.navigate(['/login'])
 
   }

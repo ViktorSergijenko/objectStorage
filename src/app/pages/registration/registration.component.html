@@ -4,7 +4,7 @@
     <div class="col-sm-4">
       <nb-card>
         <nb-card-header>
-          <h1 id="title" class="title">Register employee</h1>
+          <h1 id="title" class="title">Register user</h1>
           <nb-alert *ngIf="errorMessage" outline="danger" role="alert">
             <p class="alert-title"><b>Oh snap!</b></p>
             <ul class="alert-message-list">
@@ -44,7 +44,7 @@
             <div class="form-control-group">
               <label class="label" for="input-password">Password:</label>
               <input nbInput formControlName="password" class="form-control" type="password" id="input-password"
-                name="password" placeholder="password" fullWidth required>
+                name="password" placeholder="Password" fullWidth required>
               <label class="text-danger"
                 *ngIf="registrationForm.controls['password'].errors.required && registrationForm.controls['password'].touched">Email
                 is required</label>
