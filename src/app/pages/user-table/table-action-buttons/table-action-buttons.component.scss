@@ -1,0 +1,31 @@
+.problem-icon {
+    color: red;
+    &:hover {
+        text-shadow: 3px 3px 16px red;
+      cursor: pointer;
+    }
+}
+
+.edit-icon {
+    color: orange;
+    &:hover {
+        text-shadow: 3px 3px 16px orange;
+      cursor: pointer;
+    }
+}
+
+.password-icon {
+    color: lightseagreen;
+    &:hover {
+        text-shadow: 3px 3px 16px lightseagreen;
+      cursor: pointer;
+    }
+}
+
+.basket-icon {
+  color: lightblue;
+  &:hover {
+      text-shadow: 3px 3px 16px lightblue;
+    cursor: pointer;
+  }
+}

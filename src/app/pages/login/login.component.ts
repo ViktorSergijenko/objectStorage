@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
         this.loadingIndicator = false;
       }))
       .subscribe((userTooken: any) => {
+        console.log(userTooken);
         localStorage.setItem('UserToken', userTooken.access_token);
         this.router.navigateByUrl('/pages/warehouse/list');
       },

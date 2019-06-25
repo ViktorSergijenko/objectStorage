@@ -4,7 +4,10 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { RegistrationModule } from './registration/registration.module';
-import { LoginModule } from './login/login.module';
+import { UserTableModule } from './user-table/user-table.module';
+import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
+import { CatalogNameTableModule } from './catalog-name-table/catalog-name-table.module';
+import { LogTableModule } from './log-table/log-table.module';
 
 
 const PAGES_COMPONENTS = [
@@ -17,6 +20,10 @@ const PAGES_COMPONENTS = [
     ThemeModule,
     DashboardModule,
     RegistrationModule,
+    CatalogNameTableModule,
+    UserTableModule,
+    MiscellaneousModule,
+    LogTableModule
   ],
   declarations: [
     ...PAGES_COMPONENTS,

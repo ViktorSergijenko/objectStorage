@@ -7,6 +7,8 @@ import { NbToastrService } from '@nebular/theme';
 import { IAddProductsToBasket } from '../../../../../models/basket.model';
 import { BasketService } from '../../../../../services/basket.service';
 import { finalize } from 'rxjs/operators';
+import { ProductService } from '../../../../../services/product.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ngx-edit-catalog-model',
@@ -14,6 +16,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./edit-catalog-model.component.scss']
 })
 export class EditCatalogModelComponent implements OnInit {
+  addingObjectToCatalogFromBasket: boolean;
   /**
   * Form group for new warehouse form
   *
@@ -38,20 +41,41 @@ export class EditCatalogModelComponent implements OnInit {
   basketId: string;
   catalogToEdit: Catalog = new Catalog();
   items: IAddProductsToBasket = new IAddProductsToBasket();
+  /**
+ * Subscription that monitors for catalog updates. Used to track changes for catalog values
+ *
+ * @type {Subscription}
+ * @memberof UserFeedbackListComponent
+ */
+  statusAddOrRemoveUpdate: Subscription;
+
   constructor(
     private formBuilder: FormBuilder,
     private modal: NgbActiveModal,
     private basketService: BasketService,
+    private productService: ProductService,
+    private catalogService: CatalogService,
     private toastrService: NbToastrService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
-    console.log(this.editCatalogForm.value);
+    console.log('modal has loaded');
+    this.statusAddOrRemoveUpdate = this.catalogService.getUpdatedAddOrRemoveStatus()
+      .subscribe(status => {
+        this.addingObjectToCatalogFromBasket = status;
+        console.log(" in modal");
+        console.log(status);
+      });
     this.editCatalogForm.patchValue({ currentAmount: 0 });
 
   }
+  ngOnDestroy() {
+    // Unsubscribe from catalog update Subscription
+    this.statusAddOrRemoveUpdate.unsubscribe();
+  }
+
 
   /**
    * Method closes (dismisses) current modal windows
@@ -66,16 +90,29 @@ export class EditCatalogModelComponent implements OnInit {
     this.items.catalogId = this.catalogToEdit.id;
     this.items.basketId = this.basketId;
     this.items.name = this.catalogToEdit.name;
-    this.basketService.addProductsToBasket(this.items)
-      .pipe(finalize(() => {
-      }))
-      .subscribe(catalog => {
-        this.toastrService.success(`Products was added to basket`);
-        this.modal.close(catalog);
-      }, err => {
-        this.toastrService.danger(`There is not enough products in catalog`);
-        this.close();
-      });
+    if (this.addingObjectToCatalogFromBasket) {
+      this.basketService.addProductsToBasket(this.items)
+        .pipe(finalize(() => {
+        }))
+        .subscribe(catalog => {
+          this.toastrService.success(`Products was added to basket`);
+          this.modal.close(catalog);
+        }, err => {
+          this.toastrService.danger(`There is not enough products in catalog`);
+          this.close();
+        });
+    } else {
+      this.productService.removeProductsFromCatalogManually(this.items)
+        .pipe(finalize(() => {
+        }))
+        .subscribe(catalog => {
+          this.toastrService.success(`Products was added to basket`);
+          this.modal.close(catalog);
+        }, err => {
+          this.toastrService.danger(`There is not enough products in catalog`);
+          this.close();
+        });
+    }
   }
 
   submitToAddProductsToCatalogFromBasket() {
@@ -83,16 +120,30 @@ export class EditCatalogModelComponent implements OnInit {
     this.items.catalogId = this.catalogToEdit.id;
     this.items.basketId = this.basketId;
     this.items.name = this.catalogToEdit.name;
-    this.basketService.addProductsToCatalogFromBasket(this.items)
-      .pipe(finalize(() => {
-      }))
-      .subscribe(catalog => {
-        this.toastrService.success(`Products was added to basket`);
-        this.modal.close(catalog);
-      }, err => {
-        this.toastrService.danger(`There is not enough products in catalog`);
-        this.close();
-      });
+    if (this.addingObjectToCatalogFromBasket) {
+      this.basketService.addProductsToCatalogFromBasket(this.items)
+        .pipe(finalize(() => {
+        }))
+        .subscribe(catalog => {
+          this.toastrService.success(`Products was removed from catalog`);
+          this.modal.close(catalog);
+        }, err => {
+          this.toastrService.danger(`There is not enough products in catalog`);
+          this.close();
+        });
+
+    } else {
+      this.productService.addProductsToCatalogManually(this.items)
+        .pipe(finalize(() => {
+        }))
+        .subscribe(catalog => {
+          this.toastrService.success(`Products was added to catalog`);
+          this.modal.close(catalog);
+        }, err => {
+          this.toastrService.danger(`Something went wrong`);
+          this.close();
+        });
+    }
   }
 
   addMaximumAmount() {

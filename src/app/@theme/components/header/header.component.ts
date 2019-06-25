@@ -41,6 +41,9 @@ export class HeaderComponent implements OnInit {
         localStorage.setItem('UserFullName', credentials.fullName);
         localStorage.setItem('UserEmail', credentials.email);
         localStorage.setItem('UserBasketId', credentials.basketId);
+        localStorage.setItem('Role', credentials.roleName);
+      }, err => {
+        this.onLogout()
       })
   }
 
@@ -79,8 +82,7 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('UserEmail');
     localStorage.removeItem('UserFullName');
     localStorage.removeItem('UserBasketId');
-    console.log('in navigation');
+    localStorage.removeItem('Role');
     this.router.navigate(['/login'])
-
   }
 }

@@ -45,6 +45,8 @@ export class WarehousesListComponent implements OnInit {
   isLoading: boolean = true;
 
   filterSortingOption: FilterSorting = new FilterSorting;
+  userRole: string;
+  regularUserRole: string = 'Level four';
 
 
   constructor(
@@ -52,9 +54,12 @@ export class WarehousesListComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private toastrService: NbToastrService,
-  ) { }
+  ) {
+    this.userRole = localStorage.getItem('Role');
+  }
 
   ngOnInit() {
+    console.log(this.userRole)
     this.getWarehouseList();
     this.searchValueChanged.pipe(
       // Wait 400ms after the last event before emitting last event

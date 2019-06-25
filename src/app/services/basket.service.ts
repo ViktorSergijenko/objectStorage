@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment.prod';
 import { Observable, Subject } from 'rxjs';
-import { Basket, BasketWithNewProductsVM, IAddProductsToBasket } from '../models/basket.model';
-import { Product } from '../models/product.model';
+import { Basket, IAddProductsToBasket } from '../models/basket.model';
 import { Catalog } from '../models/catalog.model';
 import { ObjectChange } from '../models/base.model';
 
@@ -16,10 +15,10 @@ export class BasketService {
     private http: HttpClient
   ) { }
   /**
-  * Subject to track changes of feedback status update
+  * Subject to track changes of catalog status update
   *
   * @private
-  * @memberof UserFeedBackService
+  * @memberof BasketService
   */
   private catalogSubject = new Subject<ObjectChange<Catalog>>();
   /**
@@ -41,6 +40,7 @@ export class BasketService {
   getCatalogByiD(basketId: string): Observable<Basket> {
     return this.http.get<Basket>(`${this.getEndpointUrl()}/${basketId}`);
   }
+
   /**
    * Method updates user basket
    *
@@ -49,7 +49,9 @@ export class BasketService {
    * @memberof CatalogService
    */
   addProductsToBasket(items: IAddProductsToBasket): Observable<Catalog> {
-    return this.http.post<Catalog>(this.getEndpointUrl(), items);
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.post<Catalog>(this.getEndpointUrl(), items, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
   /**
@@ -60,7 +62,9 @@ export class BasketService {
  * @memberof CatalogService
  */
   addProductsToCatalogFromBasket(items: IAddProductsToBasket): Observable<Catalog> {
-    return this.http.post<Catalog>(`${this.getEndpointUrl()}/remove-from-basket`, items);
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.post<Catalog>(`${this.getEndpointUrl()}/remove-from-basket`, items, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
   /**
   * Method send signal to stream with updated information about feedback

@@ -88,7 +88,7 @@ export class EditCatalogModalComponent implements OnInit {
         err => {
           // Initialize our error value with error message that came
           this.error = err;
-          this.toastrService.danger(`Warehouse was not modified`);
+          this.toastrService.danger(`Catalog was not modified`);
         });
   }
   /**

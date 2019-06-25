@@ -3,6 +3,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditCatalogModelComponent } from '../edit-catalog-model/edit-catalog-model.component';
 import { Catalog } from '../../../../../models/catalog.model';
 import { BasketService } from '../../../../../services/basket.service';
+import { CatalogService } from '../../../../../services/catalog.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ngx-increment-decrement-catalog-modal',
@@ -11,21 +13,26 @@ import { BasketService } from '../../../../../services/basket.service';
 })
 export class IncrementDecrementCatalogModalComponent implements OnInit {
 
+
   constructor(
     private modalService: NgbModal,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private catalogService: CatalogService,
+
   ) { }
   /**
    * Variable get data from parent component to display info in modal window
-   * 
+   *
    *
    * @type {Catalog}
    * @memberof IncrementDecrementCatalogModalComponent
    */
   @Input() rowData: any;
+
   ngOnInit() {
-    console.log('Loan:', this.rowData);
   }
+
+
   openAddCatalogModal() {
     const activeModal = this.modalService.open(EditCatalogModelComponent, {
       container: 'nb-layout',

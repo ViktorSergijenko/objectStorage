@@ -1,26 +1,29 @@
-<div class="container">
+<div *ngIf="userRole !== regularUserRole" class="container">
   <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-4">
       <nb-card>
         <nb-card-header>
           <h1 id="title" class="title">Register user</h1>
-          <nb-alert *ngIf="errorMessage" outline="danger" role="alert">
-            <p class="alert-title"><b>Oh snap!</b></p>
-            <ul class="alert-message-list">
-              <li class="alert-message">{{ errorMessage }}</li>
-            </ul>
-          </nb-alert>
-          <nb-alert *ngIf="successMessage" outline="success" role="alert">
-            <p class="alert-title"><b>Hooray!</b></p>
-            <ul class="alert-message-list">
-              <li * class="alert-message">{{ successMessage }}</li>
-            </ul>
-          </nb-alert>
         </nb-card-header>
         <nb-card-body>
-          <form (ngSubmit)="addNewUser()" [formGroup]="registrationForm" aria-labelledby="title"
-            [nbSpinner]="loadingIndicator" nbSpinnerStatus="danger">
+          <form [formGroup]="registrationForm" aria-labelledby="title" [nbSpinner]="loadingIndicator"
+            nbSpinnerStatus="danger">
+            <div class="input-group mb-3">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend" ngbDropdown>
+                  <button class="btn btn btn-outline-primary dropdown-toggle dropdown-width" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu1"
+                    ngbDropdownToggle>Choose role</button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                    <button class="dropdown-item" *ngFor="let role of rolesForDropDown"
+                      (click)="onDropDownSelect(role)">{{role}}</button>
+                  </div>
+                </div>
+                <input [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                  aria-label="Text input with dropdown button" [(ngModel)]="role" id="role">
+              </div>
+            </div>
             <div class="form-control-group">
               <label class="label" for="input-name">Full name:</label>
               <input nbInput id="input-name" name="fullName" class="form-control" placeholder="Full name"
@@ -62,7 +65,7 @@
                 is required</label>
             </div>
             <div class="row" class="submit-btn">
-              <button nbButton fullWidth status="success">
+              <button nbButton fullWidth status="success" (click)="addNewUser()">
                 Register
               </button>
             </div>

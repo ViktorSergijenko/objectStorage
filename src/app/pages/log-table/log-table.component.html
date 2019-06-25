@@ -1,0 +1,26 @@
+<nb-card *ngIf="!adminLogsOrSimple">
+  <nb-card-header class="row-with-btns">
+    <p>Log table</p>
+    <i class="fa-2x icon-add fas fa-user-shield" (click)="toggleTableFlag()">
+      <span>Simple logs</span>
+    </i>
+  </nb-card-header>
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+<nb-card *ngIf="adminLogsOrSimple">
+  <nb-card-header class="row-with-btns">
+    <p>Admin log table</p>
+    <i class="fa-2x icon-add fas fa-user-shield" (click)="toggleTableFlag()">
+      <span>Admin logs</span>
+    </i>
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="sourceAdmin">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

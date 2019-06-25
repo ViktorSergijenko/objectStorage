@@ -11,14 +11,14 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Tables',
-    icon: 'nb-tables',
-    children: [
-      {
-        title: 'Smart Table',
-        link: '/pages/tables/smart-table',
-      },
-    ],
+    title: 'Catalog Names',
+    icon: 'nb-compose',
+    link: '/pages/catalog-name-list',
+  },
+  {
+    title: 'Log table',
+    icon: 'fas fa-clipboard-list',
+    link: '/pages/log-table',
   },
   {
     title: 'Auth',
@@ -29,8 +29,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/register',
       },
       {
-        title: 'Login',
-        link: '/pages/login',
+        title: 'User Table',
+        link: '/pages/user-table',
       },
       //   {
       //     title: 'Request Password',

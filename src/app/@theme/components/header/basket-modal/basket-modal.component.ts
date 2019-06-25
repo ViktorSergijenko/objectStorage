@@ -3,6 +3,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { CatalogService } from '../../../../services/catalog.service';
 import { finalize } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BasketService } from '../../../../services/basket.service';
 
 @Component({
   selector: 'ngx-basket-modal',
@@ -11,6 +12,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class BasketModalComponent implements OnInit {
   isLoadingCatalogTable: boolean = false;
+  userId: string;
   //#region Table settings
   settings = {
     mode: 'external',
@@ -30,21 +32,6 @@ export class BasketModalComponent implements OnInit {
         title: 'Current amount',
         type: 'number',
       },
-      details:
-      {
-        filter: false,
-        addable: false,
-        editable: false,
-        title: 'Catalog Details',
-        type: 'html',
-        valuePrepareFunction: (cell, row) => {
-          return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
-        },
-        id: {
-          title: 'ID',
-          type: 'string',
-        },
-      },
     },
     noDataMessage: 'Catalogs was not found'
   };
@@ -53,11 +40,16 @@ export class BasketModalComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
   constructor(
     private catalogService: CatalogService,
+    private basketService: BasketService,
     private modal: NgbActiveModal
   ) { }
 
   ngOnInit() {
-    this.getCatalogs();
+    if (!this.userId) {
+      this.getCatalogs(localStorage.getItem('UserBasketId'));
+    } else {
+      this.getCatalogsByUserId(this.userId);
+    }
   }
   /**
    * Method closes (dismisses) current modal windows
@@ -73,9 +65,24 @@ export class BasketModalComponent implements OnInit {
      * @private
      * @memberof WarehouseInfoComponent
      */
-  private getCatalogs() {
+  private getCatalogs(id: string) {
     // Calling method from service that will get uss our catalogs
-    this.catalogService.getCatalogsByBasketId(localStorage.getItem('UserBasketId'))
+    this.catalogService.getCatalogsByBasketId(id)
+      .pipe(
+        // When method will be executed
+        finalize(() => {
+          // Loading indicator will be disabled
+          this.isLoadingCatalogTable = false;
+        }))
+      // Subscribing to the method, to get our objects
+      .subscribe(catalogs => {
+        // When objects will come, we load them in to the our smart table
+        this.source.load(catalogs);
+      });
+  }
+  private getCatalogsByUserId(id: string) {
+    // Calling method from service that will get uss our catalogs
+    this.catalogService.getCatalogByUserId(id)
       .pipe(
         // When method will be executed
         finalize(() => {

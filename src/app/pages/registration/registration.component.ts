@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbToastrService } from '@nebular/theme';
 import { AccountService } from '../../services/account.service';
 import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-registration',
@@ -27,18 +28,39 @@ export class RegistrationComponent implements OnInit {
    * @memberof RegistrationComponent
    */
   loadingIndicator: boolean = false;
+  rolesForDropDown: string[] = [];
+  role: string;
+  regularUserRole: string = 'Level four';
+  userRole: string;
+
+
 
 
   constructor(
     private formBuilder: FormBuilder,
     private toastrService: NbToastrService,
-    private accountService: AccountService
-  ) { }
+    private accountService: AccountService,
+    private router: Router
+  ) { this.userRole = localStorage.getItem('Role'); }
 
   ngOnInit() {
-    this.createForm();
+    if (this.userRole === this.regularUserRole) {
+      this.router.navigateByUrl('pages/400');
+    } else {
+      this.createForm();
+      this.getRoleList();
+    }
   }
+  getRoleList() {
+    this.accountService.getRolesList().subscribe(roles => {
+      this.rolesForDropDown = roles;
+    });
+  }
+  onDropDownSelect(role: string) {
 
+    this.registrationForm.patchValue({ roleName: role });
+    this.role = role;
+  }
   addNewUser() {
     // Enable loading indicator
     this.loadingIndicator = true;
@@ -50,6 +72,7 @@ export class RegistrationComponent implements OnInit {
         })
       )
       .subscribe(newUser => {
+        this.registrationForm.reset();
         this.toastrService.success(`User was added`);
         this.successMessage = "User was added";
       },
@@ -67,6 +90,8 @@ export class RegistrationComponent implements OnInit {
       email: [undefined, Validators.required, Validators.email],
       password: [undefined, Validators.required, Validators.minLength(6)],
       passwordConfirm: [undefined, Validators.required],
+      roleName: [undefined, Validators.required],
+
     });
   }
 }

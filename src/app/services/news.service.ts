@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { News } from '../models/news.mode';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
 
 
@@ -45,7 +45,8 @@ export class NewsService {
   * @memberof NewsService
   */
   addOrUpdate(news: News): Observable<News> {
-    return this.http.post<News>(this.getEndpointUrl(), news);
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<News>(this.getEndpointUrl(), news, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
   /**
@@ -56,7 +57,9 @@ export class NewsService {
    * @memberof NewsService
    */
   toggleNewsFlag(newsId: string): Observable<News> {
-    return this.http.get<News>(`${this.getEndpointUrl()}/fix-news/${newsId}`)
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.get<News>(`${this.getEndpointUrl()}/fix-news/${newsId}`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
   }
   /**
   * Method removes news from system
@@ -66,7 +69,9 @@ export class NewsService {
   * @memberof NewsService
   */
   removeNews(newsId: string): Observable<void> {
-    return this.http.delete<void>(`${this.getEndpointUrl()}/${newsId}`);
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.delete<void>(`${this.getEndpointUrl()}/${newsId}`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
 }

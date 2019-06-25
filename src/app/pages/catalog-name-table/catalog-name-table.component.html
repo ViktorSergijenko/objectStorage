@@ -1,0 +1,11 @@
+<nb-card *ngIf="userRole !== regularUserRole">
+  <nb-card-header>
+    Catalog names
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (create)="openAddCatalogNameModal()"
+      (delete)="deleteCatalogName($event)" (edit)="openEditCatalogNameModal($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

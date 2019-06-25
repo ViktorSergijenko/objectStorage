@@ -1,0 +1,13 @@
+.row-with-btns {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-add {
+    color: dodgerblue;
+    &:hover {
+      text-shadow: 3px 3px 16px  dodgerblue;
+      cursor: pointer;
+    }
+  }

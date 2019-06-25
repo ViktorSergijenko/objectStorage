@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Warehouse } from '../models/warehouse.model';
 import { FilterSorting } from '../models/filter-sort.model';
 import { News } from '../models/news.mode';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 
 
 
@@ -56,7 +56,8 @@ export class WarehousesService {
    * @memberof WarehousesService
    */
   addOrUpdate(warehouse: Warehouse): Observable<Warehouse> {
-    return this.http.post<Warehouse>(this.getEndpointUrl(), warehouse);
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<Warehouse>(this.getEndpointUrl(), warehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
   /**
    * Method that send request to get filtered  warehouse list

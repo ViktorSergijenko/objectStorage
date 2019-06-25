@@ -20,6 +20,7 @@ import { AddNewCatalogModalComponent } from './add-new-catalog-modal/add-new-cat
 import { EditCatalogModalComponent } from './edit-catalog-modal/edit-catalog-modal.component';
 import { Subscription } from 'rxjs';
 import { BasketService } from '../../../../services/basket.service';
+import { CatalogName } from '../../../../models/catalog-name.model';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -27,6 +28,7 @@ import { BasketService } from '../../../../services/basket.service';
   styleUrls: ['./warehouse-info.component.scss']
 })
 export class WarehouseInfoComponent implements OnInit {
+  addingObjectToCatalogFromBasket: boolean = true;
   /**
    * Subscription that monitors for catalog updates. Used to track changes for catalog values
    *
@@ -73,6 +75,9 @@ export class WarehouseInfoComponent implements OnInit {
   isLoadingCatalogTable: boolean = false;
   toggelingNews: boolean = false;
   testObj: Catalog[] = [];
+  userRole: string;
+  regularUserRole: string = 'Level four';
+  catalogNameList: CatalogName[] = [];
   //#region Table settings
   settings = {
     mode: 'external',
@@ -134,6 +139,49 @@ export class WarehouseInfoComponent implements OnInit {
     },
     noDataMessage: 'Catalogs was not found'
   };
+
+  settingsForRegularuser = {
+    mode: 'external',
+    actions: false,
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    columns: {
+      name: {
+        title: 'Catalog name',
+        type: 'string',
+      },
+      currentAmount: {
+        title: 'Current amount',
+        type: 'number',
+      },
+      shortContent: {
+        title: 'Short Content',
+        type: 'custom',
+        renderComponent: IncrementDecrementCatalogModalComponent
+      },
+      maximumAmount: {
+        title: 'Maximum amount',
+        type: 'number',
+      },
+      actions:
+      {
+        filter: false,
+        addable: false,
+        editable: false,
+        title: 'Catalog Details',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
+        },
+        id: {
+          title: 'ID',
+          type: 'string',
+        },
+      },
+    },
+    noDataMessage: 'Catalogs was not found'
+  };
   //#endregion
 
   source: LocalDataSource = new LocalDataSource();
@@ -146,7 +194,10 @@ export class WarehouseInfoComponent implements OnInit {
     private toastrService: NbToastrService,
     private catalogService: CatalogService,
     private basketService: BasketService
-  ) { }
+  ) {
+    this.userRole = localStorage.getItem('Role');
+    console.log(this.userRole);
+  }
 
   ngOnInit() {
     this.catalogUpdate = this.basketService.getUpdatedCatalog()
@@ -160,10 +211,19 @@ export class WarehouseInfoComponent implements OnInit {
     // Getting warehouse news list
     this.getWarehouseNewsList();
     this.getCatalogs();
+    this.getCatalogNameList();
   }
   ngOnDestroy() {
     // Unsubscribe from catalog update Subscription
     this.catalogUpdate.unsubscribe();
+  }
+
+  getCatalogNameList() {
+    this.catalogService.getCatalogNameList()
+      .subscribe(catalogNameList => {
+        console.log(catalogNameList);
+        this.catalogNameList = catalogNameList;
+      });
   }
 
 
@@ -243,6 +303,11 @@ export class WarehouseInfoComponent implements OnInit {
     })
   }
 
+  changeAddingToCatalogProductsMethod() {
+    this.addingObjectToCatalogFromBasket = !this.addingObjectToCatalogFromBasket
+    this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);
+  }
+
   /**
    * Method opens modal window with form to add new catalog in warehouse
    *
@@ -254,6 +319,7 @@ export class WarehouseInfoComponent implements OnInit {
       container: 'nb-layout',
     });
     activeModal.componentInstance.warehouseId = this.specificWarehouseId;
+    activeModal.componentInstance.catalogNameList = this.catalogNameList
     // When modal window was closed it can pass data back to uss...
     activeModal.result.then(newCatalog => {
       // Push new warehouse to the warehouse list that is used to display them 
@@ -364,7 +430,9 @@ export class WarehouseInfoComponent implements OnInit {
         this.toastrService.danger(`Status was not changed`);
       });
   }
-
+  onUserRowSelect(event): void {
+    this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);
+  }
   /**
    * Getting id of an warehouse from routing
    *

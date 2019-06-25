@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment.prod';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { Catalog } from '../models/catalog.model';
+import { IAddProductsToBasket } from '../models/basket.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +32,30 @@ export class ProductService {
    */
   getProductsByCatalogId(catalogId: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.getEndpointUrl()}/catalog/${catalogId}`);
+  }
+
+  /**
+   * Method updates user basket
+   *
+   * @param {Catalog} catalog Catalog object that we want to edit or add
+   * @returns {Observable<Catalog>}
+   * @memberof CatalogService
+   */
+  addProductsToCatalogManually(items: IAddProductsToBasket): Observable<Catalog> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<Catalog>(environment.apiUrl + "catalog/addProductsManually", items, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
+  }
+
+  /**
+ * Method updates user basket
+ *
+ * @param {Catalog} catalog Catalog object that we want to edit or add
+ * @returns {Observable<Catalog>}
+ * @memberof CatalogService
+ */
+  removeProductsFromCatalogManually(items: IAddProductsToBasket): Observable<Catalog> {
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.post<Catalog>(environment.apiUrl + "catalog/removeProductsManually", items, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 }
