@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WarehousesService } from '../../../../services/warehouses.service';
 import { Warehouse } from '../../../../models/warehouse.model';
-import { News } from '../../../../models/news.mode';
+import { News, NewsResolveDTO } from '../../../../models/news.mode';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewsModalComponent } from './add-news-modal/add-news-modal.component';
 import { NewsService } from '../../../../services/news.service';
@@ -21,6 +21,7 @@ import { EditCatalogModalComponent } from './edit-catalog-modal/edit-catalog-mod
 import { Subscription } from 'rxjs';
 import { BasketService } from '../../../../services/basket.service';
 import { CatalogName } from '../../../../models/catalog-name.model';
+import { ResolveProblemModalComponent } from './resolve-problem-modal/resolve-problem-modal.component';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -56,6 +57,7 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   warehouse: Warehouse;
+  hasAbilityToLoad: string;
   /**
    * Varialbe that stores all catalogs that are located in warehouse
    *
@@ -70,6 +72,7 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   warehouseNewsList: News[] = [];
+  trueString: string = 'true';
   isLoading: boolean = true;
   isLoadingNews: boolean = true;
   isLoadingCatalogTable: boolean = false;
@@ -80,6 +83,8 @@ export class WarehouseInfoComponent implements OnInit {
   catalogNameList: CatalogName[] = [];
   //#region Table settings
   settings = {
+    actions: { columnTitle: 'Darbības' },
+
     mode: 'external',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -105,42 +110,43 @@ export class WarehouseInfoComponent implements OnInit {
     },
     columns: {
       name: {
-        title: 'Catalog name',
+        title: 'Catalog nosaukums',
         type: 'string',
       },
-      currentAmount: {
-        title: 'Current amount',
-        type: 'number',
-      },
+      // currentAmount: {
+      //   title: 'Daudzums',
+      //   type: 'number',
+      // },
       shortContent: {
-        title: 'Short Content',
+        title: 'Izmainit daudzumu',
         type: 'custom',
         renderComponent: IncrementDecrementCatalogModalComponent
       },
-      maximumAmount: {
-        title: 'Maximum amount',
-        type: 'number',
-      },
-      actions:
-      {
-        filter: false,
-        addable: false,
-        editable: false,
-        title: 'Catalog Details',
-        type: 'html',
-        valuePrepareFunction: (cell, row) => {
-          return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
-        },
-        id: {
-          title: 'ID',
-          type: 'string',
-        },
-      },
+      // minimumAmount: {
+      //   title: 'Minimalais daudzums',
+      //   type: 'number',
+      // },
+      // actions:
+      // {
+      //   filter: false,
+      //   addable: false,
+      //   editable: false,
+      //   title: 'Catalog Details',
+      //   type: 'html',
+      //   valuePrepareFunction: (cell, row) => {
+      //     return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
+      //   },
+      //   id: {
+      //     title: 'ID',
+      //     type: 'string',
+      //   },
+      // },
     },
-    noDataMessage: 'Catalogs was not found'
+    noDataMessage: 'Informācija netika atrasta.'
   };
 
   settingsForRegularuser = {
+
     mode: 'external',
     actions: false,
     filter: {
@@ -148,39 +154,39 @@ export class WarehouseInfoComponent implements OnInit {
     },
     columns: {
       name: {
-        title: 'Catalog name',
+        title: 'Catalog nosaukums',
         type: 'string',
       },
-      currentAmount: {
-        title: 'Current amount',
-        type: 'number',
-      },
+      // currentAmount: {
+      //   title: 'Daudzums',
+      //   type: 'number',
+      // },
       shortContent: {
-        title: 'Short Content',
+        title: 'Izmainit daudzumu',
         type: 'custom',
         renderComponent: IncrementDecrementCatalogModalComponent
       },
-      maximumAmount: {
-        title: 'Maximum amount',
-        type: 'number',
-      },
-      actions:
-      {
-        filter: false,
-        addable: false,
-        editable: false,
-        title: 'Catalog Details',
-        type: 'html',
-        valuePrepareFunction: (cell, row) => {
-          return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
-        },
-        id: {
-          title: 'ID',
-          type: 'string',
-        },
-      },
+      // minimumAmount: {
+      //   title: 'Minimalais daudzums',
+      //   type: 'number',
+      // },
+      // actions:
+      // {
+      //   filter: false,
+      //   addable: false,
+      //   editable: false,
+      //   title: 'Catalog Details',
+      //   type: 'html',
+      //   valuePrepareFunction: (cell, row) => {
+      //     return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
+      //   },
+      //   id: {
+      //     title: 'ID',
+      //     type: 'string',
+      //   },
+      // },
     },
-    noDataMessage: 'Catalogs was not found'
+    noDataMessage: 'Informācija netika atrasta.'
   };
   //#endregion
 
@@ -188,6 +194,8 @@ export class WarehouseInfoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+
     private warehouseService: WarehousesService,
     private modalService: NgbModal,
     private newsService: NewsService,
@@ -196,10 +204,14 @@ export class WarehouseInfoComponent implements OnInit {
     private basketService: BasketService
   ) {
     this.userRole = localStorage.getItem('Role');
-    console.log(this.userRole);
+    this.hasAbilityToLoad = localStorage.getItem('AbilityToLoad');
   }
 
   ngOnInit() {
+
+    if (this.hasAbilityToLoad === this.trueString) {
+      console.log(this.hasAbilityToLoad);
+    }
     this.catalogUpdate = this.basketService.getUpdatedCatalog()
       .subscribe(update => {
         this.source.update(update.old, update.new)
@@ -302,7 +314,10 @@ export class WarehouseInfoComponent implements OnInit {
       this.warehouseNewsList.push(newNews);
     })
   }
-
+  goToAdditionalInformationPage(idForRoute: string) {
+    // Navigating user to details page
+    this.router.navigate([`/pages/warehouse/details/news/${idForRoute}`]);
+  }
   changeAddingToCatalogProductsMethod() {
     this.addingObjectToCatalogFromBasket = !this.addingObjectToCatalogFromBasket
     this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);
@@ -362,9 +377,9 @@ export class WarehouseInfoComponent implements OnInit {
           )
           .subscribe(() => {
             this.warehouseNewsList = this.warehouseNewsList.filter(news => news !== selectedNews)
-            this.toastrService.success(`News was deleted`);
+            this.toastrService.success(`Problema bija nodzēsta`);
           }, err => {
-            this.toastrService.danger(`News was not deleted`);
+            this.toastrService.danger(`Problema nebija nodzēsta`);
           })
       } else {
         this.isLoadingNews = false;
@@ -373,27 +388,32 @@ export class WarehouseInfoComponent implements OnInit {
     })
   }
   deleteCatalog(event) {
-    this.isLoadingCatalogTable = true;
-    const activeModal = this.modalService.open(DeleteModalComponent, {
-      container: 'nb-layout',
-    });
-    activeModal.componentInstance.objectName = `catalog: ${event.data.name}`;
-    activeModal.result.then(res => {
-      if (res) {
-        this.catalogService.removeCatalog(event.data.id)
-          .pipe(
-            finalize(() => {
-              this.isLoadingCatalogTable = false;
+    if (event.data.currentAmount > 0) {
+      this.toastrService.danger(`Cataloga vel ir produkti`);
+
+    } else {
+      this.isLoadingCatalogTable = true;
+      const activeModal = this.modalService.open(DeleteModalComponent, {
+        container: 'nb-layout',
+      });
+      activeModal.componentInstance.objectName = `catalog: ${event.data.name}`;
+      activeModal.result.then(res => {
+        if (res) {
+          this.catalogService.removeCatalog(event.data.id)
+            .pipe(
+              finalize(() => {
+                this.isLoadingCatalogTable = false;
+              })
+            )
+            .subscribe(() => {
+              this.source.remove(event.data);
+              this.toastrService.success(`Catalog ${event.data.name} bija nodzēsts`);
+            }, err => {
+              this.toastrService.danger(`Catalog ${event.data.name} nebija nodzēsts`);
             })
-          )
-          .subscribe(() => {
-            this.source.remove(event.data);
-            this.toastrService.success(`Catalog ${event.data.name} was deleted`);
-          }, err => {
-            this.toastrService.danger(`Catalog ${event.data.name} was not deleted`);
-          })
-      }
-    });
+        }
+      });
+    }
   }
 
   /**
@@ -417,18 +437,21 @@ export class WarehouseInfoComponent implements OnInit {
    * @param {News} news
    * @memberof WarehouseInfoComponent
    */
+  openCommentModal(news: News) {
+    // Opening modal window where we can edit Warehouse
+    const activeModal = this.modalService.open(ResolveProblemModalComponent, {
+      size: 'lg',
+      container: 'nb-layout',
+    });
+    // Passing information to modal window
+    activeModal.componentInstance.news = news;
+  }
   toggleNewsFlag(news: News) {
-    this.toggelingNews = true;
-    this.newsService.toggleNewsFlag(news.id)
-      .pipe(finalize(() => {
-        this.toggelingNews = false;
-      }))
-      .subscribe(toggledNews => {
-        news = Object.assign(news, toggledNews);
-        this.toastrService.success(`Status was changed`);
-      }, err => {
-        this.toastrService.danger(`Status was not changed`);
-      });
+    // Opening modal window where we can edit Warehouse
+    this.newsService.toggleNewsFlag(news).subscribe(editedCatalog => {
+      var index = this.warehouseNewsList.findIndex(x => x.id == editedCatalog.id);
+      this.warehouseNewsList[index] = editedCatalog;
+    });
   }
   onUserRowSelect(event): void {
     this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);

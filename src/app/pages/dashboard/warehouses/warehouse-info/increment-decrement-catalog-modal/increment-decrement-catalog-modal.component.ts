@@ -5,6 +5,7 @@ import { Catalog } from '../../../../../models/catalog.model';
 import { BasketService } from '../../../../../services/basket.service';
 import { CatalogService } from '../../../../../services/catalog.service';
 import { Subscription } from 'rxjs';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-increment-decrement-catalog-modal',
@@ -18,6 +19,8 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
     private modalService: NgbModal,
     private basketService: BasketService,
     private catalogService: CatalogService,
+    private toastrService: NbToastrService
+
 
   ) { }
   /**
@@ -42,6 +45,7 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
     activeModal.componentInstance.basketId = localStorage.getItem('UserBasketId');
     activeModal.result.then(editedCatalog => {
       this.basketService.setUpdatedCatalog({ old: this.rowData, new: editedCatalog });
+
     });
   }
   openRemoveCatalogModal() {
@@ -52,6 +56,7 @@ export class IncrementDecrementCatalogModalComponent implements OnInit {
     activeModal.componentInstance.addOrRemove = false;
     activeModal.componentInstance.basketId = localStorage.getItem('UserBasketId');
     activeModal.result.then(editedCatalog => {
+
       this.basketService.setUpdatedCatalog({ old: this.rowData, new: editedCatalog });
     });
   }

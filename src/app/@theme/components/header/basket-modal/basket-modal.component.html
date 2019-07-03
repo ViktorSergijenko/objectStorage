@@ -2,8 +2,12 @@
   <div class="col-sm-12">
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
-        <p>Catalog table</p>
+        <p>Basket</p>
+        <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
+        <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
+          (click)="catalogTypeShowToggle()"></i>
         <i class="fas fa-times-circle close-icon fa-2x" (click)="close()"></i>
+
       </nb-card-header>
       <nb-card-body>
         <ng2-smart-table [settings]="settings" [source]="source">

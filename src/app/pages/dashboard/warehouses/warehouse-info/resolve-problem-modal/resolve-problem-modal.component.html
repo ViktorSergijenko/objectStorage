@@ -1,0 +1,26 @@
+<nb-card [nbSpinner]="loadingIndicator" nbSpinnerStatus="danger">
+  <nb-card-header class="header text-center">
+    <h2>Problema atrisinajuma forma</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="resolveProblemForm">
+      <div class="form-group">
+        <label for="newPassword">Komentārs</label>
+        <input type="text" class="form-control" id="newPassword" placeholder="Komentārs" formControlName="comment">
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <button nbButton type="submit" status="success" class="btn btn-danger "
+            (click)="addNewsCommentFlag()">Apstiprināt</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center close-button">
+          <button nbButton outline status="danger" (click)="close()">
+            Aizvērt
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>

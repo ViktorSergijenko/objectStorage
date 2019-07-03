@@ -24,19 +24,19 @@ export class LogTableComponent implements OnInit {
     actions: false,
     columns: {
       userName: {
-        title: 'User',
+        title: 'Darbinieks',
         type: 'string',
       },
       action: {
-        title: 'Action',
+        title: 'Ko izdarīja',
         type: 'string',
       },
       date: {
-        title: 'Date',
+        title: 'Datums',
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy hh:mm:ss');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm:ss');
           return formatted;
         }
       },

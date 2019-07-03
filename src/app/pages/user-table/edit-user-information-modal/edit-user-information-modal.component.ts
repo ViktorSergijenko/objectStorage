@@ -35,6 +35,7 @@ export class EditUserInformationModalComponent implements OnInit {
    */
   loadingIndicator: boolean = false;
   rolesForDropDown: string[] = [];
+  hasAbilityToLoad: boolean = false;
   role: string;
   constructor(
     private formBuilder: FormBuilder,
@@ -44,9 +45,16 @@ export class EditUserInformationModalComponent implements OnInit {
   ) { this.createForm(); }
 
   ngOnInit() {
+    this.hasAbilityToLoad = this.userThatInformationWeWantToChange.hasAbilityToLoad;
+    console.log(this.userThatInformationWeWantToChange.hasAbilityToLoad);
     this.patchAllValuesToForm();
     this.getRoleList();
-    console.log(this.userThatInformationWeWantToChange);
+  }
+  toggleHasAbilityToLoad() {
+    this.hasAbilityToLoad = !this.hasAbilityToLoad;
+    this.editUserInformationForm.patchValue({
+      hasAbilityToLoad: this.hasAbilityToLoad
+    });
   }
   /**
    * Method closes (dismisses) current modal windows
@@ -107,6 +115,7 @@ export class EditUserInformationModalComponent implements OnInit {
       email: [undefined, Validators.required],
       fullName: [undefined, Validators.required],
       roleName: [undefined, Validators.required],
+      hasAbilityToLoad: [undefined, Validators.required]
     });
   }
   private patchAllValuesToForm() {
@@ -114,7 +123,9 @@ export class EditUserInformationModalComponent implements OnInit {
       id: this.userThatInformationWeWantToChange.id,
       email: this.userThatInformationWeWantToChange.email,
       fullName: this.userThatInformationWeWantToChange.fullName,
-      roleName: this.userThatInformationWeWantToChange.roleName
+      roleName: this.userThatInformationWeWantToChange.roleName,
+      hasAbilityToLoad: this.userThatInformationWeWantToChange.hasAbilityToLoad
+
     });
     this.role = this.userThatInformationWeWantToChange.roleName;
   }

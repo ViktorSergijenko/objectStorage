@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { NbToastrService } from '@nebular/theme';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { LocalDataSource } from 'ng2-smart-table';
+import { WarehouseListActionButtonsComponent } from './warehouse-list-action-buttons/warehouse-list-action-buttons.component';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -35,6 +36,8 @@ export class WarehousesListComponent implements OnInit {
    * @memberof WarehousesListComponent
    */
   searchValueChanged: Subject<string> = new Subject();
+  source: LocalDataSource = new LocalDataSource();
+
   /**
    * Search value in search input, used to filter images that are displayed
    *
@@ -47,7 +50,141 @@ export class WarehousesListComponent implements OnInit {
   filterSortingOption: FilterSorting = new FilterSorting;
   userRole: string;
   regularUserRole: string = 'Level four';
-
+  settings = {
+    actions: { columnTitle: 'Darbības' },
+    mode: 'external',
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      create: true,
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: false,
+    },
+    pager: {
+      perPage: 10
+    },
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    columns: {
+      actions:
+      {
+        filter: false,
+        addable: false,
+        editable: false,
+        title: 'Detalizēta informācija',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          return `<a title ="Detalizēta informācija par noliktavu" href="#/pages/warehouse/details/${row.id}"><i class=""material-icons">Detalizēta informācija</i></a>`;
+        },
+        id: {
+          title: 'ID',
+          type: 'string',
+        },
+      },
+      name: {
+        title: 'Noliktava nosaukums',
+        type: 'string',
+      },
+      address: {
+        title: 'Adrese',
+        type: 'string',
+      },
+      // type: {
+      //   title: 'Noliktava tips',
+      //   type: 'boolean',
+      //   valuePrepareFunction: (value) => { return value === 0 ? 'Galvenā noliktava' : 'Parastā noliktava' }
+      // },
+      // location: {
+      //   title: 'Lokacija',
+      //   type: 'string',
+      // },
+      action: {
+        filter: false,
+        title: 'Problemas',
+        type: 'custom',
+        renderComponent: WarehouseListActionButtonsComponent
+      },
+    },
+    noDataMessage: 'Informācija netika atrasta.'
+  };
+  settingsForEmployee = {
+    // actions: { columnTitle: 'Darbības' },
+    mode: 'external',
+    // add: {
+    //   addButtonContent: '<i class="nb-plus"></i>',
+    //   createButtonContent: '<i class="nb-checkmark"></i>',
+    //   cancelButtonContent: '<i class="nb-close"></i>',
+    //   create: true,
+    // },
+    // edit: {
+    //   editButtonContent: '<i class="nb-edit"></i>',
+    //   saveButtonContent: '<i class="nb-checkmark"></i>',
+    //   cancelButtonContent: '<i class="nb-close"></i>',
+    //   confirmSave: true,
+    // },
+    // delete: {
+    //   deleteButtonContent: '<i class="nb-trash"></i>',
+    //   confirmDelete: false,
+    // },
+    actions: false,
+    pager: {
+      perPage: 10
+    },
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    columns: {
+      actions:
+      {
+        filter: false,
+        addable: false,
+        editable: false,
+        title: 'Detalizēta informācija',
+        type: 'html',
+        valuePrepareFunction: (cell, row) => {
+          return `<a title ="Detalizēta informācija par noliktavu" href="#/pages/warehouse/details/${row.id}"><i class=""material-icons">Detalizēta informācija</i></a>`;
+        },
+        id: {
+          title: 'ID',
+          type: 'string',
+        },
+      },
+      name: {
+        title: 'Noliktava nosaukums',
+        type: 'string',
+      },
+      address: {
+        title: 'Adrese',
+        type: 'string',
+      },
+      // type: {
+      //   title: 'Noliktava tips',
+      //   type: 'boolean',
+      //   valuePrepareFunction: (value) => { return value === 0 ? 'Galvenā noliktava' : 'Parastā noliktava' }
+      // },
+      // location: {
+      //   title: 'Lokacija',
+      //   type: 'string',
+      // },
+      action: {
+        filter: false,
+        title: 'Problemas',
+        type: 'custom',
+        renderComponent: WarehouseListActionButtonsComponent
+      },
+    },
+    noDataMessage: 'Informācija netika atrasta.'
+  };
 
   constructor(
     private warehouseService: WarehousesService,
@@ -56,10 +193,10 @@ export class WarehousesListComponent implements OnInit {
     private toastrService: NbToastrService,
   ) {
     this.userRole = localStorage.getItem('Role');
+    console.log(localStorage.getItem('Role'));
   }
 
   ngOnInit() {
-    console.log(this.userRole)
     this.getWarehouseList();
     this.searchValueChanged.pipe(
       // Wait 400ms after the last event before emitting last event
@@ -80,6 +217,37 @@ export class WarehousesListComponent implements OnInit {
     this.searchValueChanged.unsubscribe();
   }
 
+
+  /**
+   * Method removes selected warehouse
+   *
+   * @param {Warehouse} selectedWarehouse Warehouse that has been selected to be deleted
+   * @memberof DashboardComponent
+   */
+  removeWarehouse(selectedWarehouse: Warehouse) {
+    const activeModal = this.modalService.open(DeleteModalComponent, {
+      container: 'nb-layout',
+    });
+    activeModal.componentInstance.objectName = 'Warehouse';
+    activeModal.result.then(res => {
+      console.log(res);
+      if (res) {
+        this.warehouseService.removeWarehouse(selectedWarehouse.id).subscribe(() => {
+          // When method will be executed without errors, we will delete selected warehouse from warehouse list that is used to display warehouses...
+          // by using method filter, we leave only those objects in list, that are not equal to selected warehouse
+          this.warehouseList = this.warehouseList.filter(warehouses => warehouses !== selectedWarehouse);
+          this.source.remove(selectedWarehouse);
+          this.toastrService.success(`Warehouse was deleted`);
+        }, err => {
+          this.toastrService.danger(`Warehouse was not deleted`);
+        });
+      }
+      else {
+        return 0;
+      }
+    })
+
+  }
   /**
    * Method navigates user to warehouse details page
    *
@@ -103,37 +271,6 @@ export class WarehousesListComponent implements OnInit {
   }
 
   /**
-   * Method removes selected warehouse
-   *
-   * @param {Warehouse} selectedWarehouse Warehouse that has been selected to be deleted
-   * @memberof DashboardComponent
-   */
-  removeWarehouse(selectedWarehouse: Warehouse) {
-    const activeModal = this.modalService.open(DeleteModalComponent, {
-      container: 'nb-layout',
-    });
-    activeModal.componentInstance.objectName = 'Warehouse';
-    activeModal.result.then(res => {
-      console.log(res);
-      if (res) {
-        this.warehouseService.removeWarehouse(selectedWarehouse.id).subscribe(() => {
-          // When method will be executed without errors, we will delete selected warehouse from warehouse list that is used to display warehouses...
-          // by using method filter, we leave only those objects in list, that are not equal to selected warehouse
-          this.warehouseList = this.warehouseList.filter(warehouses => warehouses !== selectedWarehouse);
-          this.toastrService.success(`Warehouse was deleted`);
-        }, err => {
-          this.toastrService.danger(`Warehouse was not deleted`);
-        });
-      }
-      else {
-        return 0;
-      }
-    })
-
-  }
-
-
-  /**
    * Method opens modal window with form to add a new Warehouse
    *
    * @memberof WarehousesListComponent
@@ -147,7 +284,8 @@ export class WarehousesListComponent implements OnInit {
     // When modal window was closed it can pass data back to uss...
     activeModal.result.then(newWarehouse => {
       // Push new warehouse to the warehouse list that is used to display them 
-      this.warehouseList.push(newWarehouse);
+      // this.warehouseList.push(newWarehouse);
+      this.source.prepend(newWarehouse);
     });
   }
 
@@ -171,6 +309,8 @@ export class WarehousesListComponent implements OnInit {
       // Getting data that has came back from modal window
       // Using 'Object.assing' to instantly update warehouse  object values in list where it is displayed
       warehouseToEdit = Object.assign(warehouseToEdit, newWarehouse);
+      this.source.update(warehouseToEdit, newWarehouse);
+
     })
   }
 
@@ -194,6 +334,7 @@ export class WarehousesListComponent implements OnInit {
       .subscribe((warehouses: Warehouse[]) => {
         // Initializing our local variable with data that has come
         this.warehouseList = warehouses;
+        this.source.load(warehouses);
       });
   }
   /**

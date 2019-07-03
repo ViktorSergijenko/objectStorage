@@ -27,19 +27,19 @@ export class UserTableComponent implements OnInit {
     actions: false,
     columns: {
       fullName: {
-        title: 'Full name',
+        title: 'Darbnieks',
         type: 'string',
       },
       email: {
-        title: 'Email',
+        title: 'E-pasta',
         type: 'string',
       },
       roleName: {
-        title: 'Role',
+        title: 'Loma',
         type: 'string',
       },
       action: {
-        title: 'Actions',
+        title: 'Darbības',
         type: 'custom',
         renderComponent: TableActionButtonsComponent
       },

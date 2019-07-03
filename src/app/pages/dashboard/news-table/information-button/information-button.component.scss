@@ -1,0 +1,11 @@
+.icon-detail {
+    &:hover {
+      color: #ffa100;
+      text-shadow: 3px 3px 16px  #ffa100;
+      cursor: pointer;
+    }
+  }
+  .list-buttons{
+    display: flex;
+    justify-content: space-between;
+  }

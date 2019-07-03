@@ -1,24 +1,24 @@
 <nb-card [nbSpinner]="loadingIndicator" nbSpinnerStatus="danger">
   <nb-card-header class="header text-center">
-    <h2>Edit warehouse form</h2>
+    <h2>Rediģēt noliktavas</h2>
   </nb-card-header>
   <nb-card-body>
     <form [formGroup]="editWarehouseForm">
       <div class="form-group">
-        <label for="exampleInputEmail1">Address</label>
-        <input type="text" class="form-control" id="Address" placeholder="Address" formControlName="address">
+        <label for="exampleInputEmail1">Adrese</label>
+        <input type="text" class="form-control" id="Address" placeholder="Adrese" formControlName="address">
       </div>
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name">
+        <label for="name">Nosaukums</label>
+        <input type="text" class="form-control" id="name" placeholder="Nosaukums" formControlName="name">
       </div>
       <div class="form-group">
-        <label for="Location">Location</label>
-        <input type="text" class="form-control" id="Location" placeholder="Location" formControlName="location">
+        <label for="Location">Lokacija</label>
+        <input type="text" class="form-control" id="Location" placeholder="Lokacija" formControlName="location">
       </div>
       <div class="form-group">
-        <label for="image">Image</label>
-        <input type="file" accept="image/*" class="form-control" id="image" placeholder="Image"
+        <label for="image">Attēls</label>
+        <input type="file" accept="image/*" class="form-control" id="image" placeholder="Attēls"
           (change)="onFileSelected($event)">
       </div>
       <div class="row" *ngIf="selectedFile">
@@ -31,7 +31,7 @@
           <div class="input-group-prepend" ngbDropdown>
             <button class="btn btn btn-outline-primary dropdown-toggle dropdown-width" type="button"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu1"
-              ngbDropdownToggle>Choose type</button>
+              ngbDropdownToggle>Izveleties tipu</button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
               <button class="dropdown-item" *ngFor="let role of names"
                 (click)="onDropDownSelect(role)">{{role}}</button>
@@ -44,13 +44,13 @@
       <div class="row">
         <div class="col-sm-12 text-center">
           <button nbButton type="submit" status="success" class="btn btn-danger "
-            (click)="editWarehouse()">Submit</button>
+            (click)="editWarehouse()">Apstiprināt</button>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 text-center close-button">
           <button nbButton outline status="danger" (click)="close()">
-            CLOSE
+            Aizvērt
           </button>
         </div>
       </div>

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Warehouse } from '../models/warehouse.model';
 import { FilterSorting } from '../models/filter-sort.model';
 import { News } from '../models/news.mode';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+import { ObjectChange } from '../models/base.model';
 
 
 
@@ -17,6 +18,13 @@ import { environment } from '../../environments/environment.prod';
 export class WarehousesService {
 
   constructor(private http: HttpClient) { }
+  /**
+  * Subject to track changes of catalog status update
+  *
+  * @private
+  * @memberof BasketService
+  */
+  private warehouseSubject = new Subject<ObjectChange<Warehouse>>();
 
   /**
    * Method returns endpoint that is related only to this module
@@ -77,7 +85,9 @@ export class WarehousesService {
    * @memberof HousesService
    */
   removeWarehouse(warehouseId: string): Observable<void> {
-    return this.http.delete<void>(`${this.getEndpointUrl()}/${warehouseId}`);
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.delete<void>(`${this.getEndpointUrl()}/${warehouseId}`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
   /**
@@ -89,5 +99,19 @@ export class WarehousesService {
    */
   getWarehouseNews(warehouseId: string): Observable<News[]> {
     return this.http.post<News[]>(`${this.getEndpointUrl()}/warehouse-news`, warehouseId);
+  }
+
+  setUpdatedWarehouse(updated: ObjectChange<Warehouse>) {
+    this.warehouseSubject.next(updated);
+  }
+
+  /**
+   * Method that gets changes from subject about updated feedback
+   *
+   * @returns Returns observable with new feedback 
+   * @memberof UserFeedBackService
+   */
+  getUpdatedWarehouse() {
+    return this.warehouseSubject.asObservable();
   }
 }

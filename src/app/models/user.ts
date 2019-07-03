@@ -6,6 +6,8 @@ export class User extends BaseEntity {
     password: string;
 
     roleName: string;
+    hasAbilityToLoad: boolean;
+
 }
 
 export class RegistrationVM {
@@ -24,6 +26,8 @@ export class ProfileInformationVM {
     email: string;
     basketId: string;
     roleName: string;
+    hasAbilityToLoad: boolean;
+
 }
 
 export class ChangePasswordViewModel {
@@ -37,6 +41,8 @@ export class ChangeUserInfoViewModel {
     email: string;
     fullName: string;
     roleName: string;
+    hasAbilityToLoad: boolean;
+
 
 }
 
@@ -45,4 +51,5 @@ export class UserVM {
     fullName: string;
     email: string;
     roleName: string;
+    hasAbilityToLoad: boolean;
 }

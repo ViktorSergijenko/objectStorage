@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { Catalog } from '../models/catalog.model';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { CatalogName } from '../models/catalog-name.model';
 import { FilterSorting } from '../models/filter-sort.model';
 

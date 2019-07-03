@@ -60,6 +60,12 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
   warehouseId: string;
   catalogNameList: CatalogName[] = [];
   name: string = '';
+  types: string[] = [
+    'Kafija',
+    'Sneks',
+  ];
+  typeName: string;
+  typeCatalog: boolean;
 
   @ViewChild(NgbDropdown)
   private dropdown: NgbDropdown;
@@ -90,6 +96,15 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Unsubscribe from search value changes to avoid memory leaks
     this.searchValueChanged.unsubscribe();
+  }
+  onDropDownSelectTypes(type: string) {
+    if (type === 'Kafija') {
+      this.addCatalogForm.patchValue({ type: true });
+      this.typeName = type;
+    } else {
+      this.addCatalogForm.patchValue({ type: false });
+      this.typeName = type;
+    }
   }
   openDropdown() {
     this.dropdown.open();
@@ -134,13 +149,13 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
         }))
       .subscribe(newCatalog => {
         // Closing modal window and passing new object back to component where this modal window was opened
-        this.toastrService.success(`Catalog was added`);
+        this.toastrService.success(`Catalog bija izveidots`);
         this.modal.close(newCatalog);
       },
         err => {
           // Initialize our error value with error message that came
           this.error = err;
-          this.toastrService.danger(`Catalog was not added`);
+          this.toastrService.danger(`Catalog nebija izveidots`);
         });
   }
 
@@ -161,6 +176,7 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
       minimumAmount: [undefined, Validators.required],
       warehouseId: ['', Validators.required],
       productPrice: [undefined, Validators.required],
+      type: [undefined, Validators.required],
     });
     this.addCatalogForm.patchValue({ currentAmount: 0 });
   }

@@ -1,5 +1,44 @@
+<div class="row" *ngIf="warehouse">
+  <div class="col-sm-12" *ngIf="userRole != regularUserRole">
+    <nb-card class="width-card">
+      <nb-card-header class="row-with-btns">
+        <p>Catalog tabula</p>
+        <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="userRole != regularUserRole && warehouse.type != 1"
+          [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
+          (click)="changeAddingToCatalogProductsMethod()">
+          <span *ngIf="addingObjectToCatalogFromBasket">Uz mašinu</span>
+          <span *ngIf="!addingObjectToCatalogFromBasket">Iegade</span>
+        </i>
+      </nb-card-header>
+      <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source" (create)="openAddCatalogModal()"
+          (edit)="openEditCatalogModal($event)" (delete)="deleteCatalog($event)"
+          (userRowSelect)="onUserRowSelect($event)">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-sm-12" *ngIf="userRole == regularUserRole">
+    <nb-card class="width-card">
+      <nb-card-header class="row-with-btns">
+        <p>Catalog tabula</p>
+        <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="warehouse.type != 1 && hasAbilityToLoad == trueString"
+          [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
+          (click)="changeAddingToCatalogProductsMethod()">
+          <span *ngIf="addingObjectToCatalogFromBasket">Uz mašinu</span>
+          <span *ngIf="!addingObjectToCatalogFromBasket">Iegade</span>
+        </i>
+      </nb-card-header>
+      <nb-card-body>
+        <ng2-smart-table [settings]="settingsForRegularuser" [source]="source"
+          (userRowSelect)="onUserRowSelect($event)">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
 <div class="">
-  <div class="info-top-container">
+  <div class="info-bottoms-container">
     <div class="top-info-block" [nbSpinner]="isLoading" nbSpinnerStatus="danger">
       <div class="card card-top-fixed" *ngIf="warehouse">
         <div class="card__image-container info-image-container">
@@ -9,14 +48,13 @@
         <div class="card__content">
           <div class="left-side-card-info">
             <h1 class="card__title">{{warehouse.name}}</h1>
-            <p><b>Address: {{warehouse.address}}</b></p>
-            <p><b>Location: {{warehouse.location}}</b></p>
-            <p><b>Type: {{warehouse.type}}</b></p>
+            <p><b>Adrese: {{warehouse.address}}</b></p>
+            <p><b>Lokacija: {{warehouse.location}}</b></p>
           </div>
           <div class="right-side-card-info">
             <img class="card-img-top" [src]="warehouse.qrCodeBase64" alt="Card image" *ngIf="warehouse.qrCodeBase64">
             <button type="button" class="btn btn-primary"
-              (click)="downloadQrCode(warehouse.qrCodeBase64)">DOWNLOAD</button>
+              (click)="downloadQrCode(warehouse.qrCodeBase64)">LEJUPIELĀDĒT</button>
           </div>
         </div>
       </div>
@@ -25,22 +63,47 @@
     <div class="top-info-block list-card-container">
       <nb-card class="list-card width-card">
         <nb-card-header class="row-with-btns">
-          <p>News list</p>
-          <i class="fas fa-plus-circle fa-2x icon-add" (click)="openAddNewsModal()"
-            *ngIf="userRole != regularUserRole"></i>
+          <p>Problemas saraksts</p>
+          <div class="list-button">
+            <i class="fas fa-info-circle fa-2x icon-detail"
+              (click)="goToAdditionalInformationPage(specificWarehouseId)"></i>
+          </div>
+          <i class="fas fa-plus-circle fa-2x icon-add" (click)="openAddNewsModal()"></i>
         </nb-card-header>
         <nb-card-body *ngIf="warehouseNewsList.length > 0" [nbSpinner]="toggelingNews" nbSpinnerStatus="danger">
           <nb-list>
             <nb-list-item *ngFor="let news of warehouseNewsList">
               <div>
                 <div class="">
-                  <h4>{{ news.title }}</h4>
-                  <p>{{ news.shortDescription }}</p>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <h4>{{ news.title }}</h4>
+
+                    </div>
+                    <div class="col-sm-4">
+                      <p>{{ news.author }}</p>
+
+                    </div>
+                    <div class="col-sm-4">
+                      <p>{{ news.createdDate | date: 'dd/MM/yyyy hh:mm:ss' }}</p>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col sm 12">
+                      <p>{{ news.shortDescription }}</p>
+
+                    </div>
+                  </div>
+
                 </div>
                 <div class="" *ngIf="!news.fixedProblem">
                   <div class="list-buttons">
-                    <div class="list-button" *ngIf="userRole != regularUserRole">
+                    <div class="list-button">
                       <i class="fas fa-check fa-2x resolve-icon" (click)="toggleNewsFlag(news)"></i>
+                    </div>
+                    <div class="list-button">
+                      <i class="fas fa-comment-dots fa-2x icon-detail" (click)="openCommentModal(news)"></i>
                     </div>
                     <div class="list-button">
                       <i class="fas fa-info-circle fa-2x icon-detail" (click)="openDetailsNewsModal(news)"></i>
@@ -71,43 +134,10 @@
           <nb-list>
             <nb-list-item>
               <div class="row">
-                No data found
+                Informācija netika atrasta.
               </div>
             </nb-list-item>
           </nb-list>
-        </nb-card-body>
-      </nb-card>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12" *ngIf="userRole != regularUserRole">
-      <nb-card class="width-card">
-        <nb-card-header class="row-with-btns">
-          <p>Catalog table</p>
-          <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="userRole != regularUserRole && warehouse.type != 1"
-            [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
-            (click)="changeAddingToCatalogProductsMethod()">
-            <span *ngIf="addingObjectToCatalogFromBasket">From basket</span>
-            <span *ngIf="!addingObjectToCatalogFromBasket">Manually</span>
-          </i>
-        </nb-card-header>
-        <nb-card-body>
-          <ng2-smart-table [settings]="settings" [source]="source" (create)="openAddCatalogModal()"
-            (edit)="openEditCatalogModal($event)" (delete)="deleteCatalog($event)"
-            (userRowSelect)="onUserRowSelect($event)">
-          </ng2-smart-table>
-        </nb-card-body>
-      </nb-card>
-    </div>
-    <div class="col-sm-12" *ngIf="userRole == regularUserRole">
-      <nb-card class="width-card">
-        <nb-card-header class="row-with-btns">
-          <p>Catalog table</p>
-        </nb-card-header>
-        <nb-card-body>
-          <ng2-smart-table [settings]="settingsForRegularuser" [source]="source"
-            (userRowSelect)="onUserRowSelect($event)">
-          </ng2-smart-table>
         </nb-card-body>
       </nb-card>
     </div>

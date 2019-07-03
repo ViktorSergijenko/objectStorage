@@ -46,15 +46,15 @@ export class CatalogNameTableComponent implements OnInit {
     },
     columns: {
       name: {
-        title: 'Catalog name',
+        title: 'Catalog nosaukums',
         type: 'string',
       },
       amount: {
-        title: 'Amount of catalogs',
+        title: 'Catalogu daudzums',
         type: 'number',
       },
     },
-    noDataMessage: 'Catalogs was not found'
+    noDataMessage: 'Informācija netika atrasta'
   };
 
   source: LocalDataSource = new LocalDataSource();
@@ -126,14 +126,14 @@ export class CatalogNameTableComponent implements OnInit {
     activeModal.result.then(res => {
       if (res) {
         if (event.data.amount > 0) {
-          this.toastrService.danger(`Catalog name is used in existing catalog`);
+          this.toastrService.danger(`Šis nosaukums ir izmantots cataloga`);
         }
         else {
           this.catalogService.deleteCatalogName(event.data.id).subscribe(() => {
             this.source.remove(event.data);
-            this.toastrService.success(`Catalog name: '${event.data.name}' was deleted`);
+            this.toastrService.success(`Catalog nosaukums: '${event.data.name}' bija nodzēsts`);
           }, () => {
-            this.toastrService.success(`Catalog name: '${event.data.name}' was not deleted`);
+            this.toastrService.danger(`Catalog name: '${event.data.name}' nebija nodzēsts`);
           });
         }
       } else {

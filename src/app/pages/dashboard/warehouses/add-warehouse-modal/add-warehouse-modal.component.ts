@@ -28,8 +28,8 @@ export class AddWarehouseModalComponent implements OnInit {
   error: string = '';
   selectedFile = null;
   names: string[] = [
-    'Main warehouse',
-    'Simple warehouse',
+    'Galvenā noliktava',
+    'Vienkārša noliktava',
   ];
   type: string;
   /**
@@ -87,7 +87,7 @@ export class AddWarehouseModalComponent implements OnInit {
 
   }
   onDropDownSelect(type: string) {
-    if (type === 'Main warehouse') {
+    if (type === 'Galvenā noliktava') {
       this.newWarehouseForm.patchValue({ type: WarehouseType.MainWarehouse });
       this.type = type;
     } else {
@@ -109,14 +109,14 @@ export class AddWarehouseModalComponent implements OnInit {
       // Subscribing to method to get new warehouse
       .subscribe(newWarehouse => {
         // Closing modal window and passing new warehouse object back to component where this modal window was opened
-        this.toastrService.success(`Warehouse was added`);
+        this.toastrService.success(`Noliktava bija izveidota`);
         this.modal.close(newWarehouse);
       },
         // If there was an error during method execution
         err => {
           // Initialize our error value with error message that came
           this.error = err;
-          this.toastrService.danger(`Warehouse was not added`);
+          this.toastrService.danger(`Noliktava nebija izveidota`);
         });
   }
 

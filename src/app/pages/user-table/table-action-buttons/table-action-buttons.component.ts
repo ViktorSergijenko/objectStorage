@@ -25,8 +25,6 @@ export class TableActionButtonsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.rowData);
-
   }
 
   openChangePasswordModal() {

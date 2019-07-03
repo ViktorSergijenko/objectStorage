@@ -59,7 +59,7 @@
   <div class="wrapper fadeInDown">
     <div id="formContent">
       <!-- Tabs Titles -->
-      <h2 class="active"> Login </h2>
+      <h2 class="active"> Pieslegties </h2>
 
 
 
@@ -68,21 +68,21 @@
         nbSpinnerStatus="danger">
         <!-- <input type="text" id="login" class="fadeIn second" name="login" placeholder="login"> -->
         <input type="text" class="fadeIn second" formControlName="email" id="input-email" name="email"
-          pattern=".+@.+..+" placeholder="Email address" fullWidth required>
+          pattern=".+@.+..+" placeholder="E-pasts" fullWidth required>
         <label class="text-danger"
-          *ngIf="loginForm.controls['email'].errors.email && loginForm.controls['email'].touched">Email
-          is not valid</label>
+          *ngIf="loginForm.controls['email'].errors.email && loginForm.controls['email'].touched">E-pasts nav
+          derīgs</label>
         <label class="text-danger"
-          *ngIf="loginForm.controls['email'].errors.required && loginForm.controls['email'].touched">Email
-          is required</label>
-        <input type="text" formControlName="password" class="fadeIn second" placeholder="password" fullWidth required>
+          *ngIf="loginForm.controls['email'].errors.required && loginForm.controls['email'].touched">E-pasts ir
+          nepieciešams</label>
+        <input type="text" formControlName="password" class="fadeIn second" placeholder="Parole" fullWidth required>
         <input type="submit" class="fadeIn fourth" value="Log In">
       </form>
 
       <!-- Remind Passowrd -->
-      <div id="formFooter">
+      <!-- <div id="formFooter">
         <a class="underlineHover" href="#">Forgot Password?</a>
-      </div>
+      </div> -->
 
     </div>
   </div>

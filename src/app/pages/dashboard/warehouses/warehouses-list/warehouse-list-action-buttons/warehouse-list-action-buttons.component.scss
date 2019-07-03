@@ -1,0 +1,16 @@
+.row-with-btns {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .profile-upper-btn {
+      min-width: 160px;
+    }
+  }
+  .problem-icon {
+    color: red;
+  }
+  
+  .catalog-min-icon {
+    color: #ffa100;
+  }

@@ -4,6 +4,21 @@
   </nb-card-header>
   <nb-card-body>
     <form [formGroup]="editCatalogForm">
+      <div class="input-group mb-3">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" ngbDropdown>
+            <button class="btn btn btn-outline-primary dropdown-toggle dropdown-width" type="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu1"
+              ngbDropdownToggle>Izvēlieties produkta veidu</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+              <button class="dropdown-item" *ngFor="let catalogType of types"
+                (click)="onDropDownSelectTypes(catalogType)">{{catalogType}}</button>
+            </div>
+          </div>
+          <input [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+            aria-label="Text input with dropdown button" [(ngModel)]="typeName">
+        </div>
+      </div>
       <div class="form-group">
         <label for="minimumAmount">Minimum amount</label>
         <input type="text" class="form-control" id="minimumAmount" placeholder="Minimum amount"
@@ -13,6 +28,11 @@
         <label for="maximumAmount">Maximum amount</label>
         <input type="text" class="form-control" id="maximumAmount" placeholder="Maximum amount"
           formControlName="maximumAmount">
+      </div>
+      <div class="form-group">
+        <label for="productPrice">Produktu cena</label>
+        <input type="number" class="form-control" id="productPrice" placeholder="Produktu cena"
+          formControlName="productPrice">
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">

@@ -11,6 +11,8 @@ export class Warehouse extends BaseEntity {
     type: WarehouseType;
     catalogs: Catalog[] = [];
     hasProblems: boolean;
+    hasMinCatalogs: boolean;
+
 
 }
 

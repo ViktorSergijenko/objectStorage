@@ -4,6 +4,7 @@ import { CatalogService } from '../../../../services/catalog.service';
 import { finalize } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BasketService } from '../../../../services/basket.service';
+import { Catalog } from '../../../../models/catalog.model';
 
 @Component({
   selector: 'ngx-basket-modal',
@@ -12,6 +13,8 @@ import { BasketService } from '../../../../services/basket.service';
 })
 export class BasketModalComponent implements OnInit {
   isLoadingCatalogTable: boolean = false;
+  catalogType: boolean = true;
+  catalogs: Catalog[] = [];
   userId: string;
   //#region Table settings
   settings = {
@@ -59,6 +62,19 @@ export class BasketModalComponent implements OnInit {
   close() {
     this.modal.dismiss();
   }
+  catalogTypeShowToggle() {
+    this.catalogType = !this.catalogType
+    if (this.catalogType) {
+      var filteredCatalog = this.catalogs.filter(x => x.type !== false);
+      this.source.empty();
+      this.source.load(filteredCatalog);
+
+    } else {
+      var filteredCatalog = this.catalogs.filter(x => x.type !== true);
+      this.source.empty();
+      this.source.load(filteredCatalog);
+    }
+  }
   /**
      * Method gets list of catalogs
      *
@@ -77,7 +93,11 @@ export class BasketModalComponent implements OnInit {
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
         // When objects will come, we load them in to the our smart table
-        this.source.load(catalogs);
+
+        this.catalogs = catalogs;
+        var filteredCatalog = this.catalogs.filter(x => x.type !== true);
+
+        this.source.load(filteredCatalog);
       });
   }
   private getCatalogsByUserId(id: string) {
@@ -91,8 +111,11 @@ export class BasketModalComponent implements OnInit {
         }))
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
+        this.catalogs = catalogs;
+        var filteredCatalog = this.catalogs.filter(x => x.type !== true);
+
+        this.source.load(filteredCatalog);
         // When objects will come, we load them in to the our smart table
-        this.source.load(catalogs);
       });
   }
 }

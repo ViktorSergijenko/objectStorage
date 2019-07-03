@@ -7,6 +7,7 @@ import { EditPasswordModalComponent } from './edit-password-modal/edit-password-
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { EditUserInformationModalComponent } from './edit-user-information-modal/edit-user-information-modal.component';
+import { NbCheckboxModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { EditUserInformationModalComponent } from './edit-user-information-modal
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NbCheckboxModule
   ],
   declarations: [UserTableComponent, TableActionButtonsComponent, EditPasswordModalComponent, EditUserInformationModalComponent],
   entryComponents: [TableActionButtonsComponent, EditPasswordModalComponent, EditUserInformationModalComponent]

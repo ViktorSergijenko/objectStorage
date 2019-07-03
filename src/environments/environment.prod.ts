@@ -5,5 +5,5 @@
  */
 export const environment = {
   production: true,
-  apiUrl: 'https://warehouse-manager-api.azurewebsites.net/api/'
+  apiUrl: 'https://warehouse-manager1-api.azurewebsites.net/api/'
 };

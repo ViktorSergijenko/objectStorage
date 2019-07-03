@@ -61,12 +61,9 @@ export class EditCatalogModelComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('modal has loaded');
     this.statusAddOrRemoveUpdate = this.catalogService.getUpdatedAddOrRemoveStatus()
       .subscribe(status => {
         this.addingObjectToCatalogFromBasket = status;
-        console.log(" in modal");
-        console.log(status);
       });
     this.editCatalogForm.patchValue({ currentAmount: 0 });
 
@@ -95,10 +92,10 @@ export class EditCatalogModelComponent implements OnInit {
         .pipe(finalize(() => {
         }))
         .subscribe(catalog => {
-          this.toastrService.success(`Products was added to basket`);
+          this.toastrService.success(`Produkti tika pievienotas grozam`);
           this.modal.close(catalog);
         }, err => {
-          this.toastrService.danger(`There is not enough products in catalog`);
+          this.toastrService.danger(`Katalogā nav pietiekami daudz produktu`);
           this.close();
         });
     } else {
@@ -106,10 +103,10 @@ export class EditCatalogModelComponent implements OnInit {
         .pipe(finalize(() => {
         }))
         .subscribe(catalog => {
-          this.toastrService.success(`Products was added to basket`);
+          this.toastrService.success(`Produkti tika pievienotas grozam`);
           this.modal.close(catalog);
         }, err => {
-          this.toastrService.danger(`There is not enough products in catalog`);
+          this.toastrService.danger(`Katalogā nav pietiekami daudz produktu`);
           this.close();
         });
     }

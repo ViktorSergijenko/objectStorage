@@ -1,16 +1,16 @@
 <div class="row" *ngIf="addOrRemove">
   <div class="col-md-12">
     <nb-card class="inline-form-card">
-      <nb-card-header>Add products</nb-card-header>
+      <nb-card-header>Pievienot produktus</nb-card-header>
       <nb-card-body>
         <form [formGroup]="editCatalogForm" class="form-inline">
           <input type="text" class="form-control" id="name" placeholder="Current amount"
             formControlName="currentAmount">
           <p class="text-max" (click)="addMaximumAmount()">MAX</p>
           <button *ngIf="addingObjectToCatalogFromBasket" type="submit" class="btn btn-primary"
-            (click)="submitToAddProductsToCatalogFromBasket()">Submit</button>
+            (click)="submitToAddProductsToCatalogFromBasket()">Apsitprināt</button>
           <button *ngIf="!addingObjectToCatalogFromBasket" type="submit" class="btn btn-primary"
-            (click)="submitToAddProductsToCatalogFromBasket()">Submit</button>
+            (click)="submitToAddProductsToCatalogFromBasket()">Apsitprināt</button>
         </form>
       </nb-card-body>
     </nb-card>
@@ -19,7 +19,7 @@
 <div class="row" *ngIf="!addOrRemove">
   <div class="col-md-12">
     <nb-card class="inline-form-card">
-      <nb-card-header>Remove products</nb-card-header>
+      <nb-card-header>Noņemt produktus</nb-card-header>
       <nb-card-body>
         <form [formGroup]="editCatalogForm" class="form-inline">
           <input type="text" class="form-control" id="name" placeholder="Current amount"
@@ -28,9 +28,9 @@
             *ngIf="catalogToEdit.currentAmount>catalogToEdit.minimumAmount && addingObjectToCatalogFromBasket">MIN</p>
           <p class="text-max" (click)="removeAllAmount()">ALL</p>
           <button *ngIf="addingObjectToCatalogFromBasket" type="submit" class="btn btn-primary"
-            (click)="submitToAddProductsInBasket()">Submit</button>
+            (click)="submitToAddProductsInBasket()">Apsitprināt</button>
           <button *ngIf="!addingObjectToCatalogFromBasket" type="submit" class="btn btn-primary"
-            (click)="submitToAddProductsInBasket()">Submit</button>
+            (click)="submitToAddProductsInBasket()">Apsitprināt</button>
         </form>
       </nb-card-body>
     </nb-card>

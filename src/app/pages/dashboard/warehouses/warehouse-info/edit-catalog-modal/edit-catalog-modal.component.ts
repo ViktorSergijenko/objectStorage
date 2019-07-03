@@ -40,6 +40,12 @@ export class EditCatalogModalComponent implements OnInit {
    * @memberof EditCatalogModalComponent
    */
   catalogToEdit: Catalog;
+  types: string[] = [
+    'Kafija',
+    'Sneks',
+  ];
+  typeName: string;
+  typeCatalog: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,6 +57,12 @@ export class EditCatalogModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.catalogToEdit.type === true) {
+
+      this.typeName = 'Kafija';
+    } else {
+      this.typeName = 'Sneks';
+    }
     this.patchAllValuesToForm();
   }
 
@@ -82,14 +94,24 @@ export class EditCatalogModalComponent implements OnInit {
       .subscribe(editedCatalog => {
         // Closing modal window and passing new warehouse object back to component where this modal window was opened
         this.modal.close(editedCatalog);
-        this.toastrService.success(`Catalog was modified`);
+        this.toastrService.success(`Catalog bija rediģēts`);
       },
         // If there was an error during method execution
         err => {
           // Initialize our error value with error message that came
           this.error = err;
-          this.toastrService.danger(`Catalog was not modified`);
+          this.toastrService.danger(`Catalog nebija rediģēts`);
         });
+  }
+
+  onDropDownSelectTypes(type: string) {
+    if (type === 'Kafija') {
+      this.editCatalogForm.patchValue({ type: true });
+      this.typeName = type;
+    } else {
+      this.editCatalogForm.patchValue({ type: false });
+      this.typeName = type;
+    }
   }
   /**
    * Method creates all controls for reactive form
@@ -105,6 +127,8 @@ export class EditCatalogModalComponent implements OnInit {
       maximumAmount: [undefined, Validators.required],
       minimumAmount: [undefined, Validators.required],
       warehouseId: [undefined, Validators.required],
+      productPrice: [undefined, Validators.required],
+      type: [undefined, Validators.required],
     });
   }
   /**
@@ -120,7 +144,9 @@ export class EditCatalogModalComponent implements OnInit {
       currentAmount: this.catalogToEdit.currentAmount,
       maximumAmount: this.catalogToEdit.maximumAmount,
       minimumAmount: this.catalogToEdit.minimumAmount,
-      warehouseId: this.catalogToEdit.warehouseId
+      warehouseId: this.catalogToEdit.warehouseId,
+      productPrice: this.catalogToEdit.productPrice,
+      type: this.catalogToEdit.type,
     });
   }
 

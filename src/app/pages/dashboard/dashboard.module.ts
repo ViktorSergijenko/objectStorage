@@ -20,6 +20,9 @@ import { ProductTableComponent } from './warehouses/warehouse-info/product-table
 import { AddNewCatalogModalComponent } from './warehouses/warehouse-info/add-new-catalog-modal/add-new-catalog-modal.component';
 import { EditCatalogModalComponent } from './warehouses/warehouse-info/edit-catalog-modal/edit-catalog-modal.component';
 import { BasketModalComponent } from '../../@theme/components/header/basket-modal/basket-modal.component';
+import { WarehouseListActionButtonsComponent } from './warehouses/warehouses-list/warehouse-list-action-buttons/warehouse-list-action-buttons.component';
+import { ResolveProblemModalComponent } from './warehouses/warehouse-info/resolve-problem-modal/resolve-problem-modal.component';
+import { NewsTableModule } from './news-table/news-table.module';
 
 
 
@@ -35,7 +38,8 @@ import { BasketModalComponent } from '../../@theme/components/header/basket-moda
     NgbDropdownModule,
     WarehouseRoutingModule,
     NbToastrModule.forRoot(),
-    Ng2SmartTableModule
+    Ng2SmartTableModule,
+    NewsTableModule
   ],
   declarations:
     [
@@ -52,7 +56,9 @@ import { BasketModalComponent } from '../../@theme/components/header/basket-moda
       ProductTableComponent,
       AddNewCatalogModalComponent,
       EditCatalogModalComponent,
-      BasketModalComponent
+      BasketModalComponent,
+      WarehouseListActionButtonsComponent,
+      ResolveProblemModalComponent
     ],
   exports: [
     AddWarehouseModalComponent,
@@ -65,7 +71,9 @@ import { BasketModalComponent } from '../../@theme/components/header/basket-moda
     ProductTableComponent,
     AddNewCatalogModalComponent,
     EditCatalogModalComponent,
-    BasketModalComponent
+    BasketModalComponent,
+    WarehouseListActionButtonsComponent,
+    ResolveProblemModalComponent
   ],
   entryComponents: [
     AddWarehouseModalComponent,
@@ -78,7 +86,9 @@ import { BasketModalComponent } from '../../@theme/components/header/basket-moda
     ProductTableComponent,
     AddNewCatalogModalComponent,
     EditCatalogModalComponent,
-    BasketModalComponent
+    BasketModalComponent,
+    WarehouseListActionButtonsComponent,
+    ResolveProblemModalComponent
   ]
 })
 

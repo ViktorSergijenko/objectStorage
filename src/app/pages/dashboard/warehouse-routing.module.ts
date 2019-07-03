@@ -4,6 +4,7 @@ import { WarehouseInfoComponent } from './warehouses/warehouse-info/warehouse-in
 import { NgModule } from '@angular/core';
 import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
 import { ProductTableComponent } from './warehouses/warehouse-info/product-table/product-table.component';
+import { NewsTableComponent } from './news-table/news-table.component';
 
 const routes: Routes = [{
   path: '',
@@ -12,7 +13,9 @@ const routes: Routes = [{
     { path: 'details/:id', component: WarehouseInfoComponent },
     { path: '', component: DashboardComponent },
     { path: 'list', component: WarehousesListComponent },
-    { path: 'catalog/details/:id', component: ProductTableComponent }
+    { path: 'catalog/details/:id', component: ProductTableComponent },
+    { path: 'details/news/:id', component: NewsTableComponent }
+
   ]
 }];
 

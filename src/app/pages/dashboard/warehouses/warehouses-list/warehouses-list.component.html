@@ -1,4 +1,4 @@
-<div class="container" [nbSpinner]="isLoading" nbSpinnerStatus="danger">
+<!-- <div class="container" [nbSpinner]="isLoading" nbSpinnerStatus="danger">
   <div class="row">
     <div class="col-sm-8">
       <div class="input-container">
@@ -51,4 +51,28 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+
+
+<nb-card *ngIf="userRole !== regularUserRole">
+  <nb-card-header>
+    Noliktavas
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (create)="openAddHouseModal()"
+      (edit)="openEditHouseModal($event.data)" (delete)="removeWarehouse($event.data)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+<nb-card *ngIf="userRole === regularUserRole">
+  <nb-card-header>
+    Noliktavas
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settingsForEmployee" [source]="source" (create)="openAddHouseModal()"
+      (edit)="openEditHouseModal($event.data)" (delete)="removeWarehouse($event.data)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

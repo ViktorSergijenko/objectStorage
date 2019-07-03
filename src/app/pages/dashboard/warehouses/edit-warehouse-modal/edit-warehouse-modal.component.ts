@@ -28,8 +28,8 @@ export class EditWarehouseModalComponent implements OnInit {
   error: string = '';
   selectedFile = null;
   names: string[] = [
-    "Main warehouse",
-    "Simple warehouse"
+    'Galvenā noliktava',
+    'Vienkārša noliktava',
   ]
   type: string;
   /**
@@ -53,9 +53,9 @@ export class EditWarehouseModalComponent implements OnInit {
   ngOnInit() {
     if (this.warehouseToEdit.type === WarehouseType.MainWarehouse) {
 
-      this.type = 'Main warehouse';
+      this.type = 'Galvenā noliktava';
     } else {
-      this.type = 'Simple warehouse';
+      this.type = 'Vienkārša noliktava';
     }
     this.editWarehouseForm.patchValue({
       id: this.warehouseToEdit.id,
@@ -100,7 +100,7 @@ export class EditWarehouseModalComponent implements OnInit {
 
   }
   onDropDownSelect(type: string) {
-    if (type === 'Main warehouse') {
+    if (type === 'Galvenā noliktava') {
       this.editWarehouseForm.patchValue({ type: WarehouseType.MainWarehouse });
       this.type = type;
     } else {
@@ -122,13 +122,13 @@ export class EditWarehouseModalComponent implements OnInit {
       .subscribe(newWarehouse => {
         // Closing modal window and passing new warehouse object back to component where this modal window was opened
         this.modal.close(newWarehouse);
-        this.toastrService.success(`Warehouse was modified`);
+        this.toastrService.success(`Noliktava tiek rediģēts`);
       },
         // If there was an error during method execution
         err => {
           // Initialize our error value with error message that came
           this.error = err;
-          this.toastrService.danger(`Warehouse was not modified`);
+          this.toastrService.danger(`Noliktava nebija rediģēts`);
         });
   }
   private createForm() {
