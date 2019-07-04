@@ -3,6 +3,7 @@
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
         <p>Catalog tabula</p>
+        <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
         <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="userRole != regularUserRole && warehouse.type != 1"
           [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
           (click)="changeAddingToCatalogProductsMethod()">
@@ -22,6 +23,7 @@
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
         <p>Catalog tabula</p>
+        <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
         <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="warehouse.type != 1 && hasAbilityToLoad == trueString"
           [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
           (click)="changeAddingToCatalogProductsMethod()">
@@ -85,7 +87,7 @@
 
                     </div>
                     <div class="col-sm-4">
-                      <p>{{ news.createdDate | date: 'dd/MM/yyyy hh:mm:ss' }}</p>
+                      <p>{{ news.createdDate | date: 'dd/MM/yyyy H:mm' }}</p>
 
                     </div>
                   </div>
@@ -99,7 +101,7 @@
                 </div>
                 <div class="" *ngIf="!news.fixedProblem">
                   <div class="list-buttons">
-                    <div class="list-button">
+                    <div class="list-button" *ngIf="userRole !== regularUserRole">
                       <i class="fas fa-check fa-2x resolve-icon" (click)="toggleNewsFlag(news)"></i>
                     </div>
                     <div class="list-button">

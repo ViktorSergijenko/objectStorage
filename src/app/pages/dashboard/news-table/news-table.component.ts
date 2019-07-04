@@ -25,7 +25,7 @@ export class NewsTableComponent implements OnInit {
         valuePrepareFunction: (date) => {
           if (date) {
 
-            return this.datePipe.transform(date, 'dd/MM/yyyy hh:mm:ss');
+            return this.datePipe.transform(date, 'dd/MM/yyyy H:mm');
           }
           return null;
         }
@@ -35,7 +35,7 @@ export class NewsTableComponent implements OnInit {
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm:ss');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
           return formatted;
         }
       },

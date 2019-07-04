@@ -16,7 +16,6 @@ export class InformationButtonComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.rowData);
   }
   /**
    * Method opens modal window with news detailed information

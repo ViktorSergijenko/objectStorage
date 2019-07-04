@@ -1,40 +1,93 @@
 <div class="container">
-  <div class="row">
-    <div class="col-sm-12 text-center">
-      <h4>Problema: {{news.title}}</h4>
+  <!-- <div class="row" *ngIf="news.fixedProblem">
+      <div class="col-sm-12 text-center">
+        labošanas datums: {{news.fixedDate | date: 'dd/MM/yyyy hh:mm:ss' }} -
+        Pieņema labojumu: {{news.authorAcceptedFix}}
+      </div>
     </div>
+    <div class="row" *ngIf="!news.fixedProblem">
+      <div class="col-sm-12 text-center">
+        Problēma nav atrisināta
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h4>Problema: {{news.title}}</h4>
+      </div>
+    </div>
+    <div class="row">
+  
+      <div class="col-sm-12 text-center">
+        <h4>Darbnieks: {{news.author}}</h4>
+      </div>
+    </div>
+    <div class="row">
+  
+      <div class="col-sm-12 text-center">
+        <h4>Atklāšanas datums:{{news.createdDate | date: 'dd/MM/yyyy hh:mm:ss' }}</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        Īss apraksts: {{news.shortDescription}}
+      </div>
+    </div> -->
+  <div style="padding-top: 20px;">
+    <table class="table table-bordered">
+      <tbody>
+        <tr [ngClass]="!news.fixedProblem ? 'table-danger' : 'table-success'">
+          <th scope="row">Status</th>
+          <td>
+            {{!news.fixedProblem ? "Problēma nav atrisināta" : "Atrisināts - " + news.authorAcceptedFix}}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Autors</th>
+          <td>
+            {{news.author}}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Problēma</th>
+          <td style="word-break:break-word; text-align: justify;">
+            {{news.title}}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Atklāšanas datums</th>
+          <td>
+            {{news.createdDate | date: 'dd/MM/yyyy H:mm' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="row">
-
-    <div class="col-sm-12 text-center">
-      <h4>Darbnieks: {{news.author}}</h4>
-    </div>
-  </div>
-  <div class="row">
-
-    <div class="col-sm-12 text-center">
-      <h4>Atklāšanas datums:{{news.createdDate | date: 'dd/MM/yyyy hh:mm:ss' }}</h4>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 text-center">
-      Īss apraksts: {{news.shortDescription}}
-    </div>
-  </div>
-  <div class="row" *ngFor="let comment of newsComments">
-    <div class="col-sm-12 text-center">
-      {{comment.author}}: {{comment.comment}} - {{comment.date | date: 'dd/MM/yyyy hh:mm:ss'}}
-    </div>
-  </div>
-  <div class="row" *ngIf="news.fixedProblem">
-    <div class="col-sm-12 text-center">
-      labošanas datums: {{news.fixedDate | date: 'dd/MM/yyyy hh:mm:ss' }} -
-      Pieņema labojumu: {{news.authorAcceptedFix}}
-    </div>
-  </div>
-  <div class="row" *ngIf="!news.fixedProblem">
-    <div class="col-sm-12 text-center">
-      Problēma nav atrisināta
-    </div>
+  <div>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Autors</th>
+          <th scope="col">Komentārs</th>
+          <th scope="col">Datums</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let comment of newsComments">
+          <td>{{comment.author}}</td>
+          <td style="word-break:break-word; text-align: justify;">
+            {{comment.comment}}
+          </td>
+          <td>{{comment.date | date: 'dd/MM/yyyy H:mm'}}</td>
+        </tr>
+        <tr style="text-align: center" *ngIf="newsComments.length === 0">
+          <td colspan="3">
+            Data not found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="col-sm-12 text-center">
+        {{comment.author}}: {{comment.comment}} - {{comment.date | date: 'dd/MM/yyyy hh:mm:ss'}}
+      </div> -->
   </div>
 </div>

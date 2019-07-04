@@ -196,6 +196,12 @@
   }
 
   @media only screen and (max-width: 992px) {
+    
+    .info-bottoms-container{
+      display: block;
+      justify-content: initial;
+    }   
+    
     .top-info-block{
       width: 100%;
       margin-bottom: 50px;

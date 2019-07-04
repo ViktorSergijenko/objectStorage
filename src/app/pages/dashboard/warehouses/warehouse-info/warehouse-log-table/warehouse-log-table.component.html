@@ -1,0 +1,19 @@
+<div class="date-picker-wrapper">
+  <select (change)="selectOption($event.target.value)" class="custom-select date-picker" [(ngModel)]="selectedValue"
+    name="time" id="timeline" selected>
+    <option *ngFor="let option of selectValues" [value]="option">{{option}}</option>
+
+  </select>
+  <nb-calendar-range [(range)]="range" (rangeChange)="handleRangeChange($event)">
+  </nb-calendar-range>
+</div>
+<nb-card>
+  <nb-card-header>
+    Notikumi
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settingsForRegularuser" [source]="source">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

@@ -318,6 +318,12 @@ export class WarehouseInfoComponent implements OnInit {
     // Navigating user to details page
     this.router.navigate([`/pages/warehouse/details/news/${idForRoute}`]);
   }
+
+  goToWarehouseLogs() {
+    console.log(this.warehouse.id);
+    // Navigating user to details page
+    this.router.navigate([`/pages/warehouse/logs/${this.warehouse.id}`]);
+  }
   changeAddingToCatalogProductsMethod() {
     this.addingObjectToCatalogFromBasket = !this.addingObjectToCatalogFromBasket
     this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);

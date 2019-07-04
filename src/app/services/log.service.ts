@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { SimpleLog } from '../models/log.model';
+import { DateFiltration } from '../models/dateFiltration';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,12 @@ export class LogService {
   */
   getAllAdminLogs(): Observable<SimpleLog[]> {
     return this.http.get<SimpleLog[]>(this.getEndpointUrl() + '/admin');
+  }
+
+  filterLogsByDate(filterOptions: DateFiltration): Observable<SimpleLog[]> {
+    return this.http.post<SimpleLog[]>(this.getEndpointUrl() + '/filter', filterOptions);
+  }
+  getLogsByWarehouseId(id: string): Observable<SimpleLog[]> {
+    return this.http.get<SimpleLog[]>(this.getEndpointUrl() + `/${id}`);
   }
 }

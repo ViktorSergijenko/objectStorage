@@ -95,7 +95,7 @@ export class BasketModalComponent implements OnInit {
         // When objects will come, we load them in to the our smart table
 
         this.catalogs = catalogs;
-        var filteredCatalog = this.catalogs.filter(x => x.type !== true);
+        var filteredCatalog = this.catalogs.filter(x => x.type === true);
 
         this.source.load(filteredCatalog);
       });

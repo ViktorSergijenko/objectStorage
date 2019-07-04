@@ -44,9 +44,24 @@ export class LoginComponent implements OnInit {
         this.loadingIndicator = false;
       }))
       .subscribe((userTooken: any) => {
-        console.log(userTooken);
         localStorage.setItem('UserToken', userTooken.access_token);
-        this.router.navigateByUrl('/pages/warehouse/list');
+        this.accountService.getUserProfile()
+          .subscribe(credentials => {
+            localStorage.setItem('UserFullName', credentials.fullName);
+            localStorage.setItem('UserEmail', credentials.email);
+            localStorage.setItem('UserBasketId', credentials.basketId);
+            localStorage.setItem('Role', credentials.roleName);
+            if (credentials.hasAbilityToLoad) {
+              localStorage.setItem('AbilityToLoad', 'true');
+
+            } else {
+              localStorage.setItem('AbilityToLoad', 'false');
+            }
+            this.router.navigateByUrl('/pages/warehouse/list');
+
+          }, err => {
+
+          })
       },
         err => {
           if (err.status === 400) {

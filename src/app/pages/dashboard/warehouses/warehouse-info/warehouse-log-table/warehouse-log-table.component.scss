@@ -1,0 +1,17 @@
+@media only screen and (max-width: 576px) {
+    .date-picker{
+      max-width: 100%;
+    }
+
+    .nb-theme-corporate nb-base-calendar.medium nb-card{
+        width: 100% !important;
+    }
+  }
+
+.date-picker{
+    width: 21.875rem;
+    margin-bottom: 5px;
+}
+.date-picker-wrapper{
+    margin-bottom: 15px
+}

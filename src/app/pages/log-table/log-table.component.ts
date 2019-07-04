@@ -16,7 +16,7 @@ export class LogTableComponent implements OnInit {
   userRole: string;
   adminLogsOrSimple: boolean = false;
 
-  settings = {
+  settingsAdmin = {
     pager: {
       display: true,
       perPage: 100
@@ -36,11 +36,58 @@ export class LogTableComponent implements OnInit {
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy hh:mm:ss');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
           return formatted;
         }
       },
     },
+  };
+
+  settingsSimple = {
+
+    mode: 'external',
+    actions: false,
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    columns: {
+      userName: {
+        title: 'Darbnieks',
+        type: 'string',
+      },
+      action: {
+        title: 'Rīcība',
+        type: 'string',
+      },
+      where: {
+        title: 'Kur',
+        type: 'string',
+      },
+      what: {
+        title: 'Kas',
+        type: 'string',
+      },
+      amount: {
+        title: 'daudzums',
+        type: 'string',
+      },
+      manually: {
+        title: 'manuāli',
+        type: 'string',
+      },
+      date: {
+        title: 'datums',
+        type: 'string',
+        valuePrepareFunction: (date) => {
+          var raw = new Date(date);
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
+          return formatted;
+        }
+      },
+
+
+    },
+    noDataMessage: 'Informācija netika atrasta.'
   };
   constructor(
     private datePipe: DatePipe,
