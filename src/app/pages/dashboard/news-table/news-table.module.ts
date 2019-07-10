@@ -6,6 +6,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InformationButtonComponent } from './information-button/information-button.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { InformationButtonComponent } from './information-button/information-but
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    RouterModule
   ],
   declarations: [NewsTableComponent, InformationButtonComponent],
   exports: [InformationButtonComponent],

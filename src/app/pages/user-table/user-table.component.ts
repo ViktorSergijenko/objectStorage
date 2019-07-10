@@ -21,10 +21,15 @@ export class UserTableComponent implements OnInit {
    * @memberof UserFeedbackListComponent
    */
   userUpdate: Subscription;
+  toggleGetUsers: Subscription;
+
   regularUserRole: string = 'Level four';
   userRole: string;
   settings = {
     actions: false,
+    pager: {
+      display: false,
+    },
     columns: {
       fullName: {
         title: 'Darbnieks',
@@ -65,12 +70,19 @@ export class UserTableComponent implements OnInit {
       .subscribe(update => {
         this.source.update(update.old, update.new)
       });
+    this.toggleGetUsers = this.accountService.getUpdatedToggle()
+      .subscribe(() => {
+        this.source.empty();
+        this.getUserListForTable();
+      });
   }
 
   ngOnDestroy() {
     // Unsubscribe from catalog update Subscription
     this.userUpdate.unsubscribe();
+    this.toggleGetUsers.unsubscribe();
   }
+
 
   getUserListForTable() {
     this.accountService.getUserList()

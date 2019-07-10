@@ -77,7 +77,6 @@ export class EditWarehouseModalComponent implements OnInit {
   }
   onFileSelected(event) {
     var file = event.target.files[0];
-    console.log(file);
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {

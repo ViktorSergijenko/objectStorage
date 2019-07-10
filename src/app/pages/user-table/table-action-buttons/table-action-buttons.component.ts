@@ -4,6 +4,9 @@ import { EditPasswordModalComponent } from '../edit-password-modal/edit-password
 import { EditUserInformationModalComponent } from '../edit-user-information-modal/edit-user-information-modal.component';
 import { AccountService } from '../../../services/account.service';
 import { BasketModalComponent } from '../../../@theme/components/header/basket-modal/basket-modal.component';
+import { DeleteModalComponent } from '../../dashboard/warehouses/delete-modal/delete-modal.component';
+import { finalize } from 'rxjs/operators';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-table-action-buttons',
@@ -19,10 +22,16 @@ export class TableActionButtonsComponent implements OnInit {
    * @memberof IncrementDecrementCatalogModalComponent
    */
   @Input() rowData: any;
+
+  userRole: string;
+  globalAdmin: string = 'Level one';
   constructor(
     private modalService: NgbModal,
-    private accountService: AccountService
-  ) { }
+    private accountService: AccountService,
+    private toastrService: NbToastrService
+  ) {
+    this.userRole = localStorage.getItem('Role');
+  }
 
   ngOnInit() {
   }
@@ -34,12 +43,7 @@ export class TableActionButtonsComponent implements OnInit {
     activeModal.componentInstance.userThatPasswordWeWantToChange = this.rowData;
   }
 
-  openDeleteUser() {
-    const activeModal = this.modalService.open(EditPasswordModalComponent, {
-      container: 'nb-layout',
-    });
-    activeModal.componentInstance.userThatPasswordWeWantToChange = this.rowData;
-  }
+
 
   openEditUser() {
     const activeModal = this.modalService.open(EditUserInformationModalComponent, {
@@ -48,6 +52,30 @@ export class TableActionButtonsComponent implements OnInit {
     activeModal.componentInstance.userThatInformationWeWantToChange = this.rowData;
     activeModal.result.then(editedUser => {
       this.accountService.setUpdatedUser({ old: this.rowData, new: editedUser });
+    });
+  }
+
+  deleteUser() {
+    const activeModal = this.modalService.open(DeleteModalComponent, {
+      container: 'nb-layout',
+    });
+    activeModal.result.then(res => {
+      if (res) {
+
+        this.accountService.deleteUser(this.rowData)
+          .pipe(
+            finalize(() => {
+            })
+          )
+          .subscribe(() => {
+            this.accountService.setUpdatedToggle();
+
+            this.toastrService.success(`Darbnieks ${this.rowData.fullName} bija nodzēsts`);
+          }, err => {
+            this.toastrService.danger(`Darbnieks ${this.rowData.fullName} nebija nodzēsts`);
+          })
+      }
+
     });
   }
 

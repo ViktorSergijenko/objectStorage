@@ -21,6 +21,8 @@ export class AccountService {
   * @memberof BasketService
   */
   private userSubject = new Subject<ObjectChange<UserVM>>();
+  private togleUserGetInTable = new Subject<boolean>();
+
 
   /**
    * Method returns endpoint that is related only to this module
@@ -60,7 +62,9 @@ export class AccountService {
   }
 
   getUserList(): Observable<UserVM[]> {
-    return this.http.get<UserVM[]>(`${this.getEndpointUrl()}/getUserList`);
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.get<UserVM[]>(`${this.getEndpointUrl()}/getUserList`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
   changeUserPassword(newPassword: ChangePasswordViewModel): Observable<void> {
@@ -74,10 +78,10 @@ export class AccountService {
     return this.http.post<ChangeUserInfoViewModel>(`${this.getEndpointUrl()}/edit-user`, editedUser, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
-  deleteUser(id: string): Observable<void> {
+  deleteUser(user: UserVM): Observable<void> {
     var tokenHeader = new HttpHeaders();
 
-    return this.http.post<void>(`${this.getEndpointUrl()}/delete`, id, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
+    return this.http.post<void>(`${this.getEndpointUrl()}/delete`, user, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
   getRolesList(): Observable<string[]> {
     var tokenHeader = new HttpHeaders();
@@ -106,5 +110,26 @@ export class AccountService {
    */
   getUpdatedUser() {
     return this.userSubject.asObservable();
+  }
+
+  /**
+* Method send signal to stream with updated information about feedback
+*
+* @template Type Type of updated object (UserFeedback in current case)
+* @param {ObjectChange<Type>} updated Updated feedback object
+* @memberof UserFeedBackService
+*/
+  setUpdatedToggle() {
+    this.togleUserGetInTable.next(!this.togleUserGetInTable);
+  }
+
+  /**
+   * Method that gets changes from subject about updated feedback
+   *
+   * @returns Returns observable with new feedback 
+   * @memberof UserFeedBackService
+   */
+  getUpdatedToggle() {
+    return this.togleUserGetInTable.asObservable();
   }
 }

@@ -70,7 +70,7 @@ export class WarehousesListComponent implements OnInit {
       confirmDelete: false,
     },
     pager: {
-      perPage: 10
+      display: false,
     },
     filter: {
       inputClass: 'inherit-height',
@@ -138,7 +138,7 @@ export class WarehousesListComponent implements OnInit {
     // },
     actions: false,
     pager: {
-      perPage: 10
+      display: false,
     },
     filter: {
       inputClass: 'inherit-height',
@@ -193,7 +193,6 @@ export class WarehousesListComponent implements OnInit {
     private toastrService: NbToastrService,
   ) {
     this.userRole = localStorage.getItem('Role');
-    console.log(localStorage.getItem('Role'));
   }
 
   ngOnInit() {
@@ -230,7 +229,6 @@ export class WarehousesListComponent implements OnInit {
     });
     activeModal.componentInstance.objectName = 'Warehouse';
     activeModal.result.then(res => {
-      console.log(res);
       if (res) {
         this.warehouseService.removeWarehouse(selectedWarehouse.id).subscribe(() => {
           // When method will be executed without errors, we will delete selected warehouse from warehouse list that is used to display warehouses...
@@ -350,7 +348,6 @@ export class WarehousesListComponent implements OnInit {
       .subscribe(filteredList => {
         this.warehouseList = []
         this.warehouseList = filteredList;
-        console.log(this.warehouseList);
       });
   }
 }

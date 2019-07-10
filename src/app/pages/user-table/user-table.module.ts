@@ -8,6 +8,7 @@ import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { EditUserInformationModalComponent } from './edit-user-information-modal/edit-user-information-modal.component';
 import { NbCheckboxModule } from '@nebular/theme';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { NbCheckboxModule } from '@nebular/theme';
     ReactiveFormsModule,
     NgbModule,
     NgbDropdownModule,
-    NbCheckboxModule
+    NbCheckboxModule,
+    RouterModule
   ],
   declarations: [UserTableComponent, TableActionButtonsComponent, EditPasswordModalComponent, EditUserInformationModalComponent],
   entryComponents: [TableActionButtonsComponent, EditPasswordModalComponent, EditUserInformationModalComponent]

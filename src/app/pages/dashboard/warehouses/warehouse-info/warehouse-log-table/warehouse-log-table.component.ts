@@ -17,6 +17,11 @@ export class WarehouseLogTableComponent implements OnInit {
   selectedValue: string;
   range: NbCalendarRange<Date>;
   dateFilterOptions: DateFiltration = new DateFiltration();
+  regularUserRole: string = 'Level four';
+  userRole: string;
+  lookingAtAllChanges: boolean = true;
+
+
   constructor(
     private toastrService: NbToastrService,
     private route: ActivatedRoute,
@@ -30,6 +35,8 @@ export class WarehouseLogTableComponent implements OnInit {
       end: new Date()
     };
     this.selectedValue = this.selectValues[0];
+    this.userRole = localStorage.getItem('Role');
+
   }
   // getToday() {
   //   const a = Date.now();
@@ -41,6 +48,10 @@ export class WarehouseLogTableComponent implements OnInit {
     actions: false,
     filter: {
       inputClass: 'inherit-height',
+    },
+    pager: {
+      display: true,
+      perPage: 100
     },
     columns: {
       userName: {
@@ -72,7 +83,7 @@ export class WarehouseLogTableComponent implements OnInit {
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm:ss');
           return formatted;
         }
       },
@@ -84,14 +95,15 @@ export class WarehouseLogTableComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   ngOnInit() {
+
     this.specificWarehouseId = this.route.snapshot.paramMap.get('id');
     this.dateFilterOptions.warehouseId = this.route.snapshot.paramMap.get('id');
-    console.log(this.dateFilterOptions);
     this.getLogsForWarehouse();
 
   }
+
+
   selectOption(value: string) {
-    console.log(value);
     if (value === 'Nav izvēlēts') {
       this.dateFilterOptions.lastHour = false;
       this.dateFilterOptions.lastMonth = false;
@@ -137,6 +149,21 @@ export class WarehouseLogTableComponent implements OnInit {
       });
     }
   }
+
+  toggleLookingAtAllFlag() {
+    this.lookingAtAllChanges = !this.lookingAtAllChanges;
+    if (this.lookingAtAllChanges) {
+      this.logService.filterLogsByDate(this.dateFilterOptions).subscribe(logs => {
+        this.source.empty();
+        this.source.load(logs);
+      });
+    } else {
+      this.logService.getMyWarehouseLogs(this.specificWarehouseId).subscribe(logs => {
+        this.source.empty();
+        this.source.load(logs);
+      });
+    }
+  }
   getLogsForWarehouse() {
     this.logService.filterLogsByDate(this.dateFilterOptions).subscribe(logs => {
       this.source.load(logs);
@@ -161,8 +188,7 @@ export class WarehouseLogTableComponent implements OnInit {
     this.dateFilterOptions.lastWeek = false;
     this.dateFilterOptions.timeFrom = event.start;
     this.dateFilterOptions.timeTill = event.end;
-    console.log(event);
-    console.log(this.dateFilterOptions);
+
     this.logService.filterLogsByDate(this.dateFilterOptions).subscribe(logs => {
       this.source.empty();
       this.source.load(logs);

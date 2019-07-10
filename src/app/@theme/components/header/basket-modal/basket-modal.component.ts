@@ -21,7 +21,7 @@ export class BasketModalComponent implements OnInit {
     mode: 'external',
     actions: false,
     pager: {
-      perPage: 10
+      display: false,
     },
     filter: {
       inputClass: 'inherit-height',
@@ -93,7 +93,6 @@ export class BasketModalComponent implements OnInit {
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
         // When objects will come, we load them in to the our smart table
-
         this.catalogs = catalogs;
         var filteredCatalog = this.catalogs.filter(x => x.type === true);
 
@@ -112,7 +111,7 @@ export class BasketModalComponent implements OnInit {
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
         this.catalogs = catalogs;
-        var filteredCatalog = this.catalogs.filter(x => x.type !== true);
+        var filteredCatalog = this.catalogs.filter(x => x.type === true);
 
         this.source.load(filteredCatalog);
         // When objects will come, we load them in to the our smart table

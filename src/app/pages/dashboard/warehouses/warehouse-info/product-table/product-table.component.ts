@@ -62,7 +62,6 @@ export class ProductTableComponent implements OnInit {
           this.isLoading = false;
         }))
       .subscribe(products => {
-        console.log(products);
         // When objects will come, we load them in to the our smart table
         this.source.load(products);
       });

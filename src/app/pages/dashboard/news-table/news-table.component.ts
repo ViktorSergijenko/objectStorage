@@ -14,6 +14,9 @@ export class NewsTableComponent implements OnInit {
   warehouseId: string;
   settings = {
     actions: false,
+    pager: {
+      display: false,
+    },
     columns: {
       title: {
         title: 'Problēma',
@@ -25,7 +28,7 @@ export class NewsTableComponent implements OnInit {
         valuePrepareFunction: (date) => {
           if (date) {
 
-            return this.datePipe.transform(date, 'dd/MM/yyyy H:mm');
+            return this.datePipe.transform(date, 'dd/MM/yyyy H:mm:ss');
           }
           return null;
         }
@@ -35,7 +38,7 @@ export class NewsTableComponent implements OnInit {
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm:ss');
           return formatted;
         }
       },

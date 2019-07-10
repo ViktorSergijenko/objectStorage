@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { SimpleLog } from '../models/log.model';
@@ -41,9 +41,12 @@ export class LogService {
   }
 
   filterLogsByDate(filterOptions: DateFiltration): Observable<SimpleLog[]> {
-    return this.http.post<SimpleLog[]>(this.getEndpointUrl() + '/filter', filterOptions);
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.post<SimpleLog[]>(this.getEndpointUrl() + '/filter', filterOptions, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
-  getLogsByWarehouseId(id: string): Observable<SimpleLog[]> {
-    return this.http.get<SimpleLog[]>(this.getEndpointUrl() + `/${id}`);
+  getMyWarehouseLogs(id: string): Observable<SimpleLog[]> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.get<SimpleLog[]>(this.getEndpointUrl() + `/onlyMyLogs/${id}`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 }

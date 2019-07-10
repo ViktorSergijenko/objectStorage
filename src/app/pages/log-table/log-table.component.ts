@@ -36,7 +36,7 @@ export class LogTableComponent implements OnInit {
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm:ss');
           return formatted;
         }
       },
@@ -44,6 +44,10 @@ export class LogTableComponent implements OnInit {
   };
 
   settingsSimple = {
+    pager: {
+      display: true,
+      perPage: 100
+    },
 
     mode: 'external',
     actions: false,
@@ -80,7 +84,7 @@ export class LogTableComponent implements OnInit {
         type: 'string',
         valuePrepareFunction: (date) => {
           var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm');
+          var formatted = this.datePipe.transform(raw, 'dd/MM/yyyy H:mm:ss');
           return formatted;
         }
       },
@@ -98,7 +102,6 @@ export class LogTableComponent implements OnInit {
 
   ngOnInit() {
     if (this.userRole === this.regularUserRole) {
-      console.log('asd');
       this.router.navigateByUrl('pages/400');
     }
     else {

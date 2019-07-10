@@ -11,11 +11,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'catalog-name-table',
   templateUrl: './catalog-name-table.component.html',
-  styles: [`
-    nb-card {
-      transform: translate3d(0, 0, 0);
-    }
-  `],
+  styleUrls: ['./catalog-name-table.component.scss']
+
 })
 export class CatalogNameTableComponent implements OnInit {
   userRole: string;
@@ -39,7 +36,7 @@ export class CatalogNameTableComponent implements OnInit {
       confirmDelete: false,
     },
     pager: {
-      perPage: 10
+      display: false,
     },
     filter: {
       inputClass: 'inherit-height',

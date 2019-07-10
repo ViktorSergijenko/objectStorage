@@ -63,11 +63,9 @@ export class HeaderComponent implements OnInit {
   onItemSelection(title) {
     if (title === 'Log out') {
       // Do something on Log out
-      console.log('in item select');
       this.onLogout();
     } else if (title === 'Profile') {
       // Do something on Profile
-      console.log('Profile Clicked ')
     }
   }
   openUserBasket() {

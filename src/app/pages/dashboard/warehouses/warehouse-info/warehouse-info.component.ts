@@ -8,7 +8,6 @@ import { AddNewsModalComponent } from './add-news-modal/add-news-modal.component
 import { NewsService } from '../../../../services/news.service';
 import { DetailsNewsModalComponent } from './details-news-modal/details-news-modal.component';
 import { NbToastrService } from '@nebular/theme';
-import { pipe } from '@angular/core/src/render3';
 import { finalize } from 'rxjs/operators';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -81,6 +80,9 @@ export class WarehouseInfoComponent implements OnInit {
   userRole: string;
   regularUserRole: string = 'Level four';
   catalogNameList: CatalogName[] = [];
+  catalogType: boolean = true;
+  catalogs: Catalog[] = [];
+
   //#region Table settings
   settings = {
     actions: { columnTitle: 'Darbības' },
@@ -98,12 +100,12 @@ export class WarehouseInfoComponent implements OnInit {
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
     },
+    pager: {
+      display: false,
+    },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: false,
-    },
-    pager: {
-      perPage: 10
     },
     filter: {
       inputClass: 'inherit-height',
@@ -113,10 +115,10 @@ export class WarehouseInfoComponent implements OnInit {
         title: 'Catalog nosaukums',
         type: 'string',
       },
-      // currentAmount: {
-      //   title: 'Daudzums',
-      //   type: 'number',
-      // },
+      currentAmount: {
+        title: 'Daudzums',
+        type: 'number',
+      },
       shortContent: {
         title: 'Izmainit daudzumu',
         type: 'custom',
@@ -151,6 +153,9 @@ export class WarehouseInfoComponent implements OnInit {
     actions: false,
     filter: {
       inputClass: 'inherit-height',
+    },
+    pager: {
+      display: false,
     },
     columns: {
       name: {
@@ -210,7 +215,6 @@ export class WarehouseInfoComponent implements OnInit {
   ngOnInit() {
 
     if (this.hasAbilityToLoad === this.trueString) {
-      console.log(this.hasAbilityToLoad);
     }
     this.catalogUpdate = this.basketService.getUpdatedCatalog()
       .subscribe(update => {
@@ -233,7 +237,6 @@ export class WarehouseInfoComponent implements OnInit {
   getCatalogNameList() {
     this.catalogService.getCatalogNameList()
       .subscribe(catalogNameList => {
-        console.log(catalogNameList);
         this.catalogNameList = catalogNameList;
       });
   }
@@ -244,7 +247,6 @@ export class WarehouseInfoComponent implements OnInit {
   //#region Convertation base 64 to blob and download file functionality
   downloadQrCode(base64content: string) {
     base64content = base64content.replace(/data\:image\/(jpeg|jpg|png)\;base64\,/gi, '');
-    console.log(atob(base64content));
     const blob1 = this.convertBase64ToBlobData(base64content);
     if (window.navigator && window.navigator.msSaveOrOpenBlob) { //IE
       window.navigator.msSaveOrOpenBlob(blob1, 'qrCode');
@@ -320,7 +322,6 @@ export class WarehouseInfoComponent implements OnInit {
   }
 
   goToWarehouseLogs() {
-    console.log(this.warehouse.id);
     // Navigating user to details page
     this.router.navigate([`/pages/warehouse/logs/${this.warehouse.id}`]);
   }
@@ -462,6 +463,21 @@ export class WarehouseInfoComponent implements OnInit {
   onUserRowSelect(event): void {
     this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);
   }
+
+
+  catalogTypeShowToggle() {
+    this.catalogType = !this.catalogType
+    if (this.catalogType) {
+      var filteredCatalog = this.catalogs.filter(x => x.type !== false);
+      this.source.empty();
+      this.source.load(filteredCatalog);
+
+    } else {
+      var filteredCatalog = this.catalogs.filter(x => x.type !== true);
+      this.source.empty();
+      this.source.load(filteredCatalog);
+    }
+  }
   /**
    * Getting id of an warehouse from routing
    *
@@ -523,8 +539,9 @@ export class WarehouseInfoComponent implements OnInit {
         }))
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
-        // When objects will come, we load them in to the our smart table
-        this.source.load(catalogs);
+        this.catalogs = catalogs;
+        var filteredCatalog = this.catalogs.filter(x => x.type === true);
+        this.source.load(filteredCatalog);
       });
   }
 

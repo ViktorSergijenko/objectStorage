@@ -46,7 +46,6 @@ export class EditUserInformationModalComponent implements OnInit {
 
   ngOnInit() {
     this.hasAbilityToLoad = this.userThatInformationWeWantToChange.hasAbilityToLoad;
-    console.log(this.userThatInformationWeWantToChange.hasAbilityToLoad);
     this.patchAllValuesToForm();
     this.getRoleList();
   }

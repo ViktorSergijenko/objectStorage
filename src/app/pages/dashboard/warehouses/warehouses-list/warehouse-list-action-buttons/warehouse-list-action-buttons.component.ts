@@ -17,8 +17,6 @@ export class WarehouseListActionButtonsComponent implements OnInit {
     private toastrService: NbToastrService
 
   ) {
-    console.log('pzidts');
-    console.log(this.rowData);
   }
 
   ngOnInit() {

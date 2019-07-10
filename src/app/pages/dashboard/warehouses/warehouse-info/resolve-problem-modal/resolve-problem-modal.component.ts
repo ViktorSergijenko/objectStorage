@@ -46,7 +46,6 @@ export class ResolveProblemModalComponent implements OnInit {
   ngOnInit() {
     this.resolveProblemForm.patchValue({ newsId: this.news.id });
 
-    console.log(this.news);
   }
   /**
    * Method closes (dismisses) current modal windows

@@ -54,6 +54,8 @@ export class RegistrationComponent implements OnInit {
   getRoleList() {
     this.accountService.getRolesList().subscribe(roles => {
       this.rolesForDropDown = roles;
+      this.role = this.rolesForDropDown[0];
+      this.registrationForm.patchValue({ roleName: this.rolesForDropDown[0] });
     });
   }
   onDropDownSelect(role: string) {
@@ -72,9 +74,9 @@ export class RegistrationComponent implements OnInit {
         })
       )
       .subscribe(newUser => {
-        this.registrationForm.reset();
         this.toastrService.success(`User was added`);
         this.successMessage = "User was added";
+        this.goToUserTable();
       },
         // If there was an error during method execution
         err => {
@@ -83,12 +85,15 @@ export class RegistrationComponent implements OnInit {
           this.toastrService.danger(`User was not added`);
         })
   }
-
+  goToUserTable() {
+    // Navigating user to details page
+    this.router.navigate([`/pages/user-table`]);
+  }
   private createForm() {
     this.registrationForm = this.formBuilder.group({
       fullName: [undefined, Validators.required],
       email: [undefined, Validators.required, Validators.email],
-      password: [undefined, Validators.required, Validators.minLength(6)],
+      password: [undefined, Validators.required, Validators.minLength(3)],
       passwordConfirm: [undefined, Validators.required],
       roleName: [undefined, Validators.required],
 

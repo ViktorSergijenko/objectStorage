@@ -1,8 +1,12 @@
+<i class="fas fa-long-arrow-alt-left fa-2x icon-add" routerLink="/warehouse/list"> Iepriekšējā lapa</i>
 <div class="row" *ngIf="warehouse">
   <div class="col-sm-12" *ngIf="userRole != regularUserRole">
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
-        <p>Catalog tabula</p>
+        <p>{{warehouse.name}}</p>
+        <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
+        <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
+          (click)="catalogTypeShowToggle()"></i>
         <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
         <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="userRole != regularUserRole && warehouse.type != 1"
           [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
@@ -22,7 +26,7 @@
   <div class="col-sm-12" *ngIf="userRole == regularUserRole">
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
-        <p>Catalog tabula</p>
+        <p>{{warehouse.name}}</p>
         <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
         <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="warehouse.type != 1 && hasAbilityToLoad == trueString"
           [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
@@ -87,7 +91,7 @@
 
                     </div>
                     <div class="col-sm-4">
-                      <p>{{ news.createdDate | date: 'dd/MM/yyyy H:mm' }}</p>
+                      <p>{{ news.createdDate | date: 'dd/MM/yyyy H:mm:ss' }}</p>
 
                     </div>
                   </div>

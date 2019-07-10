@@ -165,7 +165,6 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
       .subscribe(filteredList => {
         this.catalogNameList = []
         this.catalogNameList = filteredList;
-        console.log(this.catalogNameList);
       });
   }
   private createForm() {
