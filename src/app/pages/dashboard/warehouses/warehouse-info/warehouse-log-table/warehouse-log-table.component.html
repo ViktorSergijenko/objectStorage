@@ -3,15 +3,18 @@
 <nb-card>
   <nb-card-header class="row-with-btns">
     <p>Notikumi</p>
-    <input nbInput placeholder="Diapazons" [nbDatepicker]="rangepicker" *ngIf="userRole != regularUserRole">
-    <nb-rangepicker #rangepicker [(range)]="range" (rangeChange)="handleRangeChange($event)"></nb-rangepicker>
+    <button nbButton [nbPopover]="templateRef"> Datuma diapazons</button>
+    <ng-template #templateRef>
 
-    <div style="padding-top: 10px;" class="date-picker-wrapper" *ngIf="userRole != regularUserRole">
-      <select style="height: 30px" (change)="selectOption($event.target.value)" class="custom-select date-picker"
-        [(ngModel)]="selectedValue" name="time" id="timeline" selected>
-        <option *ngFor="let option of selectValues" [value]="option">{{option}}</option>
-      </select>
-    </div>
+      <div style="padding-top: 10px;" class="date-picker-wrapper" *ngIf="userRole != regularUserRole">
+        <select style="height: 30px" (change)="selectOption($event.target.value)" class="custom-select date-picker"
+          [(ngModel)]="selectedValue" name="time" id="timeline" selected>
+          <option *ngFor="let option of selectValues" [value]="option">{{option}}</option>
+        </select>
+        <nb-calendar-range [(range)]="range" (rangeChange)="handleRangeChange($event)"></nb-calendar-range>
+      </div>
+
+    </ng-template>
 
     <i class="fas fa-shopping-bag fa-2x icon-add" *ngIf="lookingAtAllChanges && userRole != regularUserRole"
       [ngClass]="{'icon-add':lookingAtAllChanges,'problem-icon':!lookingAtAllChanges }"

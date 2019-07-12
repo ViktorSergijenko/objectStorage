@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RegistrationVM, LoginVM, ProfileInformationVM, ChangePasswordViewModel, UserVM, ChangeUserInfoViewModel } from '../models/user';
 import { Observable, Subject } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { ObjectChange } from '../models/base.model';
 
 @Injectable({
