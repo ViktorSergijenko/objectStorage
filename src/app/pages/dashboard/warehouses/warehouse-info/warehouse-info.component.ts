@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WarehousesService } from '../../../../services/warehouses.service';
-import { Warehouse } from '../../../../models/warehouse.model';
+import { Warehouse, UserWarehouse } from '../../../../models/warehouse.model';
 import { News, NewsResolveDTO } from '../../../../models/news.mode';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddNewsModalComponent } from './add-news-modal/add-news-modal.component';
@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { BasketService } from '../../../../services/basket.service';
 import { CatalogName } from '../../../../models/catalog-name.model';
 import { ResolveProblemModalComponent } from './resolve-problem-modal/resolve-problem-modal.component';
+import { WarehouseEmployeesModalComponent } from './warehouse-employees-modal/warehouse-employees-modal.component';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -71,6 +72,8 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   warehouseNewsList: News[] = [];
+  userWarehouse: UserWarehouse = new UserWarehouse();
+
   trueString: string = 'true';
   isLoading: boolean = true;
   isLoadingNews: boolean = true;
@@ -84,7 +87,7 @@ export class WarehouseInfoComponent implements OnInit {
   catalogs: Catalog[] = [];
 
   //#region Table settings
-  settings = {
+  settingsForManagersWithAccess = {
     actions: { columnTitle: 'Darbības' },
 
     mode: 'external',
@@ -124,31 +127,50 @@ export class WarehouseInfoComponent implements OnInit {
         type: 'custom',
         renderComponent: IncrementDecrementCatalogModalComponent
       },
-      // minimumAmount: {
-      //   title: 'Minimalais daudzums',
-      //   type: 'number',
-      // },
-      // actions:
-      // {
-      //   filter: false,
-      //   addable: false,
-      //   editable: false,
-      //   title: 'Catalog Details',
-      //   type: 'html',
-      //   valuePrepareFunction: (cell, row) => {
-      //     return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
-      //   },
-      //   id: {
-      //     title: 'ID',
-      //     type: 'string',
-      //   },
-      // },
+    },
+    noDataMessage: 'Informācija netika atrasta.'
+  };
+  settingsForManagersWithNoAccess = {
+    actions: { columnTitle: 'Darbības' },
+
+    mode: 'external',
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      create: true,
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
+    },
+    pager: {
+      display: false,
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: false,
+    },
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    columns: {
+      name: {
+        title: 'Catalog nosaukums',
+        type: 'string',
+      },
+      shortContent: {
+        title: 'Izmainit daudzumu',
+        type: 'custom',
+        renderComponent: IncrementDecrementCatalogModalComponent
+      },
     },
     noDataMessage: 'Informācija netika atrasta.'
   };
 
-  settingsForRegularuser = {
-
+  settingsForRegularUsersThatCanSeeAmount = {
     mode: 'external',
     actions: false,
     filter: {
@@ -162,34 +184,38 @@ export class WarehouseInfoComponent implements OnInit {
         title: 'Catalog nosaukums',
         type: 'string',
       },
-      // currentAmount: {
-      //   title: 'Daudzums',
-      //   type: 'number',
-      // },
+      currentAmount: {
+        title: 'Daudzums',
+        type: 'number',
+      },
       shortContent: {
         title: 'Izmainit daudzumu',
         type: 'custom',
         renderComponent: IncrementDecrementCatalogModalComponent
       },
-      // minimumAmount: {
-      //   title: 'Minimalais daudzums',
-      //   type: 'number',
-      // },
-      // actions:
-      // {
-      //   filter: false,
-      //   addable: false,
-      //   editable: false,
-      //   title: 'Catalog Details',
-      //   type: 'html',
-      //   valuePrepareFunction: (cell, row) => {
-      //     return `<a title ="See Detail House" href="#/pages/warehouse/catalog/details/${row.id}"><i class=""material-icons">Product Table</i></a>`;
-      //   },
-      //   id: {
-      //     title: 'ID',
-      //     type: 'string',
-      //   },
-      // },
+    },
+    noDataMessage: 'Informācija netika atrasta.'
+  };
+
+  settingsForRegularUsersThatCantSeeamount = {
+    mode: 'external',
+    actions: false,
+    filter: {
+      inputClass: 'inherit-height',
+    },
+    pager: {
+      display: false,
+    },
+    columns: {
+      name: {
+        title: 'Catalog nosaukums',
+        type: 'string',
+      },
+      shortContent: {
+        title: 'Izmainit daudzumu',
+        type: 'custom',
+        renderComponent: IncrementDecrementCatalogModalComponent
+      },
     },
     noDataMessage: 'Informācija netika atrasta.'
   };
@@ -210,6 +236,10 @@ export class WarehouseInfoComponent implements OnInit {
   ) {
     this.userRole = localStorage.getItem('Role');
     this.hasAbilityToLoad = localStorage.getItem('AbilityToLoad');
+    this.userWarehouse.warehouseId = this.route.snapshot.paramMap.get('id');
+    this.userWarehouse.userId = localStorage.getItem('UserId');
+    console.log(this.userWarehouse);
+
   }
 
   ngOnInit() {
@@ -222,16 +252,31 @@ export class WarehouseInfoComponent implements OnInit {
       });
     // Getting warehouse id from routing
     this.gettingWarehouseIdFormRoute();
+    this.getingUserWarehouseInfo();
     // Getting warehouse by id
     this.getWarehouse();
     // Getting warehouse news list
     this.getWarehouseNewsList();
-    this.getCatalogs();
     this.getCatalogNameList();
   }
   ngOnDestroy() {
     // Unsubscribe from catalog update Subscription
     this.catalogUpdate.unsubscribe();
+  }
+
+  getingUserWarehouseInfo() {
+    this.warehouseService.getUserWarehouse(this.userWarehouse).subscribe(userWarehouseInfo => {
+      this.userWarehouse.doesUserHaveAbilityToSeeProductAmount = userWarehouseInfo.doesUserHaveAbilityToSeeProductAmount;
+      this.getCatalogs();
+    })
+  }
+  openEmployeesModal() {
+    // Opening modal window where we can add new Warehouse
+    const activeModal = this.modalService.open(WarehouseEmployeesModalComponent, {
+      size: 'lg',
+      container: 'nb-layout',
+    });
+    activeModal.componentInstance.userWarehouse = this.userWarehouse;
   }
 
   getCatalogNameList() {
@@ -519,6 +564,8 @@ export class WarehouseInfoComponent implements OnInit {
       }))
       .subscribe(warehouseThatHasCame => {
         this.warehouse = warehouseThatHasCame;
+        this.userWarehouse.userId = localStorage.getItem("UserId");
+        this.userWarehouse.warehouseId = this.specificWarehouseId;
       });
   }
 

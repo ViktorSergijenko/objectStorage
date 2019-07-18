@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('UserEmail', credentials.email);
             localStorage.setItem('UserBasketId', credentials.basketId);
             localStorage.setItem('Role', credentials.roleName);
+            localStorage.setItem('UserId', credentials.userId);
             if (credentials.hasAbilityToLoad) {
               localStorage.setItem('AbilityToLoad', 'true');
 

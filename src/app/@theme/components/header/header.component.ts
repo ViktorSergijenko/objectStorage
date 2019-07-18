@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
         this.user = credentials;
         localStorage.setItem('UserFullName', credentials.fullName);
         localStorage.setItem('UserEmail', credentials.email);
+        localStorage.setItem('UserId', credentials.userId);
         localStorage.setItem('UserBasketId', credentials.basketId);
         localStorage.setItem('Role', credentials.roleName);
         if (credentials.hasAbilityToLoad) {
@@ -88,6 +89,7 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('UserFullName');
     localStorage.removeItem('UserBasketId');
     localStorage.removeItem('Role');
+    localStorage.removeItem('UserId');
     localStorage.removeItem('AbilityToLoad');
     this.router.navigate(['/login'])
   }

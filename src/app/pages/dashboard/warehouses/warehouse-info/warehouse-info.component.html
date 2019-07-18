@@ -1,12 +1,14 @@
 <i class="fas fa-long-arrow-alt-left fa-2x icon-add" routerLink="/warehouse/list"> Iepriekšējā lapa</i>
-<div class="row" *ngIf="warehouse">
-  <div class="col-sm-12" *ngIf="userRole != regularUserRole">
+<div class="row" *ngIf="warehouse && catalogs">
+  <div class="col-sm-12" *ngIf="userRole !== regularUserRole">
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
         <p>{{warehouse.name}}</p>
         <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
         <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
           (click)="catalogTypeShowToggle()"></i>
+        <i class="fas fa-users fa-2x icon-detail" *ngIf="userRole != regularUserRole" (click)="
+          openEmployeesModal()"></i>
         <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
         <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="userRole != regularUserRole && warehouse.type != 1"
           [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
@@ -16,17 +18,28 @@
         </i>
       </nb-card-header>
       <nb-card-body>
-        <ng2-smart-table [settings]="settings" [source]="source" (create)="openAddCatalogModal()"
+        <ng2-smart-table *ngIf="userWarehouse.doesUserHaveAbilityToSeeProductAmount"
+          [settings]="settingsForManagersWithAccess" [source]="source" (create)="openAddCatalogModal()"
+          (edit)="openEditCatalogModal($event)" (delete)="deleteCatalog($event)"
+          (userRowSelect)="onUserRowSelect($event)">
+        </ng2-smart-table>
+        <ng2-smart-table *ngIf="!userWarehouse.doesUserHaveAbilityToSeeProductAmount"
+          [settings]="settingsForManagersWithNoAccess" [source]="source" (create)="openAddCatalogModal()"
           (edit)="openEditCatalogModal($event)" (delete)="deleteCatalog($event)"
           (userRowSelect)="onUserRowSelect($event)">
         </ng2-smart-table>
       </nb-card-body>
     </nb-card>
   </div>
-  <div class="col-sm-12" *ngIf="userRole == regularUserRole">
+  <div class="col-sm-12" *ngIf="userRole === regularUserRole">
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
         <p>{{warehouse.name}}</p>
+        <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
+        <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
+          (click)="catalogTypeShowToggle()"></i>
+        <i class="fas fa-users fa-2x icon-detail" *ngIf="userRole != regularUserRole" (click)="
+          openEmployeesModal()"></i>
         <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
         <i class="fa-2x icon-add fas fa-truck-loading" *ngIf="warehouse.type != 1 && hasAbilityToLoad == trueString"
           [ngClass]="{'icon-add':addingObjectToCatalogFromBasket,'problem-icon':!addingObjectToCatalogFromBasket }"
@@ -36,7 +49,12 @@
         </i>
       </nb-card-header>
       <nb-card-body>
-        <ng2-smart-table [settings]="settingsForRegularuser" [source]="source"
+        <ng2-smart-table *ngIf="userWarehouse.doesUserHaveAbilityToSeeProductAmount"
+          [settings]="settingsForRegularUsersThatCanSeeAmount" [source]="source"
+          (userRowSelect)="onUserRowSelect($event)">
+        </ng2-smart-table>
+        <ng2-smart-table *ngIf="!userWarehouse.doesUserHaveAbilityToSeeProductAmount"
+          [settings]="settingsForRegularUsersThatCantSeeamount" [source]="source"
           (userRowSelect)="onUserRowSelect($event)">
         </ng2-smart-table>
       </nb-card-body>

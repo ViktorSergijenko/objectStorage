@@ -24,6 +24,7 @@ import { WarehouseListActionButtonsComponent } from './warehouses/warehouses-lis
 import { ResolveProblemModalComponent } from './warehouses/warehouse-info/resolve-problem-modal/resolve-problem-modal.component';
 import { NewsTableModule } from './news-table/news-table.module';
 import { WarehouseLogTableComponent } from './warehouses/warehouse-info/warehouse-log-table/warehouse-log-table.component';
+import { WarehouseEmployeesModalComponent } from './warehouses/warehouse-info/warehouse-employees-modal/warehouse-employees-modal.component';
 
 
 
@@ -65,7 +66,8 @@ import { WarehouseLogTableComponent } from './warehouses/warehouse-info/warehous
       BasketModalComponent,
       WarehouseListActionButtonsComponent,
       ResolveProblemModalComponent,
-      WarehouseLogTableComponent
+      WarehouseLogTableComponent,
+      WarehouseEmployeesModalComponent
     ],
   exports: [
     AddWarehouseModalComponent,
@@ -81,7 +83,8 @@ import { WarehouseLogTableComponent } from './warehouses/warehouse-info/warehous
     BasketModalComponent,
     WarehouseListActionButtonsComponent,
     ResolveProblemModalComponent,
-    WarehouseLogTableComponent
+    WarehouseLogTableComponent,
+    WarehouseEmployeesModalComponent
   ],
   entryComponents: [
     AddWarehouseModalComponent,
@@ -97,7 +100,8 @@ import { WarehouseLogTableComponent } from './warehouses/warehouse-info/warehous
     BasketModalComponent,
     WarehouseListActionButtonsComponent,
     ResolveProblemModalComponent,
-    WarehouseLogTableComponent
+    WarehouseLogTableComponent,
+    WarehouseEmployeesModalComponent
   ]
 })
 

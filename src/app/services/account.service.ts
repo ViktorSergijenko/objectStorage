@@ -4,6 +4,7 @@ import { RegistrationVM, LoginVM, ProfileInformationVM, ChangePasswordViewModel,
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 import { ObjectChange } from '../models/base.model';
+import { UserWarehouse } from '../models/warehouse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,10 @@ export class AccountService {
     var tokenHeader = new HttpHeaders();
     return this.http.get<ProfileInformationVM>(`${environment.apiUrl}userProfile/get-profile`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
-
+  getEmployeesThatDontHaveAccess(userWarehouse: UserWarehouse): Observable<UserVM[]> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<UserVM[]>(`${this.getEndpointUrl()}/get-employees-that-dont-have-access`, userWarehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
+  }
   getUserList(): Observable<UserVM[]> {
     var tokenHeader = new HttpHeaders();
 

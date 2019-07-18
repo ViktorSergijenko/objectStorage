@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-sm-6" *ngIf="usersThatHaveAccess">
+    <nb-card size="medium">
+      <nb-card-header>
+        Darbinieki, kuriem ir piekļuve
+      </nb-card-header>
+      <nb-list>
+        <nb-list-item *ngFor="let user of usersThatHaveAccess" class="row-with-btns"
+          [ngClass]="{'item-background' : user.doesUserHaveAbilityToSeeProductAmount}">
+          <nb-user [name]="user.fullName" [title]="user.roleName">
+          </nb-user>
+          <i class="fas fa-low-vision fa-2x icon-add" (click)="toggleAmountSeeAbility(user.id)"></i>
+          <i class="fas fa-minus-square problem-icon fa-2x" (click)="RemoveAccessForUser(user.id)"></i>
+        </nb-list-item>
+      </nb-list>
+    </nb-card>
+  </div>
+  <div class="col-sm-6" *ngIf="usersThatDontHaveAccess">
+    <nb-card size="medium">
+      <nb-card-header>
+        Darbinieki, kuriem nav piekļuves
+      </nb-card-header>
+      <nb-list>
+        <nb-list-item *ngFor="let user of usersThatDontHaveAccess" class="row-with-btns">
+          <nb-user [name]="user.fullName" [title]="user.roleName">
+          </nb-user>
+          <i class="fas fa-plus-square fa-2x resolve-icon" (click)="AddAccessForUser(user.id)"></i>
+        </nb-list-item>
+      </nb-list>
+    </nb-card>
+  </div>
+</div>

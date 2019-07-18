@@ -1,16 +1,44 @@
-<div class="container">
+<div class="container" *ngIf="userRole === globalAdmin">
   <div class="row">
     <div class="col-sm-3">
       <i class="fas fas fa-key fa-2x password-icon" (click)="openChangePasswordModal()"></i>
     </div>
-    <div class="col-sm-3" *ngIf="rowData.roleName !== 'Level one'">
+    <div class="col-sm-3">
       <i class="fas fa-user-edit fa-2x edit-icon" (click)="openEditUser()"></i>
     </div>
     <div class="col-sm-3">
       <i class="fas fa-shopping-basket fa-2x basket-icon" (click)="openUserBasket()"></i>
     </div>
-    <div class="col-sm-3" *ngIf="userRole === globalAdmin && rowData.roleName !== 'Level one'">
+    <div class="col-sm-3" *ngIf="userRole === globalAdmin && rowData.roleName !== globalAdmin">
       <i class="fas fa-user-slash fa-2x problem-icon" (click)="deleteUser()"></i>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="userRole === secondLevel">
+  <div class="row">
+    <div class="col-sm-3"
+      *ngIf="rowData.roleName !== userRole && rowData.reportsTo === loginedUserId ||  rowData.roleName === fourthLevel">
+      <i class="fas fas fa-key fa-2x password-icon" (click)="openChangePasswordModal()"></i>
+    </div>
+    <div class="col-sm-3"
+      *ngIf="rowData.roleName !== globalAdmin && rowData.reportsTo === loginedUserId || rowData.roleName === fourthLevel">
+      <i class="fas fa-user-edit fa-2x edit-icon" (click)="openEditUser()"></i>
+    </div>
+    <div class="col-sm-3">
+      <i class="fas fa-shopping-basket fa-2x basket-icon" (click)="openUserBasket()"></i>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="userRole === thirdLevel">
+  <div class="row">
+    <div class="col-sm-3" *ngIf="rowData.roleName !== userRole && rowData.reportsTo === loginedUserId">
+      <i class="fas fas fa-key fa-2x password-icon" (click)="openChangePasswordModal()"></i>
+    </div>
+    <div class="col-sm-3" *ngIf="rowData.roleName !== globalAdmin && rowData.reportsTo === loginedUserId">
+      <i class="fas fa-user-edit fa-2x edit-icon" (click)="openEditUser()"></i>
+    </div>
+    <div class="col-sm-3">
+      <i class="fas fa-shopping-basket fa-2x basket-icon" (click)="openUserBasket()"></i>
     </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ import { BasketModalComponent } from '../../../@theme/components/header/basket-m
 import { DeleteModalComponent } from '../../dashboard/warehouses/delete-modal/delete-modal.component';
 import { finalize } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
+import { UserVM } from '../../../models/user';
 
 @Component({
   selector: 'ngx-table-action-buttons',
@@ -21,19 +22,33 @@ export class TableActionButtonsComponent implements OnInit {
    * @type {Catalog}
    * @memberof IncrementDecrementCatalogModalComponent
    */
-  @Input() rowData: any;
+  @Input() rowData: UserVM;
 
   userRole: string;
+  loginedUserId: string;
+
   globalAdmin: string = 'Level one';
+  secondLevel: string = 'Level two';
+  thirdLevel: string = 'Level three';
+  fourthLevel: string = 'Level four';
+
   constructor(
     private modalService: NgbModal,
     private accountService: AccountService,
     private toastrService: NbToastrService
   ) {
+    this.loginedUserId = localStorage.getItem('UserId');
     this.userRole = localStorage.getItem('Role');
+
   }
 
   ngOnInit() {
+    if (<string>this.rowData.reportsTo === this.loginedUserId) {
+      console.log(this.rowData.fullName)
+    }
+    else {
+      console.log('nope');
+    }
   }
 
   openChangePasswordModal() {

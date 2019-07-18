@@ -27,6 +27,7 @@ export class ProfileInformationVM {
     basketId: string;
     roleName: string;
     hasAbilityToLoad: boolean;
+    userId: string;
 
 }
 
@@ -52,4 +53,6 @@ export class UserVM {
     email: string;
     roleName: string;
     hasAbilityToLoad: boolean;
+    reportsTo: string;
+    doesUserHaveAbilityToSeeProductAmount: boolean;
 }

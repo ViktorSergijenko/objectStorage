@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WarehousesService } from '../../../../services/warehouses.service';
-import { Warehouse } from '../../../../models/warehouse.model';
+import { Warehouse, UserWarehouse } from '../../../../models/warehouse.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterSorting } from '../../../../models/filter-sort.model';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { NbToastrService } from '@nebular/theme';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { WarehouseListActionButtonsComponent } from './warehouse-list-action-buttons/warehouse-list-action-buttons.component';
+import { WarehouseEmployeesModalComponent } from '../warehouse-info/warehouse-employees-modal/warehouse-employees-modal.component';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -28,6 +29,7 @@ export class WarehousesListComponent implements OnInit {
    */
   imageSourcePath: string;
   warehouseList: Warehouse[] = [];
+
   /**
    * ngModels change subject (Search input). It triggers event which emits search input value
    * and it can be debounced
@@ -46,6 +48,7 @@ export class WarehousesListComponent implements OnInit {
    */
   searchValue: string = '';
   isLoading: boolean = true;
+  levelThree: string = 'Level three';
 
   filterSortingOption: FilterSorting = new FilterSorting;
   userRole: string;
@@ -118,24 +121,7 @@ export class WarehousesListComponent implements OnInit {
     noDataMessage: 'Informācija netika atrasta.'
   };
   settingsForEmployee = {
-    // actions: { columnTitle: 'Darbības' },
     mode: 'external',
-    // add: {
-    //   addButtonContent: '<i class="nb-plus"></i>',
-    //   createButtonContent: '<i class="nb-checkmark"></i>',
-    //   cancelButtonContent: '<i class="nb-close"></i>',
-    //   create: true,
-    // },
-    // edit: {
-    //   editButtonContent: '<i class="nb-edit"></i>',
-    //   saveButtonContent: '<i class="nb-checkmark"></i>',
-    //   cancelButtonContent: '<i class="nb-close"></i>',
-    //   confirmSave: true,
-    // },
-    // delete: {
-    //   deleteButtonContent: '<i class="nb-trash"></i>',
-    //   confirmDelete: false,
-    // },
     actions: false,
     pager: {
       display: false,
@@ -167,15 +153,6 @@ export class WarehousesListComponent implements OnInit {
         title: 'Adrese',
         type: 'string',
       },
-      // type: {
-      //   title: 'Noliktava tips',
-      //   type: 'boolean',
-      //   valuePrepareFunction: (value) => { return value === 0 ? 'Galvenā noliktava' : 'Parastā noliktava' }
-      // },
-      // location: {
-      //   title: 'Lokacija',
-      //   type: 'string',
-      // },
       action: {
         filter: false,
         title: 'Problemas',
@@ -193,6 +170,7 @@ export class WarehousesListComponent implements OnInit {
     private toastrService: NbToastrService,
   ) {
     this.userRole = localStorage.getItem('Role');
+    console.log(this.userRole);
   }
 
   ngOnInit() {

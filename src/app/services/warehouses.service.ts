@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { Warehouse } from '../models/warehouse.model';
+import { Warehouse, UserWarehouse } from '../models/warehouse.model';
 import { FilterSorting } from '../models/filter-sort.model';
 import { News } from '../models/news.mode';
 import { environment } from '../../environments/environment.prod';
 import { ObjectChange } from '../models/base.model';
+import { UserVM } from '../models/user';
 
 
 
@@ -43,7 +44,9 @@ export class WarehousesService {
    * @memberof WarehousesService
    */
   getAllWarehouses(): Observable<Warehouse[]> {
-    return this.http.get<Warehouse[]>(this.getEndpointUrl());
+    var tokenHeader = new HttpHeaders();
+
+    return this.http.get<Warehouse[]>(this.getEndpointUrl(), { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
   /**
    * Method gets warehouse  by ID
@@ -101,6 +104,28 @@ export class WarehousesService {
     return this.http.post<News[]>(`${this.getEndpointUrl()}/warehouse-news`, warehouseId);
   }
 
+  getUsersThatAllowToUseWarehouse(userWarehouse: UserWarehouse): Observable<UserVM[]> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<UserVM[]>(`${this.getEndpointUrl()}/warehouse-employees`, userWarehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
+  }
+  addUserToUseWarehouse(userWarehouse: UserWarehouse): Observable<UserVM> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<UserVM>(`${this.getEndpointUrl()}/add-user-to-warehouse`, userWarehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
+  }
+
+  toggleAmountSeeAbility(userWarehouse: UserWarehouse): Observable<void> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<void>(`${this.getEndpointUrl()}/toggle-amount`, userWarehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
+  }
+  removeUserFromWarehouse(userWarehouse: UserWarehouse): Observable<UserVM> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<UserVM>(`${this.getEndpointUrl()}/remove-from-warehouse`, userWarehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
+  }
+
+  getUserWarehouse(userWarehouse: UserWarehouse): Observable<UserWarehouse> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<UserWarehouse>(`${this.getEndpointUrl()}/user-warehouse`, userWarehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) })
+  }
   setUpdatedWarehouse(updated: ObjectChange<Warehouse>) {
     this.warehouseSubject.next(updated);
   }

@@ -53,7 +53,7 @@
   </div>
 </div> -->
 
-<nb-card *ngIf="userRole !== regularUserRole">
+<nb-card *ngIf="userRole !== regularUserRole && userRole !== levelThree">
   <nb-card-header>
     Noliktavas
   </nb-card-header>
@@ -64,7 +64,7 @@
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
-<nb-card *ngIf="userRole === regularUserRole">
+<nb-card *ngIf="userRole === regularUserRole || userRole === levelThree">
   <nb-card-header>
     Noliktavas
   </nb-card-header>

@@ -12,11 +12,15 @@ export class Warehouse extends BaseEntity {
     catalogs: Catalog[] = [];
     hasProblems: boolean;
     hasMinCatalogs: boolean;
-
-
+}
+export class UserWarehouse {
+    warehouseId: string;
+    userId: string;
+    doesUserHaveAbilityToSeeProductAmount: boolean
 }
 
 export enum WarehouseType {
     MainWarehouse,
     SimpleWarehouse,
 }
+
