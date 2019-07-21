@@ -5,6 +5,7 @@ import { LogService } from '../../../../../services/log.service';
 import { DatePipe } from '@angular/common';
 import { LocalDataSource } from 'ng2-smart-table';
 import { DateFiltration } from '../../../../../models/dateFiltration';
+import { min } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-warehouse-log-table',
@@ -13,13 +14,15 @@ import { DateFiltration } from '../../../../../models/dateFiltration';
 })
 export class WarehouseLogTableComponent implements OnInit {
   specificWarehouseId: string = '';
-  selectValues: string[] = ['Nav izvēlēts', 'Pēdējā stundā', 'Pēdējā nedēļā', 'Pēdējā mēnesī']
+  selectValues: string[] = ['Nav izvēlēts', 'Pēdējā stundā', 'Pēdējā diena', 'Pēdējā nedēļā', 'Pēdējā mēnesī']
   selectedValue: string;
   range: NbCalendarRange<Date>;
   dateFilterOptions: DateFiltration = new DateFiltration();
   regularUserRole: string = 'Level four';
   userRole: string;
   lookingAtAllChanges: boolean = true;
+  min = new Date();
+  max = new Date();
 
 
   constructor(
@@ -29,13 +32,19 @@ export class WarehouseLogTableComponent implements OnInit {
     private datePipe: DatePipe,
     private dateService: NbDateService<Date>
   ) {
-
+    this.userRole = localStorage.getItem('Role');
+    if (this.userRole === this.regularUserRole) {
+      this.selectValues = ['Nav izvēlēts', 'Pēdējā stundā', 'Pēdējā diena', 'Pēdējā nedēļā'];
+    }
     this.range = {
       start: new Date(),
       end: new Date()
     };
+
     this.selectedValue = this.selectValues[0];
-    this.userRole = localStorage.getItem('Role');
+    this.min.setDate(this.min.getDate() - 5);
+    this.max.setDate(this.max.getDate() + 0);
+    console.log(this.min);
 
   }
   // getToday() {
@@ -108,6 +117,7 @@ export class WarehouseLogTableComponent implements OnInit {
       this.dateFilterOptions.lastHour = false;
       this.dateFilterOptions.lastMonth = false;
       this.dateFilterOptions.lastWeek = false;
+      this.dateFilterOptions.lastDay = false;
       this.dateFilterOptions.timeFrom = null;
       this.dateFilterOptions.timeTill = null;
       this.logService.filterLogsByDate(this.dateFilterOptions).subscribe(logs => {
@@ -117,6 +127,18 @@ export class WarehouseLogTableComponent implements OnInit {
     }
     if (value === 'Pēdējā stundā') {
       this.dateFilterOptions.lastHour = true;
+      this.dateFilterOptions.lastMonth = false;
+      this.dateFilterOptions.lastWeek = false;
+      this.dateFilterOptions.timeFrom = null;
+      this.dateFilterOptions.timeTill = null;
+      this.logService.filterLogsByDate(this.dateFilterOptions).subscribe(logs => {
+        this.source.empty();
+        this.source.load(logs);
+      });
+    }
+    if (value === 'Pēdējā diena') {
+      this.dateFilterOptions.lastDay = true;
+      this.dateFilterOptions.lastHour = false
       this.dateFilterOptions.lastMonth = false;
       this.dateFilterOptions.lastWeek = false;
       this.dateFilterOptions.timeFrom = null;

@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { Warehouse, UserWarehouse } from '../models/warehouse.model';
 import { FilterSorting } from '../models/filter-sort.model';
 import { News } from '../models/news.mode';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { ObjectChange } from '../models/base.model';
 import { UserVM } from '../models/user';
 

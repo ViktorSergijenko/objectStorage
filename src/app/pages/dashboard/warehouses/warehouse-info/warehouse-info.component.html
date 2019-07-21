@@ -29,6 +29,9 @@
           (userRowSelect)="onUserRowSelect($event)">
         </ng2-smart-table>
       </nb-card-body>
+      <nb-card-footer *ngIf="catalogs.length >= 15">
+        <button nbButton (click)="openAddCatalogModal()" class="footer-add-button">+</button>
+      </nb-card-footer>
     </nb-card>
   </div>
   <div class="col-sm-12" *ngIf="userRole === regularUserRole">

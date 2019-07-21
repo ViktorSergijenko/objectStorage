@@ -1,6 +1,6 @@
 export class DateFiltration {
-    lastThirtyMinutes: boolean;
     lastHour: boolean;
+    lastDay: boolean;
     lastWeek: boolean;
     lastMonth: boolean;
     timeFrom: Date;
