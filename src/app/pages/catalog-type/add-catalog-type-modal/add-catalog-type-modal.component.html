@@ -1,17 +1,17 @@
 <nb-card [nbSpinner]="loadingIndicator" nbSpinnerStatus="danger">
   <nb-card-header class="header text-center">
-    <h2>Jauna noliktava forma</h2>
+    <h2>Jauna katalogu tipu forma</h2>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="addCatalogNameForm">
+    <form [formGroup]="addCatalogTypeForm">
       <div class="form-group">
         <label for="name">Nosaukums</label>
-        <input type="text" class="form-control" id="name" placeholder="Catalog name" formControlName="name">
+        <input type="text" class="form-control" id="name" placeholder="Katalogu nosaukums" formControlName="name">
       </div>
       <div class="row">
         <div class="col-sm-12 text-center">
           <button nbButton type="submit" status="success" class="btn btn-danger "
-            (click)="addCatalogName()">Apstiprināt</button>
+            (click)="addCatalogType()">Apstiprināt</button>
         </div>
       </div>
       <div class="row">

@@ -1,0 +1,12 @@
+<i class="fas fa-long-arrow-alt-left fa-2x icon-add" routerLink="/warehouse/list"> Iepriekšējā lapa</i>
+<nb-card *ngIf="userRole !== regularUserRole" [nbSpinner]="loadingIndicator">
+  <nb-card-header>
+    Katalogu tipi
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (create)="openAddCatalogTypeModal()"
+      (delete)="deleteCatalogType($event)" (edit)="openEditCatalogTypeModal($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

@@ -8,6 +8,7 @@ import { UserTableComponent } from './user-table/user-table.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { CatalogNameTableComponent } from './catalog-name-table/catalog-name-table.component';
 import { LogTableComponent } from './log-table/log-table.component';
+import { CatalogTypeComponent } from './catalog-type/catalog-type.component';
 
 const routes: Routes = [{
   path: '',
@@ -30,8 +31,12 @@ const routes: Routes = [{
     component: UserTableComponent,
   },
   {
-    path: 'catalog-name-list',
+    path: 'catalog-name-list/:id',
     component: CatalogNameTableComponent,
+  },
+  {
+    path: 'catalog-type-list',
+    component: CatalogTypeComponent,
   },
   {
     path: 'log-table',

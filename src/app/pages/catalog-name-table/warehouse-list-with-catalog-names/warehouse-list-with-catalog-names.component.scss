@@ -1,0 +1,12 @@
+.row-with-btns {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .type-icon {
+    color: dodgerblue;
+  &:hover {
+      cursor: pointer;
+    }
+}

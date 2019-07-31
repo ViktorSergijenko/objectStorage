@@ -6,6 +6,7 @@ import { Catalog } from '../models/catalog.model';
 import { environment } from '../../environments/environment';
 import { CatalogName } from '../models/catalog-name.model';
 import { FilterSorting } from '../models/filter-sort.model';
+import { Warehouse } from '../models/warehouse.model';
 
 @Injectable({
     providedIn: 'root'
@@ -49,8 +50,8 @@ export class CatalogService {
      * @returns {Observable<Catalog[]>}
      * @memberof CatalogService
      */
-    getCatalogNameList(): Observable<CatalogName[]> {
-        return this.http.get<CatalogName[]>(this.getEndpointUrl() + 'Name');
+    getCatalogNameList(id: string): Observable<CatalogName[]> {
+        return this.http.get<CatalogName[]>(this.getEndpointUrl() + 'Name/' + id);
     }
     /**
      * Method adds or updates catalog
@@ -172,6 +173,19 @@ export class CatalogService {
         var tokenHeader = new HttpHeaders();
 
         return this.http.delete<CatalogName>(this.getEndpointUrl() + 'Name/' + id, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
+    }
+
+    /**
+     * Method gets all warehouses that stores catalogs with specific name
+     *
+     * @param {string} catalogNameId
+     * @returns {Observable<Warehouse[]>} Returns list with warehouses
+     * @memberof CatalogService
+     */
+    getWarehousesThatHaveCatalogsWithSpecificName(catalogNameId: string): Observable<Warehouse[]> {
+        var tokenHeader = new HttpHeaders();
+
+        return this.http.get<Warehouse[]>(this.getEndpointUrl() + 'Name/warehouses/' + catalogNameId, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
     }
 
 }

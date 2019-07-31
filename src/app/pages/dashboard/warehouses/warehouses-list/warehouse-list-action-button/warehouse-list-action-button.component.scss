@@ -1,0 +1,20 @@
+.row-with-btns {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .profile-upper-btn {
+      min-width: 160px;
+    }
+  }
+  .list-icon {
+    color: #5dcfe3;
+    &:hover {
+        text-shadow: 3px 3px 16px #5dcfe3;
+        cursor: pointer;    
+      } 
+  }
+  
+  .catalog-min-icon {
+    color: #ffa100;
+  }

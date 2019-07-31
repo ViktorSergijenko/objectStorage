@@ -92,7 +92,10 @@ export class AccountService {
     return this.http.get<string[]>(`${this.getEndpointUrl()}/getRoleList`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 
-
+  getUsersWithLevelTwoRole(): Observable<UserVM[]> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.get<UserVM[]>(`${this.getEndpointUrl()}/second-role-users`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
+  }
 
 
   /**

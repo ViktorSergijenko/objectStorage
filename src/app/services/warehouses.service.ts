@@ -26,6 +26,8 @@ export class WarehousesService {
   * @memberof BasketService
   */
   private warehouseSubject = new Subject<ObjectChange<Warehouse>>();
+  private changedWarehousePosition = new Subject<boolean>();
+
 
   /**
    * Method returns endpoint that is related only to this module
@@ -57,6 +59,11 @@ export class WarehousesService {
    */
   getById(warehouseId: string): Observable<Warehouse> {
     return this.http.get<Warehouse>(`${this.getEndpointUrl()}/${warehouseId}`);
+  }
+
+
+  getUserWarehouseById(userWarehouse: UserWarehouse): Observable<UserWarehouse> {
+    return this.http.post<UserWarehouse>(`${this.getEndpointUrl()}/specific-user-warehouse`, userWarehouse);
   }
 
   /**
@@ -138,5 +145,31 @@ export class WarehousesService {
    */
   getUpdatedWarehouse() {
     return this.warehouseSubject.asObservable();
+  }
+
+  setUpdatedPostiion(updated: boolean) {
+    this.changedWarehousePosition.next(updated);
+  }
+
+  /**
+   * Method that gets changes from subject about updated feedback
+   *
+   * @returns Returns observable with new feedback 
+   * @memberof UserFeedBackService
+   */
+  getUpdatedPosition() {
+    return this.changedWarehousePosition.asObservable();
+  }
+
+  /**
+   * Method that send request to add new warehouse to system or modifie it
+   *
+   * @param {RentalPointDTO} warehouse Warehouse  to add or modifie
+   * @returns {Observable<RentalPointVM>} Returns `Observable` with new/modified `Warehouse`
+   * @memberof WarehousesService
+   */
+  editWarehousePosition(warehouse: UserWarehouse): Observable<void> {
+    var tokenHeader = new HttpHeaders();
+    return this.http.post<void>(`${this.getEndpointUrl()}/change-position`, warehouse, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
   }
 }

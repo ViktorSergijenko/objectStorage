@@ -238,7 +238,6 @@ export class WarehouseInfoComponent implements OnInit {
     this.hasAbilityToLoad = localStorage.getItem('AbilityToLoad');
     this.userWarehouse.warehouseId = this.route.snapshot.paramMap.get('id');
     this.userWarehouse.userId = localStorage.getItem('UserId');
-    console.log(this.userWarehouse);
 
   }
 
@@ -257,7 +256,7 @@ export class WarehouseInfoComponent implements OnInit {
     this.getWarehouse();
     // Getting warehouse news list
     this.getWarehouseNewsList();
-    this.getCatalogNameList();
+    // this.getCatalogNameList();
   }
   ngOnDestroy() {
     // Unsubscribe from catalog update Subscription
@@ -279,12 +278,12 @@ export class WarehouseInfoComponent implements OnInit {
     activeModal.componentInstance.userWarehouse = this.userWarehouse;
   }
 
-  getCatalogNameList() {
-    this.catalogService.getCatalogNameList()
-      .subscribe(catalogNameList => {
-        this.catalogNameList = catalogNameList;
-      });
-  }
+  // getCatalogNameList() {
+  //   this.catalogService.getCatalogNameList()
+  //     .subscribe(catalogNameList => {
+  //       this.catalogNameList = catalogNameList;
+  //     });
+  // }
 
 
   // TODO: Write a comments and JSDOCs to all this methods.....

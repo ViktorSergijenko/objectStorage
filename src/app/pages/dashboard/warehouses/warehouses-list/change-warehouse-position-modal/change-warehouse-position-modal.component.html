@@ -1,0 +1,15 @@
+<div class="row" *ngIf="userWarehouse">
+  <div class="col-md-12">
+    <nb-card class="inline-form-card">
+      <nb-card-header>Nomainit poziciju: {{warehouseName}}</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="editPositionForm" class="form-inline">
+          <input min="1" type="number" class="form-control" id="name" placeholder="Pozicija"
+            formControlName="warehousePositionInTable">
+          <button *ngIf="!addingObjectToCatalogFromBasket" type="submit" class="btn btn-primary"
+            (click)="submitButton()">Apsitprināt</button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

@@ -14,7 +14,7 @@ import { min } from 'rxjs/operators';
 })
 export class WarehouseLogTableComponent implements OnInit {
   specificWarehouseId: string = '';
-  selectValues: string[] = ['Nav izvēlēts', 'Pēdējā stundā', 'Pēdējā diena', 'Pēdējā nedēļā', 'Pēdējā mēnesī']
+  selectValues: string[] = ['Nav izvēlēts', 'Pēdējā stundā', 'Pēdējā diena', 'Pēdējā nedēļā', 'Pēdējā mēnesī'];
   selectedValue: string;
   range: NbCalendarRange<Date>;
   dateFilterOptions: DateFiltration = new DateFiltration();
@@ -30,7 +30,7 @@ export class WarehouseLogTableComponent implements OnInit {
     private route: ActivatedRoute,
     private logService: LogService,
     private datePipe: DatePipe,
-    private dateService: NbDateService<Date>
+    private dateService: NbDateService<Date>,
   ) {
     this.userRole = localStorage.getItem('Role');
     if (this.userRole === this.regularUserRole) {
@@ -38,13 +38,12 @@ export class WarehouseLogTableComponent implements OnInit {
     }
     this.range = {
       start: new Date(),
-      end: new Date()
+      end: new Date(),
     };
 
     this.selectedValue = this.selectValues[0];
-    this.min.setDate(this.min.getDate() - 5);
+    this.min.setDate(this.min.getDate() - 7);
     this.max.setDate(this.max.getDate() + 0);
-    console.log(this.min);
 
   }
   // getToday() {
@@ -138,7 +137,7 @@ export class WarehouseLogTableComponent implements OnInit {
     }
     if (value === 'Pēdējā diena') {
       this.dateFilterOptions.lastDay = true;
-      this.dateFilterOptions.lastHour = false
+      this.dateFilterOptions.lastHour = false;
       this.dateFilterOptions.lastMonth = false;
       this.dateFilterOptions.lastWeek = false;
       this.dateFilterOptions.timeFrom = null;
@@ -208,6 +207,7 @@ export class WarehouseLogTableComponent implements OnInit {
     this.dateFilterOptions.lastHour = false;
     this.dateFilterOptions.lastMonth = false;
     this.dateFilterOptions.lastWeek = false;
+    this.dateFilterOptions.lastDay = false;
     this.dateFilterOptions.timeFrom = event.start;
     this.dateFilterOptions.timeTill = event.end;
 

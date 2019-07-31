@@ -16,7 +16,8 @@ export class Warehouse extends BaseEntity {
 export class UserWarehouse {
     warehouseId: string;
     userId: string;
-    doesUserHaveAbilityToSeeProductAmount: boolean
+    doesUserHaveAbilityToSeeProductAmount: boolean;
+    warehousePositionInTable: number;
 }
 
 export enum WarehouseType {

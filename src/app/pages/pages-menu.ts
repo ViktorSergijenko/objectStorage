@@ -11,9 +11,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Catalog nosaukumi',
+    title: 'Katalogu tipi',
     icon: 'nb-compose',
-    link: '/pages/catalog-name-list',
+    link: '/pages/catalog-type-list',
   },
   {
     title: 'Notikumi',

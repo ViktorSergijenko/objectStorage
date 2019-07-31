@@ -44,10 +44,10 @@ export class EditCatalogNameModalComponent implements OnInit {
     this.patchValuesToForm();
   }
   /**
-     * Method closes (dismisses) current modal windows
-     *
-     * @memberof EditCatalogModelComponent
-     */
+   * Method closes (dismisses) current modal windows
+   *
+   * @memberof EditCatalogModelComponent
+   */
   close() {
     this.modal.dismiss();
   }

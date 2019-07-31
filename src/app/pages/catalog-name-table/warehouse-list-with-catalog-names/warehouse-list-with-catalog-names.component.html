@@ -1,0 +1,9 @@
+<nb-card size="small">
+  <nb-list>
+    <nb-list-item *ngFor="let warehouse of warehouses" class="row-with-btns">
+      <nb-user [name]="warehouse.name" [title]="warehouse.address">
+      </nb-user>
+      <i class="fas fa-2x fa-external-link-alt type-icon" (click)="navigateToWarehouse(warehouse.id)"></i>
+    </nb-list-item>
+  </nb-list>
+</nb-card>

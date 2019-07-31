@@ -3,6 +3,8 @@ import { DatePipe } from '@angular/common';
 import { LogService } from '../../services/log.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Router } from '@angular/router';
+import { NbCalendarRange, NbDateService } from '@nebular/theme';
+import { DateFiltration } from '../../models/dateFiltration';
 
 @Component({
   selector: 'ngx-log-table',
@@ -15,6 +17,10 @@ export class LogTableComponent implements OnInit {
   regularUserRole: string = 'Level four';
   userRole: string;
   adminLogsOrSimple: boolean = false;
+  selectValues: string[] = ['Nav izvēlēts', 'Pēdējā stundā', 'Pēdējā diena', 'Pēdējā nedēļā', 'Pēdējā mēnesī'];
+  selectedValue: string;
+  range: NbCalendarRange<Date>;
+  dateFilterOptions: DateFiltration = new DateFiltration();
 
   settingsAdmin = {
     pager: {
@@ -96,9 +102,19 @@ export class LogTableComponent implements OnInit {
   constructor(
     private datePipe: DatePipe,
     private logService: LogService,
-    private router: Router
+    private router: Router,
 
-  ) { this.userRole = localStorage.getItem('Role'); }
+    private dateService: NbDateService<Date>,
+
+
+  ) {
+    this.userRole = localStorage.getItem('Role');
+    this.range = {
+      start: new Date(),
+      end: new Date(),
+    };
+    this.selectedValue = this.selectValues[0];
+  }
 
   ngOnInit() {
     if (this.userRole === this.regularUserRole) {
@@ -111,15 +127,152 @@ export class LogTableComponent implements OnInit {
   toggleTableFlag() {
     this.adminLogsOrSimple = !this.adminLogsOrSimple
   }
+
+  selectOption(value: string) {
+    if (value === 'Nav izvēlēts') {
+      this.dateFilterOptions.lastHour = false;
+      this.dateFilterOptions.lastMonth = false;
+      this.dateFilterOptions.lastWeek = false;
+      this.dateFilterOptions.lastDay = false;
+      this.dateFilterOptions.timeFrom = null;
+      this.dateFilterOptions.timeTill = null;
+      if (!this.adminLogsOrSimple) {
+        this.logService.getAllLogs(this.dateFilterOptions).subscribe(logs => {
+          this.source.empty();
+          this.source.load(logs);
+        });
+      } else {
+
+        this.logService.getAllAdminLogs(this.dateFilterOptions)
+          .subscribe(adminLogs => {
+            this.sourceAdmin.empty();
+            this.sourceAdmin.load(adminLogs);
+          });
+      }
+    }
+    if (value === 'Pēdējā stundā') {
+      this.dateFilterOptions.lastHour = true;
+      this.dateFilterOptions.lastMonth = false;
+      this.dateFilterOptions.lastDay = false;
+      this.dateFilterOptions.lastWeek = false;
+      this.dateFilterOptions.timeFrom = null;
+      this.dateFilterOptions.timeTill = null;
+      if (!this.adminLogsOrSimple) {
+        this.logService.getAllLogs(this.dateFilterOptions).subscribe(logs => {
+          this.source.empty();
+          this.source.load(logs);
+        });
+      } else {
+
+        this.logService.getAllAdminLogs(this.dateFilterOptions)
+          .subscribe(adminLogs => {
+            this.sourceAdmin.empty();
+            this.sourceAdmin.load(adminLogs);
+          });
+      }
+    }
+    if (value === 'Pēdējā diena') {
+      this.dateFilterOptions.lastDay = true;
+      this.dateFilterOptions.lastHour = false;
+      this.dateFilterOptions.lastMonth = false;
+      this.dateFilterOptions.lastWeek = false;
+      this.dateFilterOptions.timeFrom = null;
+      this.dateFilterOptions.timeTill = null;
+      if (!this.adminLogsOrSimple) {
+        this.logService.getAllLogs(this.dateFilterOptions).subscribe(logs => {
+          this.source.empty();
+          this.source.load(logs);
+        });
+      } else {
+
+        this.logService.getAllAdminLogs(this.dateFilterOptions)
+          .subscribe(adminLogs => {
+            this.sourceAdmin.empty();
+            this.sourceAdmin.load(adminLogs);
+          });
+      }
+    }
+    if (value === 'Pēdējā nedēļā') {
+      this.dateFilterOptions.lastWeek = true;
+      this.dateFilterOptions.lastHour = false;
+      this.dateFilterOptions.lastDay = false;
+      this.dateFilterOptions.lastMonth = false;
+      this.dateFilterOptions.timeFrom = null;
+      this.dateFilterOptions.timeTill = null;
+      if (!this.adminLogsOrSimple) {
+        this.logService.getAllLogs(this.dateFilterOptions).subscribe(logs => {
+          this.source.empty();
+          this.source.load(logs);
+        });
+      } else {
+
+        this.logService.getAllAdminLogs(this.dateFilterOptions)
+          .subscribe(adminLogs => {
+            this.sourceAdmin.empty();
+            this.sourceAdmin.load(adminLogs);
+          });
+      }
+    }
+    if (value === 'Pēdējā mēnesī') {
+      this.dateFilterOptions.lastWeek = false;
+      this.dateFilterOptions.lastHour = false;
+      this.dateFilterOptions.lastDay = false;
+      this.dateFilterOptions.lastMonth = true;
+      this.dateFilterOptions.timeFrom = null;
+      this.dateFilterOptions.timeTill = null;
+      if (!this.adminLogsOrSimple) {
+        this.logService.getAllLogs(this.dateFilterOptions).subscribe(logs => {
+          this.source.empty();
+          this.source.load(logs);
+        });
+      } else {
+
+        this.logService.getAllAdminLogs(this.dateFilterOptions)
+          .subscribe(adminLogs => {
+            this.sourceAdmin.empty();
+            this.sourceAdmin.load(adminLogs);
+          });
+      }
+    }
+  }
   getLogs() {
-    this.logService.getAllLogs()
+    this.logService.getAllLogs(this.dateFilterOptions)
       .subscribe(logs => {
         this.source.load(logs);
       });
-    this.logService.getAllAdminLogs()
+    this.logService.getAllAdminLogs(this.dateFilterOptions)
       .subscribe(adminLogs => {
         this.sourceAdmin.load(adminLogs);
       });
+  }
+  get monthStart(): Date {
+    return this.dateService.getMonthStart(new Date());
+  }
 
+  get monthEnd(): Date {
+    return this.dateService.getMonthEnd(new Date());
+  }
+
+  handleRangeChange(event) {
+    this.dateFilterOptions.lastHour = false;
+    this.dateFilterOptions.lastMonth = false;
+    this.dateFilterOptions.lastWeek = false;
+    this.dateFilterOptions.lastDay = false;
+    this.dateFilterOptions.timeFrom = event.start;
+    this.dateFilterOptions.timeTill = event.end;
+
+    if (!this.adminLogsOrSimple) {
+      this.logService.getAllLogs(this.dateFilterOptions).subscribe(logs => {
+        this.source.empty();
+        this.source.load(logs);
+      });
+    } else {
+
+      this.logService.getAllAdminLogs(this.dateFilterOptions)
+        .subscribe(adminLogs => {
+          this.sourceAdmin.empty();
+          this.sourceAdmin.load(adminLogs);
+        });
+    }
   }
 }

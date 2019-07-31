@@ -1,7 +1,7 @@
 <div class="row" *ngIf="addOrRemove">
   <div class="col-md-12">
     <nb-card class="inline-form-card">
-      <nb-card-header>Pievienot produktus</nb-card-header>
+      <nb-card-header>Pievienot produktus: {{catalogToEdit.name}}</nb-card-header>
       <nb-card-body>
         <form [formGroup]="editCatalogForm" class="form-inline">
           <input type="number" step="any" class="form-control" id="name" placeholder="Current amount"
@@ -19,7 +19,7 @@
 <div class="row" *ngIf="!addOrRemove">
   <div class="col-md-12">
     <nb-card class="inline-form-card">
-      <nb-card-header>Noņemt produktus</nb-card-header>
+      <nb-card-header>Noņemt produktus: {{catalogToEdit.name}}</nb-card-header>
       <nb-card-body>
         <form [formGroup]="editCatalogForm" class="form-inline">
           <input type="number" step="any" class="form-control" id="name" placeholder="Current amount"

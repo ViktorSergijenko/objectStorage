@@ -61,6 +61,7 @@ export class WarehouseEmployeesModalComponent implements OnInit {
     let userWarehouse = new UserWarehouse();
     userWarehouse.userId = userId;
     userWarehouse.warehouseId = this.userWarehouse.warehouseId;
+    userWarehouse.warehousePositionInTable = this.userWarehouse.warehousePositionInTable;
     this.warehouseService.removeUserFromWarehouse(userWarehouse)
       .subscribe(removedUser => {
         this.getUsersThatDontHaveAccess();

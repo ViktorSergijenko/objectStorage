@@ -27,8 +27,8 @@ export class LogService {
   * @returns {Observable<SimpleLog[]>}
   * @memberof WarehousesService
   */
-  getAllLogs(): Observable<SimpleLog[]> {
-    return this.http.get<SimpleLog[]>(this.getEndpointUrl());
+  getAllLogs(filterOptions: DateFiltration): Observable<SimpleLog[]> {
+    return this.http.post<SimpleLog[]>(this.getEndpointUrl(), filterOptions);
   }
   /**
   * Method gets all logs
@@ -36,8 +36,8 @@ export class LogService {
   * @returns {Observable<SimpleLog[]>}
   * @memberof WarehousesService
   */
-  getAllAdminLogs(): Observable<SimpleLog[]> {
-    return this.http.get<SimpleLog[]>(this.getEndpointUrl() + '/admin');
+  getAllAdminLogs(filterOptions: DateFiltration): Observable<SimpleLog[]> {
+    return this.http.post<SimpleLog[]>(this.getEndpointUrl() + '/admin', filterOptions);
   }
 
   filterLogsByDate(filterOptions: DateFiltration): Observable<SimpleLog[]> {

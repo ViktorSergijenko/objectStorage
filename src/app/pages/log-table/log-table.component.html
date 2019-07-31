@@ -3,6 +3,19 @@
 <nb-card *ngIf="!adminLogsOrSimple">
   <nb-card-header class="row-with-btns">
     <p>Notikumu tabula</p>
+    <button nbButton [nbPopover]="datePicker"> Datuma diapazons</button>
+    <ng-template #datePicker>
+
+      <div style="padding-top: 10px;" class="date-picker-wrapper">
+        <select style="height: 30px" (change)="selectOption($event.target.value)" class="custom-select date-picker"
+          [(ngModel)]="selectedValue" name="time" id="timeline" selected>
+          <option *ngFor="let option of selectValues" [value]="option">{{option}}</option>
+        </select>
+        <nb-calendar-range [(range)]="range" (rangeChange)="handleRangeChange($event)">
+        </nb-calendar-range>
+      </div>
+
+    </ng-template>
     <i class="fa-2x icon-add fas fa-user-shield" (click)="toggleTableFlag()">
       <span>Parasti notikumi</span>
     </i>
@@ -16,6 +29,19 @@
 <nb-card *ngIf="adminLogsOrSimple">
   <nb-card-header class="row-with-btns">
     <p>Admin notikumu tabula</p>
+    <button nbButton [nbPopover]="datePicker"> Datuma diapazons</button>
+    <ng-template #datePicker>
+
+      <div style="padding-top: 10px;" class="date-picker-wrapper">
+        <select style="height: 30px" (change)="selectOption($event.target.value)" class="custom-select date-picker"
+          [(ngModel)]="selectedValue" name="time" id="timeline" selected>
+          <option *ngFor="let option of selectValues" [value]="option">{{option}}</option>
+        </select>
+        <nb-calendar-range [(range)]="range" (rangeChange)="handleRangeChange($event)">
+        </nb-calendar-range>
+      </div>
+
+    </ng-template>
     <i class="fa-2x icon-add fas fa-user-shield" (click)="toggleTableFlag()">
       <span>Admin notikumi</span>
     </i>

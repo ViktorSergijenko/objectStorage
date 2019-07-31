@@ -32,6 +32,7 @@ export class AddNewCatalogNameModalComponent implements OnInit {
    * @memberof AddNewCatalogModalComponent
    */
   error: string = '';
+  catalogTypeId: string;
   constructor(
     private formBuilder: FormBuilder,
     private modal: NgbActiveModal,
@@ -39,6 +40,7 @@ export class AddNewCatalogNameModalComponent implements OnInit {
     private toastrService: NbToastrService
   ) { this.createForm() }
   ngOnInit() {
+    this.addCatalogNameForm.patchValue({ catalogTypeId: this.catalogTypeId });
   }
   /**
    * Method closes (dismisses) current modal windows
@@ -51,6 +53,8 @@ export class AddNewCatalogNameModalComponent implements OnInit {
   private createForm() {
     this.addCatalogNameForm = this.formBuilder.group({
       name: [undefined, Validators.required],
+      catalogTypeId: [undefined, Validators.required],
+
     });
   }
 

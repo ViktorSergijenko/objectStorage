@@ -6,7 +6,9 @@ import { AddNewCatalogNameModalComponent } from './add-new-catalog-name-modal/ad
 import { EditCatalogNameModalComponent } from './edit-catalog-name-modal/edit-catalog-name-modal.component';
 import { DeleteModalComponent } from '../dashboard/warehouses/delete-modal/delete-modal.component';
 import { NbToastrService } from '@nebular/theme';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { type } from 'os';
+import { CatalogNameActionButtonsComponent } from './catalog-name-action-buttons/catalog-name-action-buttons.component';
 
 @Component({
   selector: 'catalog-name-table',
@@ -16,6 +18,8 @@ import { Router } from '@angular/router';
 })
 export class CatalogNameTableComponent implements OnInit {
   userRole: string;
+  specifiedCatalogTypeId: string;
+
   regularUserRole: string = 'Level four';
   settings = {
     mode: 'external',
@@ -50,6 +54,12 @@ export class CatalogNameTableComponent implements OnInit {
         title: 'Catalogu daudzums',
         type: 'number',
       },
+      buttons: {
+        filter: false,
+        title: 'Darbības',
+        type: 'custom',
+        renderComponent: CatalogNameActionButtonsComponent
+      },
     },
     noDataMessage: 'Informācija netika atrasta'
   };
@@ -60,10 +70,14 @@ export class CatalogNameTableComponent implements OnInit {
     private catalogService: CatalogService,
     private modalService: NgbModal,
     private toastrService: NbToastrService,
-    private router: Router
-  ) { this.userRole = localStorage.getItem('Role'); }
+    private router: Router,
+    private route: ActivatedRoute,
+
+
+  ) { }
 
   ngOnInit() {
+    this.gettingCatalogTypeIdFormRoute();
     if (this.userRole === this.regularUserRole) {
       this.router.navigateByUrl('pages/400');
     }
@@ -73,7 +87,7 @@ export class CatalogNameTableComponent implements OnInit {
   }
 
   private getCatalogNameList() {
-    this.catalogService.getCatalogNameList()
+    this.catalogService.getCatalogNameList(this.specifiedCatalogTypeId)
       .subscribe(nameList => {
         this.source.load(nameList);
       });
@@ -89,6 +103,7 @@ export class CatalogNameTableComponent implements OnInit {
     const activeModal = this.modalService.open(AddNewCatalogNameModalComponent, {
       container: 'nb-layout',
     });
+    activeModal.componentInstance.catalogTypeId = this.specifiedCatalogTypeId;
     // When modal window was closed it can pass data back to uss...
     activeModal.result.then(newCatalog => {
       // Push new warehouse to the warehouse list that is used to display them 
@@ -138,4 +153,9 @@ export class CatalogNameTableComponent implements OnInit {
       }
     })
   };
+
+  private gettingCatalogTypeIdFormRoute() {
+    // Getting a route param from our routing.
+    this.specifiedCatalogTypeId = this.route.snapshot.paramMap.get('id');
+  }
 }

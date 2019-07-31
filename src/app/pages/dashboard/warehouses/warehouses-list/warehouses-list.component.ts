@@ -3,7 +3,7 @@ import { WarehousesService } from '../../../../services/warehouses.service';
 import { Warehouse, UserWarehouse } from '../../../../models/warehouse.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterSorting } from '../../../../models/filter-sort.model';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AddWarehouseModalComponent } from '../add-warehouse-modal/add-warehouse-modal.component';
 import { EditWarehouseModalComponent } from '../edit-warehouse-modal/edit-warehouse-modal.component';
 import { finalize, debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { NbToastrService } from '@nebular/theme';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { WarehouseListActionButtonsComponent } from './warehouse-list-action-buttons/warehouse-list-action-buttons.component';
-import { WarehouseEmployeesModalComponent } from '../warehouse-info/warehouse-employees-modal/warehouse-employees-modal.component';
+import { WarehouseListActionButtonComponent } from './warehouse-list-action-button/warehouse-list-action-button.component';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -38,6 +38,8 @@ export class WarehousesListComponent implements OnInit {
    * @memberof WarehousesListComponent
    */
   searchValueChanged: Subject<string> = new Subject();
+  positionUpdate: Subscription;
+
   source: LocalDataSource = new LocalDataSource();
 
   /**
@@ -54,6 +56,7 @@ export class WarehousesListComponent implements OnInit {
   userRole: string;
   regularUserRole: string = 'Level four';
   settings = {
+
     actions: { columnTitle: 'Darbības' },
     mode: 'external',
     add: {
@@ -79,6 +82,11 @@ export class WarehousesListComponent implements OnInit {
       inputClass: 'inherit-height',
     },
     columns: {
+      warehousePositionInTable: {
+        title: 'Nr.',
+        type: 'number',
+        width: '40px',
+      },
       actions:
       {
         filter: false,
@@ -117,7 +125,14 @@ export class WarehousesListComponent implements OnInit {
         type: 'custom',
         renderComponent: WarehouseListActionButtonsComponent
       },
+      buttons: {
+        filter: false,
+        title: 'Darbības',
+        type: 'custom',
+        renderComponent: WarehouseListActionButtonComponent
+      },
     },
+
     noDataMessage: 'Informācija netika atrasta.'
   };
   settingsForEmployee = {
@@ -130,6 +145,10 @@ export class WarehousesListComponent implements OnInit {
       inputClass: 'inherit-height',
     },
     columns: {
+      warehousePositionInTable: {
+        title: 'Pozicija',
+        type: 'number',
+      },
       actions:
       {
         filter: false,
@@ -159,6 +178,19 @@ export class WarehousesListComponent implements OnInit {
         type: 'custom',
         renderComponent: WarehouseListActionButtonsComponent
       },
+      buttons: {
+        filter: false,
+        title: 'Darbības',
+        type: 'custom',
+        renderComponent: WarehouseListActionButtonComponent
+      },
+    },
+    rowClassFunction: (row) => {
+      //console.log("row.data.userID:: " + row.data.userID + ", this.loggedInUserId:: " + this.loggedInUserId);
+      if (row.data.hasProblem) {
+        return 'row-background';
+      }
+      return '';
     },
     noDataMessage: 'Informācija netika atrasta.'
   };
@@ -170,7 +202,6 @@ export class WarehousesListComponent implements OnInit {
     private toastrService: NbToastrService,
   ) {
     this.userRole = localStorage.getItem('Role');
-    console.log(this.userRole);
   }
 
   ngOnInit() {
@@ -186,12 +217,18 @@ export class WarehousesListComponent implements OnInit {
         this.searchValue = newSearchVal;
         this.getFilteredWarehouseList(this.searchValue);
       });
-
+    this.positionUpdate = this.warehouseService.getUpdatedPosition()
+      .subscribe(() => {
+        console.log('empty');
+        this.source.empty();
+        this.getWarehouseList();
+      });
   }
 
   ngOnDestroy() {
     // Unsubscribe from search value changes to avoid memory leaks
     this.searchValueChanged.unsubscribe();
+    this.positionUpdate.unsubscribe();
   }
 
 
