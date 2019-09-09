@@ -12,5 +12,7 @@ export class Catalog extends BaseEntity {
     warehouse: Warehouse;
     warehouseId: string;
     productPrice: number;
+    catalogNameId: string
+
     type: boolean;
 }

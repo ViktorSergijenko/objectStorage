@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 import { Catalog } from '../models/catalog.model';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { CatalogName } from '../models/catalog-name.model';
-import { FilterSorting } from '../models/filter-sort.model';
+import { FilterSorting, WarehouseCatalogFiltrationByType } from '../models/filter-sort.model';
 import { Warehouse } from '../models/warehouse.model';
 
 @Injectable({
@@ -95,8 +95,8 @@ export class CatalogService {
      * @returns {Observable<void>}
      * @memberof CatalogService
      */
-    getCatalogsByWarehouseId(warehouseId: string): Observable<Catalog[]> {
-        return this.http.get<Catalog[]>(`${this.getEndpointUrl()}/warehouse/${warehouseId}`);
+    getCatalogsByWarehouseId(filterCatalogInWarehouse: WarehouseCatalogFiltrationByType): Observable<Catalog[]> {
+        return this.http.post<Catalog[]>(`${this.getEndpointUrl()}/warehouse`, filterCatalogInWarehouse);
     }
     /**
      * Method gets list of catalogs of an specifick basket
@@ -105,18 +105,19 @@ export class CatalogService {
      * @returns {Observable<void>}
      * @memberof CatalogService
      */
-    getCatalogsByBasketId(basketId: string): Observable<Catalog[]> {
-        return this.http.get<Catalog[]>(`${this.getEndpointUrl()}/basket/${basketId}`);
+    getCatalogsByBasketId(catalogFiltrator: WarehouseCatalogFiltrationByType): Observable<Catalog[]> {
+        return this.http.post<Catalog[]>(`${this.getEndpointUrl()}/basket`, catalogFiltrator);
     }
     /**
-   * Method gets basket from system
-   *
-   * @param {string} basketId Id of an basket that we want to get
-   * @returns {Observable<void>}
-   * @memberof CatalogService
-   */
-    getCatalogByUserId(useriD: string): Observable<Catalog[]> {
-        return this.http.get<Catalog[]>(`${this.getEndpointUrl()}/basket-user-id/${useriD}`);
+    * Method gets basket from system
+    *
+    * @param {string} basketId Id of an basket that we want to get
+    * @returns {Observable<void>}
+    * @memberof CatalogService
+    */
+    getCatalogByUserId(filterCatalogInWarehouse: WarehouseCatalogFiltrationByType): Observable<Catalog[]> {
+
+        return this.http.post<Catalog[]>(`${this.getEndpointUrl()}/basket-user-id`, filterCatalogInWarehouse);
     }
     /**
     * Method send signal to stream with updated information about feedback

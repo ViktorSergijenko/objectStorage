@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CatalogService } from '../../../../services/catalog.service';
 import { finalize } from 'rxjs/operators';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BasketService } from '../../../../services/basket.service';
 import { Catalog } from '../../../../models/catalog.model';
+import { CatalogType } from '../../../../models/catalog-type';
+import { WarehouseCatalogFiltrationByType } from '../../../../models/filter-sort.model';
+import { CatalogTypeService } from '../../../../services/catalog-type.service';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-basket-modal',
@@ -16,6 +20,12 @@ export class BasketModalComponent implements OnInit {
   catalogType: boolean = true;
   catalogs: Catalog[] = [];
   userId: string;
+  selectedCatalogType: CatalogType;
+  catalogFiltrator: WarehouseCatalogFiltrationByType = new WarehouseCatalogFiltrationByType();
+  catalogTypeList: CatalogType[] = [];
+
+
+
   //#region Table settings
   settings = {
     mode: 'external',
@@ -44,15 +54,46 @@ export class BasketModalComponent implements OnInit {
   constructor(
     private catalogService: CatalogService,
     private basketService: BasketService,
-    private modal: NgbActiveModal
+    private modal: NgbActiveModal,
+    private catalogTypeService: CatalogTypeService,
+    private toastrService: NbToastrService,
   ) { }
 
   ngOnInit() {
+    this.getCatalogTypeList();
+  }
+
+  onSelectTypeChange() {
+    this.catalogFiltrator.catalogTypeId = this.selectedCatalogType.id;
     if (!this.userId) {
-      this.getCatalogs(localStorage.getItem('UserBasketId'));
+      this.catalogFiltrator.basketId = localStorage.getItem('UserBasketId')
+      this.getCatalogs(this.catalogFiltrator);
     } else {
-      this.getCatalogsByUserId(this.userId);
+      this.catalogFiltrator.userId = this.userId;
+      this.getCatalogsByUserId(this.catalogFiltrator);
     }
+  }
+
+  private getCatalogTypeList() {
+    this.catalogTypeService.getCatalogNameList()
+      .pipe(
+        finalize(() => {
+        }))
+      .subscribe(catalogTypeList => {
+        this.catalogTypeList = catalogTypeList;
+        console.log(this.catalogTypeList);
+        this.selectedCatalogType = catalogTypeList[1];
+        this.catalogFiltrator.catalogTypeId = catalogTypeList[1].id;
+        if (!this.userId) {
+          this.catalogFiltrator.basketId = localStorage.getItem('UserBasketId')
+          this.getCatalogs(this.catalogFiltrator);
+        } else {
+          this.catalogFiltrator.userId = this.userId;
+          this.getCatalogsByUserId(this.catalogFiltrator);
+        }
+      }, err => {
+        this.toastrService.danger(`Nesanāca dabūt katalogu tipus`);
+      });
   }
   /**
    * Method closes (dismisses) current modal windows
@@ -62,28 +103,18 @@ export class BasketModalComponent implements OnInit {
   close() {
     this.modal.dismiss();
   }
-  catalogTypeShowToggle() {
-    this.catalogType = !this.catalogType
-    if (this.catalogType) {
-      var filteredCatalog = this.catalogs.filter(x => x.type !== false);
-      this.source.empty();
-      this.source.load(filteredCatalog);
 
-    } else {
-      var filteredCatalog = this.catalogs.filter(x => x.type !== true);
-      this.source.empty();
-      this.source.load(filteredCatalog);
-    }
-  }
   /**
      * Method gets list of catalogs
      *
      * @private
      * @memberof WarehouseInfoComponent
      */
-  private getCatalogs(id: string) {
+  private getCatalogs(catalogFiltrator: WarehouseCatalogFiltrationByType) {
+    this.source.empty();
+
     // Calling method from service that will get uss our catalogs
-    this.catalogService.getCatalogsByBasketId(id)
+    this.catalogService.getCatalogsByBasketId(catalogFiltrator)
       .pipe(
         // When method will be executed
         finalize(() => {
@@ -94,14 +125,14 @@ export class BasketModalComponent implements OnInit {
       .subscribe(catalogs => {
         // When objects will come, we load them in to the our smart table
         this.catalogs = catalogs;
-        var filteredCatalog = this.catalogs.filter(x => x.type === true);
 
-        this.source.load(filteredCatalog);
+        this.source.load(catalogs);
       });
   }
-  private getCatalogsByUserId(id: string) {
+  private getCatalogsByUserId(catalogFiltrator: WarehouseCatalogFiltrationByType) {
+    this.source.empty();
     // Calling method from service that will get uss our catalogs
-    this.catalogService.getCatalogByUserId(id)
+    this.catalogService.getCatalogByUserId(catalogFiltrator)
       .pipe(
         // When method will be executed
         finalize(() => {
@@ -111,9 +142,8 @@ export class BasketModalComponent implements OnInit {
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
         this.catalogs = catalogs;
-        var filteredCatalog = this.catalogs.filter(x => x.type === true);
 
-        this.source.load(filteredCatalog);
+        this.source.load(catalogs);
         // When objects will come, we load them in to the our smart table
       });
   }

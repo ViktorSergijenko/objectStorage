@@ -3,10 +3,17 @@
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
         <p>Basket</p>
-        <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
-        <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
-          (click)="catalogTypeShowToggle()"></i>
+        <select [(ngModel)]="selectedCatalogType" (change)="onSelectTypeChange()" style="width: 100px;"
+          class="form-control" (change)="onSelectTypeChange()">
+          <option *ngFor="let type of catalogTypeList" [ngValue]="type"> {{type.name}}</option>
+        </select>
         <i class="fas fa-times-circle close-icon fa-2x" (click)="close()"></i>
+        <!-- <nb-select (selectedChange)="onSelectTypeChange($event)" [(ngModel)]="catalogFiltrator.catalogTypeId"
+          placeholder="Katalogu TIPI">
+          <nb-option [value]="type.id" *ngFor="let type of catalogTypeList">
+            {{type.name}}
+          </nb-option>
+        </nb-select> -->
 
       </nb-card-header>
       <nb-card-body>

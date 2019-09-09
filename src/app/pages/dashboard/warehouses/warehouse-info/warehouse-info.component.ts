@@ -22,6 +22,9 @@ import { BasketService } from '../../../../services/basket.service';
 import { CatalogName } from '../../../../models/catalog-name.model';
 import { ResolveProblemModalComponent } from './resolve-problem-modal/resolve-problem-modal.component';
 import { WarehouseEmployeesModalComponent } from './warehouse-employees-modal/warehouse-employees-modal.component';
+import { CatalogTypeService } from '../../../../services/catalog-type.service';
+import { CatalogType } from '../../../../models/catalog-type';
+import { WarehouseCatalogFiltrationByType } from '../../../../models/filter-sort.model';
 
 @Component({
   selector: 'ngx-warehouse-info',
@@ -73,6 +76,7 @@ export class WarehouseInfoComponent implements OnInit {
    */
   warehouseNewsList: News[] = [];
   userWarehouse: UserWarehouse = new UserWarehouse();
+  selectedCatalogType: CatalogType;
 
   trueString: string = 'true';
   isLoading: boolean = true;
@@ -85,6 +89,9 @@ export class WarehouseInfoComponent implements OnInit {
   catalogNameList: CatalogName[] = [];
   catalogType: boolean = true;
   catalogs: Catalog[] = [];
+  catalogTypeList: CatalogType[] = [];
+  catalogFiltrator: WarehouseCatalogFiltrationByType = new WarehouseCatalogFiltrationByType();
+
 
   //#region Table settings
   settingsForManagersWithAccess = {
@@ -232,7 +239,9 @@ export class WarehouseInfoComponent implements OnInit {
     private newsService: NewsService,
     private toastrService: NbToastrService,
     private catalogService: CatalogService,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private catalogTypeService: CatalogTypeService
+
   ) {
     this.userRole = localStorage.getItem('Role');
     this.hasAbilityToLoad = localStorage.getItem('AbilityToLoad');
@@ -252,21 +261,39 @@ export class WarehouseInfoComponent implements OnInit {
     // Getting warehouse id from routing
     this.gettingWarehouseIdFormRoute();
     this.getingUserWarehouseInfo();
+    this.getCatalogTypeList();
     // Getting warehouse by id
     this.getWarehouse();
     // Getting warehouse news list
     this.getWarehouseNewsList();
     // this.getCatalogNameList();
   }
+
+  onSelectTypeChange() {
+    this.getCatalogs();
+  }
   ngOnDestroy() {
     // Unsubscribe from catalog update Subscription
     this.catalogUpdate.unsubscribe();
+  }
+  private getCatalogTypeList() {
+    this.catalogTypeService.getCatalogNameList()
+      .pipe(
+        finalize(() => {
+        }))
+      .subscribe(catalogTypeList => {
+        this.catalogTypeList = catalogTypeList;
+        this.selectedCatalogType = catalogTypeList[1];
+        this.catalogFiltrator.catalogTypeId = catalogTypeList[1].id;
+        this.getCatalogs();
+      }, err => {
+        this.toastrService.danger(`Nesanāca dabūt katalogu tipus`);
+      });
   }
 
   getingUserWarehouseInfo() {
     this.warehouseService.getUserWarehouse(this.userWarehouse).subscribe(userWarehouseInfo => {
       this.userWarehouse.doesUserHaveAbilityToSeeProductAmount = userWarehouseInfo.doesUserHaveAbilityToSeeProductAmount;
-      this.getCatalogs();
     })
   }
   openEmployeesModal() {
@@ -384,8 +411,9 @@ export class WarehouseInfoComponent implements OnInit {
     const activeModal = this.modalService.open(AddNewCatalogModalComponent, {
       container: 'nb-layout',
     });
+    activeModal.componentInstance.catalogTypeId = this.catalogFiltrator.catalogTypeId;
     activeModal.componentInstance.warehouseId = this.specificWarehouseId;
-    activeModal.componentInstance.catalogNameList = this.catalogNameList
+    activeModal.componentInstance.catalogNameList = this.catalogNameList;
     // When modal window was closed it can pass data back to uss...
     activeModal.result.then(newCatalog => {
       // Push new warehouse to the warehouse list that is used to display them 
@@ -508,20 +536,6 @@ export class WarehouseInfoComponent implements OnInit {
     this.catalogService.setAddOrRemoveStatus(this.addingObjectToCatalogFromBasket);
   }
 
-
-  catalogTypeShowToggle() {
-    this.catalogType = !this.catalogType
-    if (this.catalogType) {
-      var filteredCatalog = this.catalogs.filter(x => x.type !== false);
-      this.source.empty();
-      this.source.load(filteredCatalog);
-
-    } else {
-      var filteredCatalog = this.catalogs.filter(x => x.type !== true);
-      this.source.empty();
-      this.source.load(filteredCatalog);
-    }
-  }
   /**
    * Getting id of an warehouse from routing
    *
@@ -529,8 +543,11 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   private gettingWarehouseIdFormRoute() {
+    console.log('warehouse id');
+
     // Getting a route param from our routing.
     this.specificWarehouseId = this.route.snapshot.paramMap.get('id');
+    this.catalogFiltrator.warehouseId = this.route.snapshot.paramMap.get('id');
   }
   /**
    * Method gets news list for warehouse
@@ -575,8 +592,9 @@ export class WarehouseInfoComponent implements OnInit {
    * @memberof WarehouseInfoComponent
    */
   private getCatalogs() {
+
     // Calling method from service that will get uss our catalogs
-    this.catalogService.getCatalogsByWarehouseId(this.specificWarehouseId)
+    this.catalogService.getCatalogsByWarehouseId(this.catalogFiltrator)
       .pipe(
         // When method will be executed
         finalize(() => {
@@ -585,9 +603,10 @@ export class WarehouseInfoComponent implements OnInit {
         }))
       // Subscribing to the method, to get our objects
       .subscribe(catalogs => {
+        this.catalogs = [];
+        this.source.empty();
         this.catalogs = catalogs;
-        var filteredCatalog = this.catalogs.filter(x => x.type === true);
-        this.source.load(filteredCatalog);
+        this.source.load(catalogs);
       });
   }
 

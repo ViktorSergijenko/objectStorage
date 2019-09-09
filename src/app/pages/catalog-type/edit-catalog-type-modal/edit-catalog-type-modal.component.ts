@@ -87,7 +87,7 @@ export class EditCatalogTypeModalComponent implements OnInit {
    * @private
    * @memberof EditCatalogTypeModalComponent
    */
-  private editCatalogType() {
+  editCatalogType() {
     this.catalogTypeService.saveCatalogType(this.editCatalogTypeForm.value)
       .pipe(
         // When method was executed

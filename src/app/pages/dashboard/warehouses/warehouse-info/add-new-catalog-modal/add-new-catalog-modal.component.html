@@ -1,6 +1,6 @@
 <nb-card [nbSpinner]="loadingIndicator" nbSpinnerStatus="danger">
   <nb-card-header class="header text-center">
-    <h2>Add Catalog form</h2>
+    <h2>Jaunu katalogu forma</h2>
   </nb-card-header>
   <nb-card-body>
     <form [formGroup]="addCatalogForm">
@@ -12,14 +12,14 @@
               ngbDropdownToggle>Izvēlieties catalogu nosaukumu</button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
               <button class="dropdown-item" *ngFor="let catalog of catalogNameList"
-                (click)="onDropDownSelect(catalog.name)">{{catalog.name}}</button>
+                (click)="onDropDownSelect(catalog)">{{catalog.name}}</button>
             </div>
           </div>
           <input formControlName="name" type="text" class="form-control" aria-label="Text input with dropdown button"
             [ngModel]="searchValue" (ngModelChange)="searchTextChanged($event)">
         </div>
       </div>
-      <div class="input-group mb-3">
+      <!-- <div class="input-group mb-3">
         <div class="input-group mb-3">
           <div class="input-group-prepend" ngbDropdown>
             <button class="btn btn btn-outline-primary dropdown-toggle dropdown-width" type="button"
@@ -33,7 +33,7 @@
           <input [ngModelOptions]="{standalone: true}" type="text" class="form-control"
             aria-label="Text input with dropdown button" [(ngModel)]="typeName">
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="minimumAmount">Minimalais daudzums</label>
         <input type="text" class="form-control" id="minimumAmount" placeholder="Minimalais daudzums"

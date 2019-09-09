@@ -35,6 +35,7 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
    * @memberof AddNewCatalogModalComponent
    */
   loadingIndicator: boolean = false;
+  catalogTypeId: string;
   filterSortingOption: FilterSorting = new FilterSorting;
   /**
    * ngModels change subject (Search input). It triggers event which emits search input value
@@ -81,6 +82,8 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.addCatalogForm.patchValue({ warehouseId: this.warehouseId });
+    this.filterSortingOption.catalogTypeId = this.catalogTypeId;
+    console.log(this.catalogTypeId);
     this.searchValueChanged.pipe(
       // Wait 400ms after the last event before emitting last event
       debounceTime(400),
@@ -109,8 +112,8 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
   openDropdown() {
     this.dropdown.open();
   }
-  onDropDownSelect(name: string) {
-    this.addCatalogForm.patchValue({ name: name });
+  onDropDownSelect(catalogName: CatalogName) {
+    this.addCatalogForm.patchValue({ name: catalogName.name, catalogNameId: catalogName.id });
   }
   /**
    * Method closes (dismisses) current modal windows
@@ -175,7 +178,7 @@ export class AddNewCatalogModalComponent implements OnInit, OnDestroy {
       minimumAmount: [undefined, Validators.required],
       warehouseId: ['', Validators.required],
       productPrice: [undefined, Validators.required],
-      type: [undefined, Validators.required],
+      catalogNameId: [undefined, Validators.required],
     });
     this.addCatalogForm.patchValue({ currentAmount: 0 });
   }

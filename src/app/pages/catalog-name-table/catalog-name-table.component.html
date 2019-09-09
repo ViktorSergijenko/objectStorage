@@ -1,7 +1,7 @@
-<i class="fas fa-long-arrow-alt-left fa-2x icon-add" routerLink="/warehouse/list"> Iepriekšējā lapa</i>
+<i class="fas fa-long-arrow-alt-left fa-2x icon-add" routerLink="/pages/catalog-type-list"> Iepriekšējā lapa</i>
 <nb-card *ngIf="userRole !== regularUserRole">
   <nb-card-header>
-    Catalog nosaukumus
+    Katalogu nosaukumus: {{catalogType.name}}
   </nb-card-header>
 
   <nb-card-body>

@@ -9,6 +9,8 @@ import { NbToastrService } from '@nebular/theme';
 import { Router, ActivatedRoute } from '@angular/router';
 import { type } from 'os';
 import { CatalogNameActionButtonsComponent } from './catalog-name-action-buttons/catalog-name-action-buttons.component';
+import { CatalogTypeService } from '../../services/catalog-type.service';
+import { CatalogType } from '../../models/catalog-type';
 
 @Component({
   selector: 'catalog-name-table',
@@ -19,6 +21,7 @@ import { CatalogNameActionButtonsComponent } from './catalog-name-action-buttons
 export class CatalogNameTableComponent implements OnInit {
   userRole: string;
   specifiedCatalogTypeId: string;
+  catalogType: CatalogType
 
   regularUserRole: string = 'Level four';
   settings = {
@@ -68,6 +71,8 @@ export class CatalogNameTableComponent implements OnInit {
 
   constructor(
     private catalogService: CatalogService,
+    private catalogTypeService: CatalogTypeService,
+
     private modalService: NgbModal,
     private toastrService: NbToastrService,
     private router: Router,
@@ -83,6 +88,7 @@ export class CatalogNameTableComponent implements OnInit {
     }
     else {
       this.getCatalogNameList();
+      this.getCatalogType();
     }
   }
 
@@ -91,6 +97,12 @@ export class CatalogNameTableComponent implements OnInit {
       .subscribe(nameList => {
         this.source.load(nameList);
       });
+  }
+
+  private getCatalogType() {
+    this.catalogTypeService.getCatalogTypeById(this.specifiedCatalogTypeId).subscribe(catalogType => {
+      this.catalogType = catalogType;
+    });
   }
 
   /**

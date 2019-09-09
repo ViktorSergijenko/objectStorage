@@ -13,6 +13,8 @@ import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { WarehouseListActionButtonsComponent } from './warehouse-list-action-buttons/warehouse-list-action-buttons.component';
 import { WarehouseListActionButtonComponent } from './warehouse-list-action-button/warehouse-list-action-button.component';
+import { CatalogTypeService } from '../../../../services/catalog-type.service';
+import { CatalogType } from '../../../../models/catalog-type';
 
 @Component({
   selector: 'ngx-warehouses-list',
@@ -51,6 +53,7 @@ export class WarehousesListComponent implements OnInit {
   searchValue: string = '';
   isLoading: boolean = true;
   levelThree: string = 'Level three';
+  catalogTypeList: CatalogType[] = [];
 
   filterSortingOption: FilterSorting = new FilterSorting;
   userRole: string;
@@ -200,6 +203,7 @@ export class WarehousesListComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private toastrService: NbToastrService,
+    private catalogTypeService: CatalogTypeService
   ) {
     this.userRole = localStorage.getItem('Role');
   }
@@ -229,6 +233,18 @@ export class WarehousesListComponent implements OnInit {
     // Unsubscribe from search value changes to avoid memory leaks
     this.searchValueChanged.unsubscribe();
     this.positionUpdate.unsubscribe();
+  }
+
+  private getCatalogTypeList() {
+    this.catalogTypeService.getCatalogNameList()
+      .pipe(
+        finalize(() => {
+        }))
+      .subscribe(catalogTypeList => {
+        this.catalogTypeList = catalogTypeList;
+      }, err => {
+        this.toastrService.danger(`Nesanāca dabūt katalogu tipus`);
+      });
   }
 
 

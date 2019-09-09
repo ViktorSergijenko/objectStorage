@@ -58,7 +58,7 @@ export class AddNewCatalogNameModalComponent implements OnInit {
     });
   }
 
-  private addCatalogName() {
+  addCatalogName() {
     this.catalogService.addOrUpdateCatalogName(this.addCatalogNameForm.value)
       .pipe(
         // When method was executed

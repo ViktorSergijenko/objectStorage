@@ -57,12 +57,11 @@ export class EditCatalogNameModalComponent implements OnInit {
       name: [undefined, Validators.required],
     });
   }
-
   patchValuesToForm() {
     this.addCatalogNameForm.patchValue({ id: this.catalogName.id });
     this.addCatalogNameForm.patchValue({ name: this.catalogName.name });
   }
-  private editCatalogName() {
+  editCatalogName() {
     this.catalogService.addOrUpdateCatalogName(this.addCatalogNameForm.value)
       .pipe(
         // When method was executed

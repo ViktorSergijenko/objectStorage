@@ -57,12 +57,7 @@ export class EditCatalogModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.catalogToEdit.type === true) {
 
-      this.typeName = 'Kafija';
-    } else {
-      this.typeName = 'Sneks';
-    }
     this.patchAllValuesToForm();
   }
 
@@ -128,7 +123,7 @@ export class EditCatalogModalComponent implements OnInit {
       minimumAmount: [undefined, Validators.required],
       warehouseId: [undefined, Validators.required],
       productPrice: [undefined, Validators.required],
-      type: [undefined, Validators.required],
+      catalogNameId: [undefined, Validators.required],
     });
   }
   /**
@@ -146,7 +141,7 @@ export class EditCatalogModalComponent implements OnInit {
       minimumAmount: this.catalogToEdit.minimumAmount,
       warehouseId: this.catalogToEdit.warehouseId,
       productPrice: this.catalogToEdit.productPrice,
-      type: this.catalogToEdit.type,
+      catalogNameId: this.catalogToEdit.catalogNameId,
     });
   }
 

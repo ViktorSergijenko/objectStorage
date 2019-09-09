@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './dashboard.component';
 import { WarehousesListComponent } from './warehouses/warehouses-list/warehouses-list.component';
-import { NbSpinnerModule, NbToastrModule, NbCalendarModule, NbPopoverModule, NbButtonModule } from '@nebular/theme';
+import { NbSpinnerModule, NbToastrModule, NbCalendarModule, NbPopoverModule, NbButtonModule, NbSelectModule } from '@nebular/theme';
 import { CommonModule } from '@angular/common';
 import { AddWarehouseModalComponent } from './warehouses/add-warehouse-modal/add-warehouse-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,8 +47,8 @@ import { ChangeWarehousePositionModalComponent } from './warehouses/warehouses-l
     NewsTableModule,
     NbCalendarModule,
     NbPopoverModule,
-    NbButtonModule
-
+    NbButtonModule,
+    NbSelectModule,
   ],
   declarations:
     [

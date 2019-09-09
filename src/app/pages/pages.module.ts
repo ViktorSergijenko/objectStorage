@@ -10,6 +10,7 @@ import { CatalogNameTableModule } from './catalog-name-table/catalog-name-table.
 import { LogTableModule } from './log-table/log-table.module';
 import { NewsTableModule } from './dashboard/news-table/news-table.module';
 import { CatalogTypeModule } from './catalog-type/catalog-type.module';
+import { NbSelectModule } from '@nebular/theme';
 
 
 const PAGES_COMPONENTS = [
@@ -26,7 +27,8 @@ const PAGES_COMPONENTS = [
     UserTableModule,
     MiscellaneousModule,
     LogTableModule,
-    CatalogTypeModule
+    CatalogTypeModule,
+    NbSelectModule
   ],
   declarations: [
     ...PAGES_COMPONENTS,

@@ -5,9 +5,14 @@
       <nb-card-header class="row-with-btns">
         <p>{{warehouse.name}}</p>
         <i class="fas fa-exclamation-circle fa-2x problem-icon" *ngIf="warehouse.hasProblems"></i>
-        <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
+        <!-- <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
         <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
-          (click)="catalogTypeShowToggle()"></i>
+          (click)="catalogTypeShowToggle()"></i> -->
+        <nb-select (selectedChange)="onSelectTypeChange($event)" [(ngModel)]="catalogFiltrator.catalogTypeId"
+          placeholder="Katalogu TIPI">
+          <nb-option [value]="type.id" *ngFor="let type of catalogTypeList">{{type.name}}
+          </nb-option>
+        </nb-select>
         <i class="fas fa-users fa-2x icon-detail" *ngIf="userRole != regularUserRole" (click)="
           openEmployeesModal()"></i>
         <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>
@@ -39,9 +44,13 @@
     <nb-card class="width-card">
       <nb-card-header class="row-with-btns">
         <p>{{warehouse.name}}</p>
-        <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
+        <!-- <i class="fas fa-coffee fa-2x padding type-icon" *ngIf="catalogType" (click)="catalogTypeShowToggle()"></i>
         <i class="fas fa-cookie-bite fa-2x padding type-icon" *ngIf="!catalogType"
-          (click)="catalogTypeShowToggle()"></i>
+          (click)="catalogTypeShowToggle()"></i> -->
+        <nb-select (selectedChange)="onSelectTypeChange($event)" [(ngModel)]="catalogFiltrator.catalogTypeId"
+          placeholder="Katalogu TIPI">
+          <nb-option [value]="type.id" *ngFor="let type of catalogTypeList">{{type.name}}</nb-option>
+        </nb-select>
         <i class="fas fa-users fa-2x icon-detail" *ngIf="userRole != regularUserRole" (click)="
           openEmployeesModal()"></i>
         <i class="fas fa-clipboard-list fa-2x icon-detail" (click)="goToWarehouseLogs()"></i>

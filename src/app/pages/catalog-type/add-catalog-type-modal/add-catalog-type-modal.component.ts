@@ -64,7 +64,7 @@ export class AddCatalogTypeModalComponent implements OnInit {
     });
   }
 
-  private addCatalogType() {
+  addCatalogType() {
     this.catalogTypeService.saveCatalogType(this.addCatalogTypeForm.value)
       .pipe(
         // When method was executed

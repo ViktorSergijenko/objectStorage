@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from "../../environments/environment";
+import { environment } from "../../environments/environment.prod";
 import { Observable, Subject } from "rxjs";
 import { CatalogType } from "../models/catalog-type";
 import { ObjectChange } from "../models/base.model";
@@ -39,6 +39,17 @@ export class CatalogTypeService {
     getCatalogNameList(): Observable<CatalogType[]> {
         var tokenHeader = new HttpHeaders();
         return this.http.get<CatalogType[]>(this.getEndpointUrl(), { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
+    }
+
+    /**
+     * Method gets catalog type by id
+     *
+     * @returns {Observable<Catalog[]>}
+     * @memberof CatalogService
+     */
+    getCatalogTypeById(id: string): Observable<CatalogType> {
+        var tokenHeader = new HttpHeaders();
+        return this.http.get<CatalogType>(this.getEndpointUrl() + `/${id}`, { headers: tokenHeader.set('Authorization', 'Bearer ' + localStorage.getItem('UserToken')) });
     }
 
     /**
